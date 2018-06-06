@@ -1,0 +1,45 @@
+<view class='section'>
+  <view onTap='select' id="rech" class="{{show?'select':'normal'}}">充值记录</view>
+  <view onTap='select' id="cosu" class="{{!show?'select':'normal'}}">消费记录</view>
+</view>
+<view>
+  <swiper current='{{current}}' onChange='changeSwiper' style="height:{{(screenHeight-30)/pixelRatio}}rpx">
+    <!-- 充值记录 -->
+    <swiper-item>
+      <view>
+        <block a:for="{{re_array}}" a:key="index">
+          <view class='item'>
+            <view class='item-left'>
+              <view>{{item.platformName}}</view>
+              <view>{{item.timestamp}}</view>
+            </view>
+            <view>{{item.money}}元</view>
+          </view>
+        </block>
+      </view>
+      <view class='loading'>
+        <text onTap='fresh' id="re_loading">{{re_loading}}</text>
+      </view>
+    </swiper-item>
+    <!-- 消费记录 -->
+    <swiper-item>
+      <view>
+        <block a:for="{{co_array}}" a:key="index">
+          <view class='item'>
+            <view class='item-left'>
+              <view>{{item.name}}</view>
+              <view>{{item.time_str}}</view>
+            </view>
+            <view>
+              <text>{{item.price}}</text>
+              <view class="{{item.state == 1 ? 'complete' : 'warning'}}">({{item.state_str}})</view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <view class='loading'>
+        <text onTap='fresh' id="co_loading">{{co_loading}}</text>
+      </view>
+    </swiper-item>
+  </swiper>
+</view>

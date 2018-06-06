@@ -1,0 +1,60 @@
+<view class='main'>
+  <!-- 广告位 -->
+  <view class='header'>
+    <swiper indicator-dots="true" autoplay="true" interval="3000" duration="1000">
+      <block a:for="{{info}}" a:for-index="index" a:key='index'>
+        <swiper-item style='height:350rpx;'>
+          <image src="{{item.img}}" class='image' id="{{item.action}}" onTap='jumpTo'></image>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 扫一扫二维码联动 -->
+  <view class='footer'>
+    <view class='bar'>
+      <view onTap='show' id="scan" class="{{show?'select':'normal'}}">扫一扫</view>
+      <view onTap='show' id="code" class="{{!show?'select':'normal'}}">二维码</view>
+    </view>
+    <view class='slip'>
+      <view a:if="{{showType}}" style='width:{{screenWidth/pixelRatio}}rpx;height:{{screenWidth/pixelRatio}}rpx;'>
+        <view class='child' style="width:{{screenWidth/pixelRatio *2/3}}rpx;height:{{screenWidth/pixelRatio * 2/3}}rpx;        border-radius:{{screenWidth/pixelRatio * 2/3}}rpx;        background-size:300rpx;        background-position:{{(screenWidth/pixelRatio *2/3 - 300)/2 }}rpx" catchTap='scan' a:if="{{!showClose}}"></view>
+        <canvas canvas-id="scan" id="scan" a:if="{{showClose}}"></canvas>
+        <view class='close' style="width:{{screenWidth/pixelRatio *2/3}}rpx;height:{{screenWidth/pixelRatio*2/3}}rpx;        line-height:{{screenWidth/pixelRatio*2/3}}rpx;        border-radius:{{screenWidth/pixelRatio*2/3}}rpx;" onTap="endHot" a:if="{{showClose}}">点击停水</view>
+      </view>
+      <view a:if="{{!showType}}" style='width:{{screenWidth/pixelRatio}}rpx;height:{{screenWidth/pixelRatio}}rpx;'>
+        <canvas canvas-id='qrcode' id="qrcode"></canvas>
+      </view>
+    </view>
+  </view>
+  <!-- 选择模式下模态框 -->
+  <!-- 开水器 -->
+  <view class='water' a:if="{{showWater}}">
+    <view class="shadow" style="height:{{screenHeight}}px" a:if="{{showWater}}"></view>
+    <view class='detail'>
+      <view onTap='getWaterType' id="large">大瓶</view>
+      <view onTap='getWaterType' id="small">小瓶</view>
+      <view catchTap='cancel' id="cancelWater">取消</view>
+    </view>
+  </view>
+  <!-- 洗衣机 -->
+  <view class='washer' a:if="{{showWasher}}">
+    <view class='shadow' style='height:{{screenHeight}}px'></view>
+    <view class='detail'>
+      <view onTap='getWasherType' id="dewater">单脱                        
+        <span>{{dryPrice}}</span>
+      </view>
+      <view onTap='getWasherType' id="fast">快速                        
+        <span>{{fastPrice}}</span>
+      </view>
+      <view onTap='getWasherType' id="standard">标准                        
+        <span>{{stdPrice}}</span>
+      </view>
+      <view onTap='getWasherType' id="big">大物                        
+        <span>{{bigPrice}}</span>
+      </view>
+      <view catchTap='cancel' id="cancelWasher" class='cancel'>取消                        
+        <span></span>
+      </view>
+    </view>
+  </view>
+</view>

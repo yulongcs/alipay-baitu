@@ -1,0 +1,14 @@
+<view class="school">
+  <view class='search'>
+  <form onSubmit='sub'>
+    <input name="schoolInput" onInput='onInput' type='text' placeholder-class='searchColor' placeholder='同学！这里搜索学校哦~'></input>
+    <button form-type='submit'>
+      <icon type='search' size='15' class='reading'></icon>
+    </button>
+  </form>
+
+</view>
+<view a:for="{{schoolList}}" class='content' a:key="index">
+  <view id="{{item.sc_id}}" data-text="{{item.sc_name}}" onTap='selectSchool' class='school'>{{item.sc_name}}</view>
+</view>
+</view>

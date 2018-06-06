@@ -1,0 +1,85 @@
+@import '/assets/main.acss';
+.image{
+  width: 100%;
+}
+.bar{
+  width: 70%;
+  margin: 10rpx 15% 0 15%;
+  display: flex;
+  text-align: center;
+}
+.bar>view{
+  flex: 1;
+  padding: 20rpx;
+  border:1rpx solid #4ab6f4;
+}
+.bar>view:first-child{
+  border-radius: 20rpx 0 0 20rpx;
+}
+.bar>view:last-child{
+  border-right: solid 1rpx #4ab6f4;
+  border-radius:0 20rpx 20rpx 0;
+}
+canvas{
+   width: 100%;  
+   height: 100%;
+}
+.child{
+  position: relative; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  text-align: center;
+  border: solid 1px #c4e8f8;
+  background-color: #c4e8f8;
+  background-image: url('data:image/png;base64,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'); 
+  background-repeat: no-repeat;
+  /* border:solid 1px red; */
+}
+.close{
+  position: relative; 
+  top: -51%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  text-align: center;
+  border: solid 1px #eeeeee;
+  background-color: #c4e8f8;
+  font-size: 18px;
+  z-index: 100;
+}
+.select{
+  background-color: #78caf2;
+  color: white;
+}
+.shadow{
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.95;
+}
+.detail{
+  z-index: 30;
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 80%;
+}
+.detail>view{
+  border-bottom:solid 1rpx #eeeeee;
+  height:100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: #2b7d9e;
+  background-color:#D9EFFA;
+  margin-top: 20rpx;
+  border-radius: 20rpx;
+}
+span{
+  display:inline-block;
+  margin-left: 10rpx; 
+}

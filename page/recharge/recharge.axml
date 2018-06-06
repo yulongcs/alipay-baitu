@@ -1,0 +1,20 @@
+<view class='text'>
+  <text>选择充值金额</text>
+</view>
+<view class='money' a:if="{{!give}}" a:key="index">
+  <block a:for="{{txtArray}}" a:key="index">
+    <view id="{{item.id}}" class="{{item.getColor?'selected':'normal'}} number" onTap='changeColor'>{{item.text}}</view>
+  </block>  
+</view>
+<view class='money-cz' a:if="{{give}}">
+  <view></view>
+  <block a:for="{{czGive}}" a:key="index">
+    <view id="{{item.id}}" class="{{item.getColor?'selected':'normal'}} number" onTap='changeColorCZ'>{{item.money}}</view>
+  </block>
+</view>
+<view>
+  <input a:if="{{show}}" class="number" onInput='getMoney' type='number' focus='true' placeholder='输入充值金额'></input>
+</view>
+<view>
+   <button onTap='recharge'>充值</button> 
+</view>

@@ -1,0 +1,181 @@
+/***  字体大小  ***/
+.font_18{
+  font-size: 18rpx;
+}
+.font_20{
+  font-size: 20rpx;
+}
+.font_20_b{
+  font-size: 20rpx;
+  font-weight: 700;
+}
+.font_22{
+  font-size: 22rpx;
+}
+.font_24{
+  font-size: 24rpx;
+}
+.font_26{
+  font-size: 26rpx;
+}
+.font_26_b{
+  font-size: 26rpx;
+  font-weight: 700;
+}
+.font_28{
+  font-size: 28rpx;
+}
+.font_28_b{
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.font_30{
+  font-size: 30rpx;
+}
+.font_30_b{
+  font-size: 30rpx;
+  font-weight: 700;
+}
+.font_34{
+  font-size: 34rpx;
+}
+.font_34_b{
+  font-size: 34rpx;
+  font-weight: 700;
+}
+.font_36{
+  font-size: 36rpx;
+}
+.font_36_b{
+  font-size: 36rpx;
+  font-weight: 700;
+}
+.font_42{
+  font-size: 42rpx;
+}
+.font_48_b{
+  font-size: 48rpx;
+  font-weight: 700;
+}
+
+/***  字体颜色  ***/
+/* 淡蓝色 */
+.font_color1{ 
+    color:#2b7d9e; 
+}
+
+
+/*文字位置  */
+.text-ac{ text-align: center}
+
+.text-dec{text-decoration:line-through}
+
+/***  渐变按钮  ***/
+/** 小 **/
+.btn1{
+  background: linear-gradient(to right top,#ff2526,#ff417f);
+  height: 68rpx;
+  line-height: 68rpx;
+  border-radius: 4rpx;
+  color: #fff;
+  text-align: center;
+}
+
+
+/*短红背景按钮  */
+.btndred{ height:68rpx; line-height: 68rpx; text-align: center; color: #fff;  background: #ff2741; border-radius: 4rpx;}
+
+/*短红背景圆角按钮  */
+.btndredx{ height:90rpx; line-height: 90rpx; text-align: center;color: #fff;  background: #ff2741; border-radius: 4rpx;}
+
+/*通屏红背景按钮  */
+.btnrtred{ height:100rpx; line-height: 100rpx; text-align: center;color: #fff;  background: #ff2741; border-radius: 4rpx;}
+
+/*通屏灰背景按钮  */
+.btnrth{ height:100rpx; line-height: 100rpx; text-align: center; border-radius: 4rpx;}  
+
+/* 底部红背景按钮 */
+.btnrbred{ height:100rpx; line-height: 100rpx;text-align: center; color: #fff;  background: #ff2741;}
+
+/* 蓝白渐变色背景按钮  */
+.btnblue {text-align: center; color: #fff;background: linear-gradient(to right,#63b8ff,#88B6E7 )}
+
+
+/*button初始化  */
+.a-button::after{ border:0}
+/***  margin  ***/
+.margin_30{
+  margin: 30rpx;
+}
+.margin_30_t{
+  margin-top: 30rpx;
+}
+.margin_30_b{
+  margin-bottom: 30rpx;
+}
+.margin_30_lr{
+  margin: 0 30rpx;
+}
+.margin_25_tb{
+  margin: 25rpx 0;
+}
+
+
+/*弹性布局*/
+
+.flex_col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex_row {
+  display: flex;
+  flex-direction: row;
+}
+
+/**** 统一提示弹出层 ****/
+.tipFloat{
+  width: 50%;
+  text-align: center;
+  padding: 50rpx;
+  background-color: rgba(0,0,0,.7);
+  position: absolute;
+  top: 300rpx;
+  left: 25%;
+  border-radius: 6rpx;
+}
+.tipFloat text{
+  color: #fff;
+  font-size: 70rpx;
+}
+.tipFloat view{
+  color: #fff;
+  margin-top: 20rpx;
+}
+
+
+/***** 没有封面图情况 ******/
+.noImage{
+  background-color: #eee;
+  width: 100%;
+  height: 420rpx;
+  text-align: center;
+}
+.noImage text{
+  color: #666;
+  font-size: 160rpx;
+  line-height: 420rpx;
+}
+.a-button{
+  background: none;
+  margin: 0;
+  padding: 0;
+  outline:none;
+  border: none;
+  height: 60px;
+  line-height: 60px;
+}
+.a-input{
+  color:#fff;
+  background: none;
+}

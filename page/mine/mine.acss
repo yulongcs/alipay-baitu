@@ -1,0 +1,32 @@
+@import '/assets/main.acss';
+.all image {
+    width: 80rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    margin-top: 5rpx;
+}
+navigator { 
+    display: flex;
+    align-items: center;
+    padding: 0 20rpx;
+    height: 150rpx; 
+    line-height: 150rpx;
+    background-image: url('../image/list_bg_info.png');
+    opacity: 10%;
+    font-size: 28rpx;
+}
+navigator view {display: flex;align-items: center;padding-left: 30rpx;color:#000;}
+
+.cancel >button{
+    height: 50px;
+    line-height: 50px;
+    color: #2b7d9e;
+    background-color:#D9EFFA;
+    border-radius: 50rpx;
+    margin: 150rpx 180rpx 0 180rpx;
+    font-size: 32rpx;
+    border: 0;
+}
+.col {
+    background-color: #ECf7FD;
+}

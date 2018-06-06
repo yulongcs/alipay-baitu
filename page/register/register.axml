@@ -1,0 +1,29 @@
+<view class='container'>
+  <form onSubmit='baitu_register'>
+    <!-- 注册手机号码  -->
+    <view class='baitu_enrol'>
+      <input onInput='getTel' name="mobile" type='text' maxlength='11' placeholder='手机号' placeholder-class='register_input'></input>
+    </view>
+    <!-- 注册输入验证码  -->
+    <view class='baitu_enrol'>
+      <input value='{{code}}' maxlength="8" name="code" type='text'
+       placeholder='验证码' placeholder-class='register_input'></input>
+      <button hover-class="none" class='btnrth' onTap='getCode' 
+      disabled='{{buttonDsiable}}'>{{codes}}</button>
+    </view>
+    <!-- 注册密码  -->
+    <view class='baitu_enrol'>
+      <input password='true' onInput='getPsd' name="password" type='password' 
+      placeholder='密码' placeholder-class='register_input'></input>
+    </view>
+    <!-- 选择学校  -->
+    <view class='baitu_enrol'>
+      <input type='text' placeholder='学校' placeholder-class='register_input'
+       onFocus='pickSchool' value="{{schoolName}}"></input>
+    </view>
+    <!-- 注册按钮 -->
+    <button class='register_btn' form-type="submit" hover-class="none">
+      <image src="../../image/btn_login.png" mode="scaleToFill" />
+    </button>
+  </form>
+</view>

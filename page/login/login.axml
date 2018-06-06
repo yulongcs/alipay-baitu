@@ -1,0 +1,33 @@
+<view class='background_image' style='width:{{screenWidth/pixelRatio}}rpx;height:{{screenHeight/pixelRatio}}rpx;'>
+  <view class='container'>
+    <view class='login_image'>
+      <image src="../../image/ic_launcher.png"></image>
+    </view>
+  </view>
+  <!--登录部分  -->
+  <view class='login_submit'>
+    <form onSubmit='login_submit'>
+      <!--手机输入框  -->
+      <view class='login'>
+        <input type='text' maxlength="11" 
+        name="userName" value='{{userName}}'
+         placeholder='手机号' placeholder-class='login_input' />
+      </view>
+      <!--密码输入框  -->
+      <view class='login'>
+        <input password='true' name="password" value='{{password}}' 
+        placeholder='密码' placeholder-class='login_input'/>
+      </view>
+      <!--登录按钮  -->
+      <button class='login_btn' form-type="submit" hover-class="none">
+        <image src="../../image/btn_login.png" mode="scaleToFill" />
+      </button>
+      <!--注册及忘记密码  -->
+      <view class='reg_foget'>
+        <view onTap='forgetPsd'>忘记密码</view>
+        <view onTap='register'>注册</view>
+      </view>
+    </form>
+  </view>
+</view>
+

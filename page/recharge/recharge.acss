@@ -1,0 +1,41 @@
+@import '/assets/main.acss';
+.money,.money-cz{
+  width: 100%;
+  text-align: center;
+}
+.number{
+  display: inline-block;  
+  width: 30%;
+  height: 100rpx;
+  line-height: 100rpx; 
+  border: 1rpx solid #eeeeee;
+  border-radius: 10rpx;
+  color: #c5E8F9;
+}
+input,button{
+  width: 80%;
+  margin-left:10%;
+  border:solid 1rpx #eeeeee;
+}
+.normal{
+  color:#2b7d9e;
+  background-color: rgb(203, 233, 244);
+  border-radius: 50rpx;
+}
+.selected{
+  color: #c5E8F9;
+  border-radius: 50rpx;
+  background-color: rgb(62, 179, 236);
+}
+view{
+  margin-top: 10rpx;
+}
+.text{
+  text-align: center;
+}
+button{
+  background-color: #c5E8F9;
+  color: #2B7D9E;
+  margin: 60rpx;
+  border-radius: 50rpx;
+}

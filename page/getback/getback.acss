@@ -1,0 +1,50 @@
+@import "/assets/common.acss";
+@import "/assets/login.acss";
+
+page{padding-top: 35rpx;}
+/* 输入框标签  */
+.baitu_enrol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1rpx solid #eee;
+  border-radius: 50rpx;
+  margin: 75rpx 80rpx 0 80rpx;
+  padding-left:40rpx;
+  color: #fff;
+}
+
+/* 输入框所有样式  */
+.baitu_enrol input {
+  flex: 9;
+  height: 60rpx;
+  padding: 25rpx 0; 
+  font-size: 36rpx;
+  color: #fff;
+  font-style:italic;
+}
+
+/* placeholder样式  */
+.register_input {
+  font-size: 32rpx;
+}
+.btnrth {
+  color: #fff;
+  margin-right: 20rpx;
+}
+/* 注册按钮  */
+.goback_btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 50rpx;
+}
+.goback_btn image {
+  width: 104rpx;
+  height: 104rpx;
+  background-size: 100%;
+}
+
+/* 获取验证码样式  */
+.btnrth{ background-color: transparent;font-size: 24rpx;}
+.btnrth::after {background: none;}
+button[disabled][type="default"],wx-button[disabled]:not([type]) {background:none; color: #fff;}

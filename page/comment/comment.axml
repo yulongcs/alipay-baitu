@@ -1,0 +1,32 @@
+<view class='container'>
+  <view>
+    <form onSubmit='baitu_comment'>
+      <view class='comTitle'>
+        <view>(必选)请您选择你想要反馈的问题点</view>
+      </view>
+      <radio-group class="radio main" style='background: #cbe9f4;' onChange="radioChange">
+        <label class="radioText" a:for="{{title}}" a:key="index">
+          <radio value='{{ item.titleId}}' name="title_name"></radio>
+          <view>{{ item.title }}</view>
+        </label>
+      </radio-group>
+      <view class='main'>
+        <textarea name="baitu_question" placeholder='简要描述您要反馈的问题和意见' onInput='getText'></textarea>
+      </view>
+      <view class='main'>
+        <view style='background:#cbe9f4'>
+          <view class="questionImg">请提供相关问题截图或图片</view>
+        </view>
+        <view class='image' style='background:#cbe9f4;padding:10rpx;'>
+          <view a:for="{{filePath}}" a:key="index" style='width:{{width}}px;height:{{width}}px;'>
+            <image src="{{item}}"></image>
+          </view>
+          <view class='chooseImg' onTap="upload" style='width:{{width}}px;height:{{width}}px;line-height:{{width}}px;'></view>
+        </view>
+      </view>
+      <view class='main'>
+        <button class="submit" onTap='postComment'>提交</button>
+      </view>
+    </form>
+  </view>
+</view>

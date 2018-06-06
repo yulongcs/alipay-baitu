@@ -1,0 +1,25 @@
+<view class='container'>
+  <view class='swcard_background'>
+    <view class='swcar_img'>
+      <image src='../../image/icon_care.png'></image>
+    </view>
+    <view class='swcar_text font_32'>卡号</view>
+    <view class='swcar_text_two font_32'>{{ card }}</view>
+  </view>
+  <!-- 温馨提示公告  -->
+  <view class='swcar_public'>
+    <image src='../../image/icon_red.png'></image>
+    <view>温馨提示：一张水卡只能绑定一个账号</view>
+  </view>
+  <!-- 刷卡绑定/解除绑定  -->
+  <view class='swing_card font_32'>
+    <view class='swing_machine' catchTap='bind'>
+      <image src='../../image/icon_left.png'></image>
+      <view>刷卡绑定</view>
+    </view>
+    <view class='swing_machine font_32' catchTap='remove'>
+      <image class='swing_two' src='../../image/iconright.png'></image>
+      <view>解除绑定</view>
+    </view>
+  </view>
+</view>

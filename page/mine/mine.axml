@@ -1,0 +1,13 @@
+<view class="all">
+  <view a:for="{{mine}}" a:key='index'>
+    <view class="col">
+      <navigator url="{{item.url}}">
+        <image src="{{item.src}}" />
+        <view>{{item.name}}</view>
+      </navigator >
+    </view>
+  </view>
+  <view class="cancel">
+    <button onTap="cancel"> 注销登录 </button>
+  </view>
+</view>

@@ -1,0 +1,65 @@
+@import '/assets/main.acss';
+
+.a-swiper{
+  height: auto;
+}
+.section{
+  width: 100%;
+  display: flex;
+  padding: 20rpx 0;
+}
+.section>view{
+  text-align: center;
+  flex:1;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+.section>view:first-child{
+  border-right: solid 1rpx #eee;
+}
+.select{
+  color: #31a4eb;
+  border-bottom: solid 2rpx #31a4eb;
+
+}
+.item{
+  display: flex;
+  height: 100rpx;
+  border-bottom: solid 1rpx #eeeeee;
+}
+.item>view{
+  flex: 1;
+}
+.item>view:last-child{
+  text-align: right;
+  color: #31a4eb;
+}
+.item-left {
+  margin-right: 20rpx;
+}
+.item-left>view{
+  height: 50rpx;
+  line-height: 50rpx;
+}
+.item-left>view:last-child{
+  color: #757373;
+}
+swiper-item{
+  overflow-y: scroll;
+}
+.loading{
+  width: 100%;
+  text-align: center;
+  padding-top: 10rpx;
+}
+.warning{
+  color: red;
+}
+.state {
+  margin-right: 20rpx;
+}
+
+.complete {
+  display: inline-block;
+  padding-top: 32rpx;
+}

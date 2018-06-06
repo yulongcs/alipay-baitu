@@ -1,0 +1,20 @@
+<view>
+  <block a:for="{{comment}}" a:key="index">
+  <view class='container'>
+    <view class='list'>
+      <view>
+        <view>{{item.title}}</view>
+        <view>{{item.description}}</view>
+      </view>
+      <view>
+        {{item.applyTime}}
+      </view>
+    </view>
+    <view class='reply' a:for="{{item.replies}}" a:for-item="i" a:key="index">
+      回复：{{ i.replyContent}}
+    </view>
+  </view>
+    
+  </block> 
+</view>
+<button class='backBtn' onTap='gotoComment'>我要反馈</button>

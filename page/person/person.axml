@@ -1,0 +1,10 @@
+<view class='baitu_person'>
+  <view class='item'>
+    <view class='phoneNum'>电话</view>
+    <view>{{tele}}</view>
+  </view>
+  <view class='item'>
+    <view class='school'>学校</view>
+    <view>{{school}}</view>
+  </view>
+</view>

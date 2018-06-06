@@ -1,0 +1,14 @@
+<view class="page">
+  <view class='money'>
+    <text class='font_42'>余额：{{money}}元</text>
+  </view>
+  <view>
+    <button onTap='goto'>充值</button>
+  </view>
+   <view a:if="{{showRefund}}">
+    <button onTap='refund'>退款</button>
+  </view>
+  <view class='record'>
+    <text class="font_34" onTap='record'>明细记录</text>
+  </view>
+</view>

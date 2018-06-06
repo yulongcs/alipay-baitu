@@ -1,0 +1,35 @@
+@import "/assets/common.acss";
+@import "/assets/main.acss";
+
+.list {
+  width: 100%;
+  font-size: 28rpx;
+  display: flex;
+  padding: 30rpx;
+}
+
+.list>view:first-child {
+  flex: 3;
+}
+
+.list>view:last-child {
+  flex: 1;
+  text-align: right;
+}
+
+.reply {
+  font-size: 28rpx;
+  background-color: #eee;
+  width: 100%;
+}
+
+.container {
+  border-bottom: 1rpx solid #eee;
+  padding: 0;
+}
+.backBtn {
+  margin: 70rpx;
+  color: #2b7d9e;
+  background-color:#D9EFFA;
+  border-radius: 50rpx;
+}

@@ -1,0 +1,26 @@
+@import '../../assets/common.acss';
+@import '../../assets/main.acss';
+
+.money{
+  width: 100%;
+  height: 300rpx;
+  line-height: 300rpx;
+  text-align: center;
+  background-color: #d8f0fc;
+  border-top: solid 1rpx #eeeeee;
+}
+.record{
+  width: 100%;
+  position: absolute;
+  bottom: 40rpx;
+  text-align: center;
+}
+.record>text{
+  color: #c4e8f8;
+}
+button{
+ margin: 60rpx;
+ border-radius: 50rpx;
+ color:#2b7d9e;
+ background-color: #c4e8F8;
+}

@@ -1,0 +1,95 @@
+<!-- 未申请退款 -->
+<view a:if="{{!ifOrder}}">
+  <view class='refund'>
+    <text class='font_36'>退款数据</text>
+    <view class='analysis'>
+      <view>
+        <view>可退金额</view>
+        <view>不可退总额</view>
+      </view>
+      <view>
+        <view>{{refundData.remainMoney/100}}元</view>
+        <view>{{refundData.NotBackCardMoney}}元</view>
+      </view>
+    </view>
+  </view>
+  <view class='refund'>
+    <text class='font_36 font_color1'>退款账单</text>
+    <view class="detail">
+      <view a:for="{{refundData.backDetails}}" a:key="index" class='orderFlex'>
+        <view>
+          <view>{{item.platformDesc}}</view>
+          <text>{{item.czTimestamp}}</text>
+        </view>
+        <view>
+          <view>充值金额:{{item.czMoney/100}}</view>
+          <view>退款金额:{{item.toRefundMoney/100}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='refund' a:if="{{showTrans}}">
+    <text class='font_36 font_color1 '>转账账单</text>
+    <icon type='info' size='14' onTap="getWarn"></icon>
+    <view class='detail'>
+      <view a:for="{{refundData.transDetails}}" a:key="index" class='orderFlex'>
+        <view>
+          <view>{{item.platformDesc}}</view>
+          <view>{{item.czTimestamp}}</view>
+        </view>
+        <view>
+          <view>充值金额:{{item.czMoney/100}}</view>
+          <view>退款金额:{{item.toRefundMoney/100}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='refund account' a:if="{{showTrans}}">
+    <text class="font_36 font_color1">转账账号</text>
+    <view class="alipay">
+      <text>支付宝账号</text>
+      <input name='account' placeholder="请输入支付宝账号" onInput="getAccount" />
+    </view>
+    <view class="alipay">
+      <text>真实姓名</text>
+      <input name="name" placeholder='请填写真实姓名' onInput='getName' />
+    </view>
+  </view>
+  <view>
+    <button onTap='commit'>申请退款</button>
+  </view>
+</view>
+<!-- 已申请退款 -->
+<view a:if="{{ifOrder}}">
+  <view class='order'>
+    <text class='font_36 font_color1'>退款详情</text>
+    <view class='summary'>
+      <view style="padding:20rpx 0;">
+        <view class='third'>可退金额:{{orderData.toRefundMoney/100}}元</view>
+        <view class='third'>不可退金额:{{notBackMoney}}元</view>
+        <view class='third'>{{orderData.applyTime}}</view>
+      </view>
+      <view>
+        <view class='state'>{{orderData.stateStr}}</view>
+      </view>
+    </view>
+  </view>
+  <view class='order'>
+    <text class='font_36 font_color1'>退款明细</text>
+    <view class='detail'>
+      <view a:for="{{orderDetail}}" a:key="index" class='orderFlex'>
+        <view>
+          <view>{{item.platformDesc}}</view>
+          <view>{{item.czTimestamp}}</view>
+        </view>
+        <view>
+          <view>充值金额:{{item.czMoney/100}}</view>
+          <view>退款金额:{{item.toRefundMoney/100}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view>
+    <button onTap='cancel'>取消退款</button>
+  </view>
+</view>

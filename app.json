@@ -1,0 +1,46 @@
+{
+    "pages": [
+        "page/login/login",
+        "page/getback/getback",
+        "page/register/register",
+        "page/school/school",
+        "page/index/index",
+        "page/mine/mine",
+        "page/person/person",
+        "page/wallet/wallet",
+        "page/comment_list/comment_list",
+        "page/comment/comment",
+        "page/recharge/recharge",
+        "page/record/record",
+        "page/refund/refund",        
+        "page/swingCard/swingCard",
+        "page/cardReader/cardReader"
+    ],
+    "window": {
+        "enableWK": "YES",
+        "enableDSL": true,
+        "defaultTitle": "佰途",
+        "pullRefresh": false,
+        "allowsBounceVertical": true,
+        "titleBarColor": "#63B8FF"
+    },
+    "tabBar": {
+        "textColor": "#dddddd",
+        "selectedColor": "#33a6ff",
+        "items": [
+            {
+                "pagePath": "page/index/index",
+                "icon": "image/boiling_nav_unsel.png",
+                "activeIcon": "image/boiling_nav_selected.png",
+                "name": "首页"
+            },
+            {
+                "pagePath": "page/mine/mine",
+                "icon": "image/mine_nav_unsel.png",
+                "activeIcon": "image/mine_nav_selected.png",
+                "name": "个人中心"
+            }
+        ]
+    },
+    "debug": true
+}

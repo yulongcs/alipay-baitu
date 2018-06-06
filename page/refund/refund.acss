@@ -1,0 +1,93 @@
+@import '/assets/common.acss';
+@import '/assets/main.acss'; 
+
+order,.refund{
+  margin-top: 30rpx;
+}
+.refund>view{
+  background-color: #c4e8f8;
+}
+.summary,.detail{
+  background-color: #c4e8f8;
+  margin-top: 10rpx;
+  height: 200rpx;
+}
+.detail{
+  height: 400rpx;
+  overflow-y: scroll;
+}
+.orderFlex{
+  display: flex;
+  border: solid 1px #eeeeee;
+}
+.orderFlex>view{
+  flex: 1;
+  height: 200rpx;
+}
+.orderFlex>view:last-child{
+  text-align: right;
+}
+.orderFlex>view>view:not(.state){
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 32rpx;
+}
+.summary{
+  display: flex;
+}
+.summary>view{
+  flex: 1;
+}
+.state{
+  color:#31a3eb;
+  height: 200rpx;
+  line-height: 200rpx;
+  font-size: 34rpx;
+  text-align: right;
+}
+.third{
+  height: 66rpx;
+  line-height: 66rpx;
+  font-size: 34rpx;
+}
+button{
+ margin: 60rpx;
+ border-radius: 50rpx;
+ color:#2b7d9e;
+ background-color: #c4e8F8;
+}
+input{
+  border: solid 1px #eeeeee;
+  background-color: white;
+  height: 64rpx;
+  line-height: 64rpx;
+  color: #2b7d9e;
+}
+.account>view{
+  padding: 20rpx 0;
+}
+icon{
+  margin-left: 20rpx;
+}
+.analysis{
+  display: flex;
+  height: 200rpx;
+}
+.analysis>view{
+  flex: 1;
+}
+.analysis>view:last-child{
+  text-align: right;
+}
+.analysis>view>view{
+  height: 100rpx;
+  line-height: 100rpx;
+}
+.alipay{
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+.alipay>text{
+  width: 170rpx;
+}

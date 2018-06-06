@@ -1,0 +1,21 @@
+@import "/assets/common.acss";
+@import "/assets/card.acss";
+
+/* header部分背景  */
+.swcard_background {background-color: #d0e8f6; height: 300rpx;}
+.swcar_img { display: -webkit-flex;justify-content: center;align-items: center;}
+.swcar_img image {width: 122rpx;height: 88rpx; margin-top: 40rpx;}
+
+/* card  */
+.swcar_text {display: -webkit-flex;justify-content: center;align-items: center;color: #3a2c56; margin-top: 35rpx;}
+.swcar_text_two {display: -webkit-flex;justify-content: center;align-items: center;margin:25rpx 0 0 0;color: #3a2c56;}
+
+/* swcar_public  */
+.swcar_public {display: flex;align-items: center;margin: 50rpx 20rpx 50rpx 20rpx; color: #3a2c56}
+.swcar_public view {margin-left: 30rpx;}
+.swcar_public image {width: 50rpx;height: 50rpx;position: absolute; top:340rpx;left: 31rpx;}
+
+/* scard card  */
+.swing_card {margin: 50rpx 0 0 0;display: flex;justify-content: space-around;align-items: center;}
+.swing_machine view {text-align: center;}
+.swing_machine image {width: 150rpx;height: 150rpx; margin-bottom: 20rpx;}

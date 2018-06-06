@@ -1,0 +1,81 @@
+@import "/assets/main.acss";
+
+page {
+  background-color: #69c0f5;
+}
+
+.comTitle {
+  padding: 30rpx;
+  background-color: #cbe9f4;
+}
+
+.main {
+  margin-top: 30rpx;
+}
+
+.main view p {
+  padding: 20rpx 0 0 25rpx;
+  font-size: 28rpx;
+}
+
+textarea {
+  width: 100%;
+  background-color: #cbe9f4;
+  color: #000000;
+}
+
+.image>view, .image>button {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.image>button {
+  font-size: 30rpx;
+}
+
+image {
+  width: 100%;
+  height: 100%;
+}
+
+radio {
+  font-size: 28rpx;
+  display: block;
+  padding:20rpx 15rpx;
+}
+
+textarea {
+  padding: 15rpx 0 0 25rpx;
+  height: 256rpx;
+  font-size: 28rpx;
+  color: #a9c2cb;
+  background: #cbe9f4;
+}
+.a-textarea {
+  width:auto;
+}
+.chooseImg{
+  background-image: url('../image/btn_pic.png');
+  background-size: 100%;
+  background-repeat:no-repeat;
+}
+
+.submit{
+  margin: 70rpx;
+  color: #2b7d9e;
+  background-color:#D9EFFA;
+  border-radius: 50rpx;
+}
+.radioText{
+  display: flex;
+  align-items: center;
+}
+.radioText radio{
+  margin-left: 30rpx;
+}
+.radioText view{
+  margin: 15rpx;
+}
+.questionImg {
+  padding: 20rpx;
+}
