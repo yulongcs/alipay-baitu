@@ -7,7 +7,7 @@
     border:1rpx solid #eeeeee;
     background-color: white; 
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     padding: 60rpx 50rpx;
     font-size: 28rpx;
@@ -17,7 +17,3 @@
 .phoneNum {font-size: 34rpx;}
 
 .school {font-size: 34rpx;}
-
-.item>view{ flex: 1;}
-
-.item>view:last-child{text-align: right;margin-right: 10rpx;}

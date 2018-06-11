@@ -64,7 +64,7 @@ Page({
         data: res.res.id,
       });
       my.setStorage({
-        key: 'cardNo', // 缓存数据的key
+        key: 'card', // 缓存数据的key
         data: res.res.cardNo, // 要缓存的数据
       });
       my.switchTab({

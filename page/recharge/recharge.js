@@ -127,13 +127,13 @@ Page({
     var sign = app.common.createSign({
       userName: that.data.userName,
       stuId: this.data.sa_id,
-      money: '0.01',
+      money: this.data.money,
       timestamp: time
     })
     var params = {
       userName: that.data.userName,
       stuId: this.data.sa_id,
-      money: '0.01',
+      money: this.data.money,
       timestamp: time,
       sign: sign
     }

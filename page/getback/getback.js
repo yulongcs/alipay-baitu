@@ -34,11 +34,19 @@ Page({
     let password = that.data.password;
     let buttonDisable = that.data.buttonDisable;
     let url = '/miniprogram/sendMessage'
+
     let params = {
       phoneNum: mobile,
       msgType: 'resetPwd',
       timestamp: new Date().getTime(),
+      sign: app.common.createSign({
+        msgType: 'resetPwd',   //  传递信息类型        
+        phoneNum: mobile,
+        timestamp: new Date().getTime(),
+      })
     }
+
+    console.log(params.timestamp)
     // 网络请求
     app.req.requestPostApi(url, params, this, (res) => {
       console.log('验证码发送成功');
@@ -62,8 +70,6 @@ Page({
             codes: '获取验证码',
             buttonDisable: false,
           })
-        } else {
-          console.log(res);
         }
       }, 1000)
     })

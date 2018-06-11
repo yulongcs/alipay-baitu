@@ -20,6 +20,7 @@ Page({
     my.getStorage({
       key: 'card', // 缓存数据的key
       success: (res) => {
+        console.log(res)
         that.setData({
           card: res.data
         })
@@ -31,6 +32,7 @@ Page({
   bind() {
     let that = this;
     let card = that.data.card;
+    console.log(card)
     let mac = that.data.mac;
     let userName = that.data.userName;
     if (!card) {
@@ -117,12 +119,12 @@ Page({
             duration: 1000,
             success: (res) => {
               my.setStorage({
-                key: 'card',
-                data: '',
-              })
-              that.setData({
-                card: '',
-              })
+                key: 'card', // 缓存数据的key
+                success: (res) => {
+                  that.setData({ card: '' })
+                    
+                  },
+              });
               that.onShow();
             }
           })
