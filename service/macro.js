@@ -7,11 +7,11 @@ var version = '1.7.1';
 
 
 var api = 'https://app.hzchengshan.cn/CSProject';
-// var appSecret = 'aae7b0089f3d413c3d86bd54776adcaf';
 // var api = 'https://mid.zjbaitu.cn/CSProject'
 // var api = 'http://192.168.0.106:8013/appServer'
 // var api = 'http://192.168.0.107:8080'
 // var api = 'http://114.55.255.89:8080/CSProject';
+// var appSecret = 'aae7b0089f3d413c3d86bd54776adcaf';
 
 module.exports = {
   appId: appId,

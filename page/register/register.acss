@@ -48,3 +48,16 @@ page{padding-top: 35rpx;}
 .btnrth{ background-color: none;font-size: 26rpx;}
 .btnrth::after {background: none;}
 .a-button.a-button-disabled{background:none;color: #fff;}
+
+.checkbox {
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  margin-top: 25rpx;
+}
+.checkbox view{
+  color: #fff;
+  margin-left: 15rpx;
+  text-decoration:underline
+}

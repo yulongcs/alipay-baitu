@@ -1,8 +1,9 @@
 {
     "pages": [
-        "page/login/login",
+        "page/login/login",        
+        "page/register/register",        
+        "page/userService/userService",        
         "page/getback/getback",
-        "page/register/register",
         "page/school/school",
         "page/index/index",
         "page/mine/mine",

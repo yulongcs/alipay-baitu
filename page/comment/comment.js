@@ -159,7 +159,7 @@ Page({
       my.navigateBack({
         url: '../comment_list/comment_list'
       })
-    }, this.Funfail)
+    })
   },
 
   onLoad: function () {

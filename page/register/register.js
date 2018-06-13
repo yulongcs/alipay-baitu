@@ -7,14 +7,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    mobile: '',              //  手机号码
-    password: '',            //   密码
-    schoolId: 0,             //   学校id
+    mobile: '',             //  手机号码
+    password: '',           //   密码
+    schoolId: 0,            //   学校id
     schoolName: '',         //    学校名称
     registerList: [],       //   存储表单传递值
-    codes: '获取验证码',     //   页面文字
+    codes: '获取验证码',      //   页面文字
     count: 60,              //   存储倒计时
-    buttonDsiable: false,             //   三元禁用按钮
+    buttonDsiable: false,   //   三元禁用按钮
   },
 
   onLoad: function (options) {
@@ -37,12 +37,6 @@ Page({
     var that = this
     WxNotificationCenter.removeNotification('NotificationName', that)
   },
-
-  // 失败函数统一调用
-  Funfail: function (res) {
-    console.log(res);
-  },
-
   // 失去焦点事件获取手机号码
   getTel: function (e) {
     var that = this;
@@ -62,7 +56,8 @@ Page({
   },
 
   // 获取学校列表
-  pickSchool() {
+  pickSchool(e) {
+    console.log(e);
     my.navigateTo({
       url: '../school/school'
     });
@@ -114,12 +109,25 @@ Page({
           })
         }
       }, 1000)
-    }, this.Funfail);
+    });
   },
-
+  // 跳转用户服务协议
+  userText: function () {
+    my.navigateTo({
+      url: '/page/userService/userService',
+    });
+  },
+  // 选中复选框
+  check(e) {
+    var that = this;
+    var checked = e.detail.value
+    that.setData({checked:checked})
+  },
   // 表单提交
   baitu_register: function (e) {
     var that = this;
+    var checked = that.data.checked;
+    console.log(checked)
     var mobile = e.detail.value.mobile;         //   获取手机号码
     var password = e.detail.value.password;        //  获取密码
     var code = e.detail.value.code;            //  获取验证码
@@ -130,22 +138,29 @@ Page({
         content: '请补全信息',
       })
       return;
-    }
-    var url = "/miniprogram/register"
-    var params = {
-      account: mobile,
-      password: app.md5.hexMD5(app.md5.hexMD5(e.detail.value.password) + '%K8s01&!s'),
-      schoolId: schoolId,
-      phone: mobile,
-      verifyCode: code,
-      cardNo: "11111111",
-    }
-    // 调用网络接口
-    app.req.requestPostApi(url, params, this, function (res) {
-      //  表单提交成功跳转
-      my.redirectTo({
-        url: '/page/login/login',
+    } else if (checked != true) {
+      my.alert({
+        title: '提示',
+        content: '请查看且选中服务协议'
       });
-    }, this.Funfail)
+    } else {
+      var url = "/miniprogram/register"
+      var params = {
+        account: mobile,
+        password: app.md5.hexMD5(app.md5.hexMD5(e.detail.value.password) + '%K8s01&!s'),
+        schoolId: schoolId,
+        phone: mobile,
+        verifyCode: code,
+        cardNo: "11111111",
+      }
+      // 调用网络接口
+      app.req.requestPostApi(url, params, this, function (res) {
+        //  表单提交成功跳转
+        my.redirectTo({
+          url: '/page/login/login',
+        });
+      })
+    }
+
   },
 })

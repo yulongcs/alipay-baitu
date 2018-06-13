@@ -3,8 +3,9 @@ require('./config$');
 function success() {
 require('../..//app');
 require('../../page/login/login');
-require('../../page/getback/getback');
 require('../../page/register/register');
+require('../../page/userService/userService');
+require('../../page/getback/getback');
 require('../../page/school/school');
 require('../../page/index/index');
 require('../../page/mine/mine');

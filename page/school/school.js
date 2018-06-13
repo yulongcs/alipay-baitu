@@ -7,10 +7,6 @@ Page({
     inputVal: '',        //  获取输入框的值
 
   },
-  // 回调失败函数
-  Funfail: function (res) {
-    console.log(res)
-  },
   // load函数
   onLoad: function (options) {
     var that = this;
@@ -21,7 +17,7 @@ Page({
       that.setData({
         schoolList: res.res
       })
-    }, this.Funfail)
+    })
   },
   // 输入事件
   onInput(e) {
@@ -47,7 +43,7 @@ Page({
         schoolList: res.res,
       })
       console.log(that.data.schoolList)
-    }, this.Failfun)
+    })
   },
   // 获取学校
   selectSchool: function (e) {

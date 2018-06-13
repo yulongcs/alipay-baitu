@@ -85,7 +85,7 @@ Page({
             my.redirectTo({
               url: "/page/cardReader/cardReader?mac=" + mac + "&userName=" + userName + "&task_uuid=" + task_uuid
             })
-          }, this.Failfun)
+          })
         }
       });
     }
