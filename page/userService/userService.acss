@@ -1,0 +1,9 @@
+.mar_t{
+    margin: 30rpx 0;
+    color:red;
+    font-size: 34rpx;
+}
+.userService{
+    padding: 10rpx 20rpx 0 20rpx; 
+    font-size: 30rpx;
+}
