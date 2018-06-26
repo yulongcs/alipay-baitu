@@ -1,10 +1,12 @@
 var app = getApp();
-var WxNotificationCenter = require('../../utils/WxNotificationCenter.js')
 Page({
 
   data: {
     schoolList: [],      //  学校列表
     inputVal: '',        //  获取输入框的值
+    account: '',         //  userID
+    schoolName:'',       //  学校名称
+    cardNo:'',           //  虚拟卡号
 
   },
   // load函数
@@ -13,7 +15,6 @@ Page({
     var url = '/miniprogram/getAllSchools';
     var params = null;
     app.req.requestPostApi(url, params, this, function (res) {
-      console.log('拉去学校列表成功')
       that.setData({
         schoolList: res.res
       })
@@ -42,22 +43,51 @@ Page({
         onInput: false,
         schoolList: res.res,
       })
-      console.log(that.data.schoolList)
     })
   },
   // 获取学校
   selectSchool: function (e) {
-    var obj = {
-      id: e.target.id,
-      name: e.target.dataset.text,
-    }
-    my.alert({
-      title: '提示',
-      content: '选错学校设备会不能用的哦',
-      success: function (res) {
-        WxNotificationCenter.postNotificationName('NotificationName', obj)
-        my.navigateBack({})
-      }
+    let account = my.getStorage({
+      key: 'userId', // 缓存数据的key
+      success: (res) => {
+        this.setData({ account: res.data })
+      },
+    });
+    var obj = { id: e.target.id, account: this.data.account }
+    let url = '/alipay/miniprogram/register'
+    let params = { schoolId: obj.id, account: obj.account }
+    // 网络请求
+    app.req.requestPostApi(url, params, this, res => {
+      my.alert({
+        title: '提示',
+        content: '选错学校设备会不能用的哦',
+        success:()=> {
+          let that = this;
+          let url = '/alipay/miniprogram/autologin';
+          let params = { account: obj.account };
+          // 网络请求
+          app.req.requestPostApi(url, params, this, res => {
+            console.log(res);
+            let schoolName  =  my.setStorage({
+              key: 'schoolName', // 缓存数据的key
+              data: res.res.schoolName, // 要缓存的数据
+              success: (res) => {
+                console.log(res)                
+                that.setData({schoolName:res.data})
+              },
+            });
+            let cardNo = my.setStorage({
+              key: 'cardNo', // 缓存数据的key
+              data: res.res.cardNo, // 要缓存的数据
+              success: (res) => {
+                console.log(res)
+                that.setData({cardNo:res.data})
+              },
+            });
+            my.navigateBack({});
+          })
+        }
+      })
     })
   },
 })

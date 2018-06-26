@@ -10,7 +10,7 @@ Page({
     info: [],     //  广告位轮播
     current: 0,   //  功能位轮播
     show: true,   //  功能bar
-    userName: '', //  接口参数
+    userId: '', //  接口参数
     mac: '',       //  mac地址
     showType: true,
     showWater: false,
@@ -25,16 +25,55 @@ Page({
     state: 0,//状态，0：空闲，1：运行中
   },
   onLoad() {
-    let that = this;
-    let userName = my.getStorageSync({
-      key: 'userName', // 缓存数据的key
+    // 请求授权操作    
+    my.getAuthCode({
+      scopes: 'auth_user',
+      success: (res) => {
+        // 将authCode传输给后台
+        let authCode = res.authCode;
+        let params = { authCode: authCode }
+        let url = '/alipay/miniprogram/grantLogin';
+        // 网络请求
+        app.req.requestPostApi(url, params, this, res => {
+          // 获取反馈数据的userId
+          let userId = res.res;
+          my.setStorageSync({
+            key: 'userId', // 缓存数据的key
+            data: userId, // 要缓存的数据
+          });
+          if (res.message == 10002) {
+            my.navigateTo({
+              url: '/page/school/school'
+            });
+          } else if (res.message == 10001) {
+            let url = '/alipay/miniprogram/autologin';
+            let userId = my.getStorage({
+              key: 'userId', // 缓存数据的key
+              success: (res) => {
+                this.setData({ userId: res.data })
+                console.log(this.data.userId)
+              },
+            })
+            let params = { account: this.data.userId, };
+            // 网络请求
+            app.req.requestPostApi(url, params, this, res => {
+              console.log('登录成功的状态',res)
+            })
+          }
+        })
+      }
+    })
+    my.getStorage({
+      key: 'userId', // 缓存数据的key
+      success: (res) => {
+        this.setData({ userId: res.data })
+      },
     });
-    that.setData({ userName: userName })
     my.getStorage({
       key: 'mac', // 缓存数据的key
       success: (res) => {
         if (res.data) {
-          that.setData({
+          this.setData({
             mac: res.data,
           })
         }
@@ -47,14 +86,15 @@ Page({
   // 获取钱包金额
   getMoney() {
     let that = this;
+    let userId = this.data.userId;
     let url = '/miniprogram/stu/money'
     let time = new Date().getTime();
     let sign = app.common.createSign({
-      userName: that.data.userName.data,
+      account: userId,
       timestamp: time,
     })
     let params = {
-      userName: that.data.userName.data,
+      account: userId,
       timestamp: time,
       sign: sign,
     };
@@ -136,15 +176,16 @@ Page({
   getType() {
     let that = this;
     let time = new Date().getTime();
+    let userId = this.data.userId;
     let sign = app.common.createSign({
       timestamp: time,
-      userName: that.data.userName.data,
+      account: userId,
       mac: that.data.mac,
     })
     let params = {
       mac: that.data.mac,
       timestamp: time,
-      userName: that.data.userName.data,
+      account: userId,
       sign: sign,
     }
     // 网络请求
@@ -165,13 +206,14 @@ Page({
   // 获取洗衣机价格
   getPrice() {
     let that = this;
+    let userId = this.data.userId;
     let time = new Date().getTime();
     let sign = app.common.createSign({
-      userName: that.data.userName.data,
+      account: userId,
       timestamp: time
     })
     let params = {
-      userName: that.data.userName.data,
+      account: userId,
       timestamp: time,
       sign: sign
     }
@@ -222,7 +264,6 @@ Page({
     this.openHot()
   },
   getWasherType: function (e) {
-    //console.log(e.target.id)
     switch (e.target.id) {
       case 'dewater':
         this.setData({
@@ -245,7 +286,6 @@ Page({
         })
         break;
     }
-    //console.log(this.data.washerType)
     this.openWasher();
   },
   /**
@@ -254,15 +294,16 @@ Page({
   openHot: function () {//开启开水器
     var that = this;
     var time = new Date().getTime();
+    let userId=  this.data.userId;    
     var sign = app.common.createSign({
       mac: that.data.mac,
       timestamp: time,
       type: that.data.waterType,
-      userName: that.data.userName.data
+      account: userId
     });
     var params = {
       sign: sign,
-      userName: this.data.userName.data,
+     account:userId,
       timestamp: time,
       type: this.data.waterType,
       mac: this.data.mac
@@ -279,14 +320,14 @@ Page({
         var time_polling = new Date().getTime();
         var sign_polling = app.common.createSign({
           mac: that.data.mac,
-          userName: that.data.userName.data,
+          account: userId,
           timestamp: time_polling,
         })
         var param_polling = {
           sign: sign_polling,
           timestamp: time_polling,
           mac: that.data.mac,
-          userName: that.data.userName.data,
+          account: userId,
         }
         if (res.res.isPollingEnable) {
           polling = setInterval(() => {
@@ -322,10 +363,10 @@ Page({
     var sign = app.common.createSign({
       mac: that.data.mac,
       timestamp: time,
-      userName: that.data.userName.data
+      account: userId
     });
     var params = {
-      userName: this.data.userName.data,
+     account:userId,
       timestamp: time,
       mac: that.data.mac,
       sign: sign
@@ -351,11 +392,11 @@ Page({
       mac: that.data.mac,
       timestamp: time,
       type: that.data.washerType,
-      userName: that.data.userName.data
+      account: userId
     });
     var params = {
       sign: sign,
-      userName: this.data.userName.data,
+     account:userId,
       timestamp: time,
       type: this.data.washerType,
       mac: this.data.mac
@@ -409,7 +450,6 @@ Page({
     var that = this;
     my.getSystemInfo({
       success: function (res) {
-        console.log(res.windowWidth);
         that.setData({
           screenHeight: res.screenHeight,
           screenWidth: res.windowWidth,
@@ -423,13 +463,14 @@ Page({
    */
   getAdInfo: function () {
     var that = this;
+    let userId=  this.data.userId;    
     var time = new Date().getTime();
     var sign = app.common.createSign({
-      userName: this.data.userName.data,
+      account:userId,
       timestamp: time
     })
     var params = {
-      userName: that.data.userName.data,
+      account:userId,
       timestamp: time,
       sign: sign
     }
@@ -446,11 +487,11 @@ Page({
     var that = this;
     var time = new Date().getTime();
     var sign = app.common.createSign({
-      userName: that.data.userName.data,
+      account: userId,
       timestamp: time
     });
     var params = {
-      userName: that.data.userName.data,
+      account: userId,
       timestamp: time,
       sign: sign
     };
