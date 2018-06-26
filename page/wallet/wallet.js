@@ -6,20 +6,21 @@ Page({
   },
   getMoney() {
     let that = this;
-    let userName = my.getStorageSync({
-      key: 'userName', // 缓存数据的key
+    let userId =  my.getStorageSync({
+      key: 'userId', // 缓存数据的key
     });
     let time = new Date().getTime();
     let url = '/miniprogram/stu/money';
     let sign = app.common.createSign({
-      userName: userName.data,
+      userName: userId.data,
       timestamp: time
     })
     let params = {
-      userName: userName.data,
+      userName: userId.data,
       timestamp: time,
       sign: sign
     }
+    console.log(params)
     app.req.requestPostApi(url, params, this, (res) => {
       console.log(res);
       that.setData({
@@ -31,17 +32,16 @@ Page({
    * 获取退款权限
    */
   getRefund: function () {
-    var that = this;
-    var userName = my.getStorageSync({
-      key: 'userName', // 缓存数据的key
+    let userId =  my.getStorageSync({
+      key: 'userId', // 缓存数据的key
     });
-    var time = new Date().getTime();
-    var sign = app.common.createSign({
-      userName: userName.data,
+    let time = new Date().getTime();
+    let sign = app.common.createSign({
+      userName: userId.data,
       timestamp: time,
     })
-    var params = {
-      userName: userName.data,
+    let params = {
+      userName: userId.data,
       timestamp: time,
       sign: sign
     };
@@ -81,7 +81,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getRefund();
-    this.getMoney();  
+    let that = this;
+    that.getRefund();
+    that.getMoney();
   },
 });
