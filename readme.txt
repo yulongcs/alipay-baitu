@@ -1,19 +1,17 @@
-﻿/*
- * @Author: lxjay
- * @Date: 2018-5.27 09:27:18
- */
+﻿## 佰途-支付宝小程序
 
- #
- assets     - 公共css
+ ## 注意事项
+ - 支付宝内小程序页搜索佰途
+
+ ## 项目结构
+ # 
+assets     - 公共css
 
  #
  image      - 图片
 
  #
  |- page      - 页面视图
- |- login     - 登录
- |- getback   - 忘记密码
- |- register  - 注册
  |- school    - 学校
  |- index     - 主页   
  |- mine      - 个人中心
