@@ -1,4 +1,3 @@
-@import '/assets/main.acss';
 
 .a-swiper{
   height: auto;

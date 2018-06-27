@@ -24,11 +24,19 @@ Page({
     bigPrice: '',//大物
     state: 0,//状态，0：空闲，1：运行中
   },
-  onLoad() {
+  onShow() {
     // 请求授权操作    
     my.getAuthCode({
       scopes: 'auth_user',
       success: (res) => {
+        my.getAuthUserInfo({
+          success: (userInfo) => {
+            let nickName = my.setStorageSync({
+              key: 'nickName', // 缓存数据的key
+              data: userInfo.nickName, // 要缓存的数据
+            });
+          }
+        })
         // 将authCode传输给后台
         let authCode = res.authCode;
         let params = { authCode: authCode }
@@ -51,18 +59,35 @@ Page({
               key: 'userId', // 缓存数据的key
               success: (res) => {
                 this.setData({ userId: res.data })
-                console.log(this.data.userId)
               },
             })
             let params = { account: this.data.userId, };
             // 网络请求
             app.req.requestPostApi(url, params, this, res => {
-              console.log('登录成功的状态',res)
+              let that = this;
+              let schoolName = my.setStorage({
+                key: 'schoolName', // 缓存数据的key
+                data: res.res.schoolName, // 要缓存的数据
+                success: (res) => {
+                  that.setData({ schoolName: res.data })
+                },
+              });
+              let cardNo = my.setStorage({
+                key: 'cardNo', // 缓存数据的key
+                data: res.res.cardNo, // 要缓存的数据
+                success: (res) => {
+                  that.setData({ cardNo: res.data })
+                },
+              });
+              this.getMoney();
+              this.getInfo();
+              this.getAdInfo();
             })
           }
         })
       }
     })
+    // 异步获取数据
     my.getStorage({
       key: 'userId', // 缓存数据的key
       success: (res) => {
@@ -79,9 +104,6 @@ Page({
         }
       },
     });
-    this.getMoney();
-    this.getInfo();
-    this.getAdInfo();
   },
   // 获取钱包金额
   getMoney() {
@@ -90,11 +112,11 @@ Page({
     let url = '/miniprogram/stu/money'
     let time = new Date().getTime();
     let sign = app.common.createSign({
-      account: userId,
+      userName: userId,
       timestamp: time,
     })
     let params = {
-      account: userId,
+      userName: userId,
       timestamp: time,
       sign: sign,
     };
@@ -179,13 +201,13 @@ Page({
     let userId = this.data.userId;
     let sign = app.common.createSign({
       timestamp: time,
-      account: userId,
+      userName: userId,
       mac: that.data.mac,
     })
     let params = {
       mac: that.data.mac,
       timestamp: time,
-      account: userId,
+      userName: userId,
       sign: sign,
     }
     // 网络请求
@@ -209,11 +231,11 @@ Page({
     let userId = this.data.userId;
     let time = new Date().getTime();
     let sign = app.common.createSign({
-      account: userId,
+      userName: userId,
       timestamp: time
     })
     let params = {
-      account: userId,
+      userName: userId,
       timestamp: time,
       sign: sign
     }
@@ -294,16 +316,16 @@ Page({
   openHot: function () {//开启开水器
     var that = this;
     var time = new Date().getTime();
-    let userId=  this.data.userId;    
+    let userId = this.data.userId;
     var sign = app.common.createSign({
       mac: that.data.mac,
       timestamp: time,
       type: that.data.waterType,
-      account: userId
+      userName: userId
     });
     var params = {
       sign: sign,
-     account:userId,
+      userName: userId,
       timestamp: time,
       type: this.data.waterType,
       mac: this.data.mac
@@ -320,14 +342,14 @@ Page({
         var time_polling = new Date().getTime();
         var sign_polling = app.common.createSign({
           mac: that.data.mac,
-          account: userId,
+          userName: userId,
           timestamp: time_polling,
         })
         var param_polling = {
           sign: sign_polling,
           timestamp: time_polling,
           mac: that.data.mac,
-          account: userId,
+          userName: userId,
         }
         if (res.res.isPollingEnable) {
           polling = setInterval(() => {
@@ -359,14 +381,15 @@ Page({
   },
   endHot: function () {//关闭开水器
     var that = this;
+    let userId = this.data.userId;
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
       timestamp: time,
-      account: userId
+      userName: userId
     });
     var params = {
-     account:userId,
+      userName: userId,
       timestamp: time,
       mac: that.data.mac,
       sign: sign
@@ -392,11 +415,11 @@ Page({
       mac: that.data.mac,
       timestamp: time,
       type: that.data.washerType,
-      account: userId
+      userName: userId
     });
     var params = {
       sign: sign,
-     account:userId,
+      userName: userId,
       timestamp: time,
       type: this.data.washerType,
       mac: this.data.mac
@@ -463,14 +486,14 @@ Page({
    */
   getAdInfo: function () {
     var that = this;
-    let userId=  this.data.userId;    
+    let userId = this.data.userId;
     var time = new Date().getTime();
     var sign = app.common.createSign({
-      account:userId,
+      userName: userId,
       timestamp: time
     })
     var params = {
-      account:userId,
+      userName: userId,
       timestamp: time,
       sign: sign
     }
@@ -485,13 +508,14 @@ Page({
    */
   drawQRCode: function () {
     var that = this;
+    let userId = this.data.userId;
     var time = new Date().getTime();
     var sign = app.common.createSign({
-      account: userId,
+      userName: userId,
       timestamp: time
     });
     var params = {
-      account: userId,
+      userName: userId,
       timestamp: time,
       sign: sign
     };

@@ -1,9 +1,5 @@
 @import '/assets/common.acss';
-@import '/assets/main.acss'; 
 
-order,.refund{
-  margin-top: 30rpx;
-}
 .refund>view{
   background-color: #c4e8f8;
 }
@@ -28,9 +24,8 @@ order,.refund{
   text-align: right;
 }
 .orderFlex>view>view:not(.state){
-  height: 100rpx;
-  line-height: 100rpx;
-  font-size: 32rpx;
+  padding: 20rpx 0;
+  margin-top: 10rpx;
 }
 .summary{
   display: flex;
@@ -42,13 +37,11 @@ order,.refund{
   color:#31a3eb;
   height: 200rpx;
   line-height: 200rpx;
-  font-size: 34rpx;
   text-align: right;
 }
 .third{
-  height: 66rpx;
-  line-height: 66rpx;
-  font-size: 34rpx;
+  height: 60rpx;
+  line-height: 60rpx;
 }
 button{
  margin: 60rpx;
@@ -71,17 +64,19 @@ icon{
 }
 .analysis{
   display: flex;
+  justify-content: space-between;
   height: 200rpx;
 }
 .analysis>view{
-  flex: 1;
+  font-size: 24rpx;
 }
 .analysis>view:last-child{
   text-align: right;
 }
 .analysis>view>view{
-  height: 100rpx;
-  line-height: 100rpx;
+  padding: 20rpx 0;
+  margin-top: 10rpx;
+  
 }
 .alipay{
   display: flex;

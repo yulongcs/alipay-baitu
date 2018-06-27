@@ -4,7 +4,7 @@ var imagePath = [];
 var timeout;
 Page({
   data: {
-    usernName: '',        // 用户名
+    userId: '',        // 用户名
     token: '',           //
     domain: '',          //
     title: [],           // 存储标题
@@ -19,10 +19,10 @@ Page({
     let time = new Date().getTime();
     let url = '/miniprogram/feedback/title';
     let params = {
-      userName: that.data.userName,
+      userName: that.data.userId,
       timestamp: time,
       sign: app.common.createSign({
-        userName: that.data.userName,
+        userName: that.data.userId,
         timestamp: new Date().getTime(),
       })
     }
@@ -95,10 +95,10 @@ Page({
     var time = new Date().getTime();
     var url = '/miniprogram/feedback/qiniu/token';
     var params = {
-      userName: that.data.userName,
+      userName: that.data.userId,
       timestamp: time,
       sign: app.common.createSign({
-        userName: that.data.userName,
+        userName: that.data.userId,
         timestamp: new Date().getTime(),
       })
     }
@@ -136,17 +136,17 @@ Page({
     //  获取数组 提交表单
     var arr = [];
     var time = new Date().getTime();
-    arr.push('userName=' + that.data.userName, 'timestamp=' + time, 'title_id=' + that.data.titleId, 'description=' + that.data.feedback, 'imgs=' + img);
+    arr.push('userName=' + that.data.userId, 'timestamp=' + time, 'title_id=' + that.data.titleId, 'description=' + that.data.feedback, 'imgs=' + img);
 
     var url = '/miniprogram/feedback/commit';
     var params = {
-      userName: that.data.userName,
+      userName: that.data.userId,
       timestamp: time,
       title_id: that.data.titleId,
       description: that.data.feedback,
       imgs: img,
       sign: app.common.createSign({
-        userName: that.data.userName,
+        userName: that.data.userId,
         timestamp: time,
         title_id: that.data.titleId,
         description: that.data.feedback,
@@ -173,11 +173,11 @@ Page({
         })
       },
     });
-    my.getStorage({
-      key: 'userName',
+    let useId = my.getStorage({
+      key: 'userId',
       success: function (res) {
         that.setData({
-          userName: res.data,
+          userId: res.data,
         })
         that.getToken();
         that.getTitle();

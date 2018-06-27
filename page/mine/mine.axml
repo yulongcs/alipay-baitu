@@ -7,7 +7,4 @@
       </navigator >
     </view>
   </view>
-  <view class="cancel">
-    <button onTap="cancel"> 注销登录 </button>
-  </view>
 </view>

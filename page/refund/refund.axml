@@ -1,7 +1,7 @@
 <!-- 未申请退款 -->
 <view a:if="{{!ifOrder}}">
   <view class='refund'>
-    <text class='font_36'>退款数据</text>
+    <text class='font_36 font_color1'>退款数据</text>
     <view class='analysis'>
       <view>
         <view>可退金额</view>
@@ -62,12 +62,12 @@
 <!-- 已申请退款 -->
 <view a:if="{{ifOrder}}">
   <view class='order'>
-    <text class='font_36 font_color1'>退款详情</text>
+    <text class='font_36 font_color1 margin_30_t'>退款详情</text>
     <view class='summary'>
-      <view style="padding:20rpx 0;">
+      <view>
         <view class='third'>可退金额:{{orderData.toRefundMoney/100}}元</view>
-        <view class='third'>不可退金额:{{notBackMoney}}元</view>
-        <view class='third'>{{orderData.applyTime}}</view>
+        <view class='third '>不可退金额:{{notBackMoney}}元</view>
+        <view class="margin_20_t">{{orderData.applyTime}}</view>
       </view>
       <view>
         <view class='state'>{{orderData.stateStr}}</view>
@@ -75,7 +75,7 @@
     </view>
   </view>
   <view class='order'>
-    <text class='font_36 font_color1'>退款明细</text>
+    <text class='font_36 font_color1 margin_30_t'>退款明细</text>
     <view class='detail'>
       <view a:for="{{orderDetail}}" a:key="index" class='orderFlex'>
         <view>

@@ -1,7 +1,10 @@
 {
-    "pages": [        
-	    "page/index/index",
+    "pages": [
+        "page/index/index",        
+        "page/login/login",        
+        "page/register/register",        
         "page/userService/userService",        
+        "page/getback/getback",
         "page/school/school",
         "page/mine/mine",
         "page/person/person",

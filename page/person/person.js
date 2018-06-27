@@ -1,23 +1,23 @@
 Page({
   data: {
-    tele: '',    //  电话号码
+    nickName: '',    //  电话号码
     school: '',  //  学校
   },
-  onLoad(options) {
+  onLoad() {
     let that = this;
     my.getStorage({
-      key: 'userName', // 缓存数据的key
+      key: 'nickName', // 缓存数据的key
       success: (res) => {
         that.setData({
-          tele: res.data
+          nickName: res.data
         })
       },
     });
     my.getStorage({
-      key: 'school', // 缓存数据的key
+      key: 'schoolName', // 缓存数据的key
       success: (res) => {
         that.setData({
-          school: res.data
+          schoolName: res.data
         })
       },
     });

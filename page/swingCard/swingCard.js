@@ -2,27 +2,27 @@ const app = getApp();
 
 Page({
   data: {
-    userName: '',
+    userId: '',
     mac: '',
-    card: '',
+    cardNo: '',
     task_uuid: '',
   },
   onShow() {
     let that = this;
     my.getStorage({
-      key: 'userName', // 缓存数据的key
+      key: 'userId', // 缓存数据的key
       success: (res) => {
         that.setData({
-          userName: res.data
+          userId: res.data
         })
       },
     });
     my.getStorage({
-      key: 'card', // 缓存数据的key
+      key: 'cardNo', // 缓存数据的key
       success: (res) => {
         console.log(res)
         that.setData({
-          card: res.data
+          cardNo: res.data
         })
       },
     });
@@ -31,11 +31,10 @@ Page({
   // 刷卡绑定
   bind() {
     let that = this;
-    let card = that.data.card;
-    console.log(card)
+    let cardNo = that.data.cardNo;
     let mac = that.data.mac;
-    let userName = that.data.userName;
-    if (!card) {
+    let userId = that.data.userId;
+    if (!cardNo) {
       my.scan({
         success: (res) => {
           //扫描二维码
@@ -69,13 +68,13 @@ Page({
           var time = new Date().getTime();
           var sign = app.common.createSign({
             mac: mac,
-            userName: that.data.userName,
+            userName: userId,
             timestamp: time,
           });
           var params = {
             mac: mac,
             sign: sign,
-            userName: userName,
+            userName: userId,
             timestamp: time,
           }
           var task_uuid = that.data.task_uuid;
@@ -83,7 +82,7 @@ Page({
           app.req.requestPostApi(url, params, this, function (res) {
             var task_uuid = res.message;
             my.redirectTo({
-              url: "/page/cardReader/cardReader?mac=" + mac + "&userName=" + userName + "&task_uuid=" + task_uuid
+              url: "/page/cardReader/cardReader?mac=" + mac + "&userName=" + userId + "&task_uuid=" + task_uuid
             })
           })
         }
@@ -94,18 +93,18 @@ Page({
   // 解绑
   remove() {
     let that = this;
-    let userName = that.data.userName;
-    let card = that.data.card;
+    let userId = that.data.userId;
+    let cardNo = that.data.cardNo;
     let time = new Date().getTime();
     let url = '/miniprogram/sign/unlock';
     let sign = app.common.createSign({
-      userName: that.data.userName,
+      userName: userId,
       timestamp: time,
     });
     let params = {
       sign: sign,
       timestamp: time,
-      userName: userName,
+      userName: userId,
     }
     // 网络请求
     app.req.requestPostApi(url, params, this, res => {
@@ -119,11 +118,11 @@ Page({
             duration: 1000,
             success: (res) => {
               my.setStorage({
-                key: 'card', // 缓存数据的key
+                key: 'cardNo', // 缓存数据的key
                 success: (res) => {
-                  that.setData({ card: '' })
-                    
-                  },
+                  that.setData({ cardNo: '' })
+
+                },
               });
               that.onShow();
             }

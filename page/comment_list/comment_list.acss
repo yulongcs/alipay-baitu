@@ -1,5 +1,4 @@
 @import "/assets/common.acss";
-@import "/assets/main.acss";
 
 .list {
   width: 100%;

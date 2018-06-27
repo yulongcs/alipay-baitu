@@ -104,6 +104,9 @@
 /*button初始化  */
 .a-button::after{ border:0}
 /***  margin  ***/
+.margin_20_t{
+  margin-top: 20rpx;
+}
 .margin_30{
   margin: 30rpx;
 }

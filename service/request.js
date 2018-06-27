@@ -77,7 +77,7 @@ function requestApi(url, params, method, headers, sourceObj, successFun, failFun
       } else {
         if (url !== '/miniprogram/autologin' && url !== '/miniprogram/stu/getact' && url !== '/miniprogram/sign/checkBind' && url !== '/miniprogram/machine/stophot') {
           my.alert({
-            title: 'error',
+            title: "提示",
             content: res.data.message,
           })
         }
@@ -88,6 +88,7 @@ function requestApi(url, params, method, headers, sourceObj, successFun, failFun
       typeof failFun == 'function' && failFun(res.data, sourceObj)
     },
     complete: function (res) {
+      my.hideLoading();      
       typeof completeFun == 'function' && completeFun(res.data, sourceObj)
     },
   });

@@ -1,4 +1,3 @@
-
 var app = getApp();
 Page({
 
@@ -6,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userName: '',
+    userId: '',
     ifOrder: false,
 
     backNum: 0,
@@ -27,13 +26,15 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function () {
     var that = this;
-    let userName = my.getStorageSync({
-      key: 'userName', // 缓存数据的key
+    my.getStorage({
+      key: 'userId', // 缓存数据的key
+      success: (res) => {
+        that.setData({ userId: res.data })
+        that.getInfo();
+      },
     });
-    this.setData({ userName: userName })
-    this.getInfo();
   },
   /**
    * 获取退款信息
@@ -43,10 +44,10 @@ Page({
     var time = new Date().getTime();
     var sign = app.common.createSign({
       timestamp: time,
-      userName: that.data.userName.data,
+      userName: that.data.userId,
     });
     var params = {
-      userName: that.data.userName.data,
+      userName: that.data.userId,
       timestamp: time,
       sign: sign
     };
@@ -103,13 +104,13 @@ Page({
     var time = new Date().getTime();
     var sign = app.common.createSign({
       timestamp: time,
-      userName: that.data.userName.data,
+      userName: that.data.userId,
       alipayAccount: that.data.account,
       realName: that.data.name
     });
     var params = {
       timestamp: time,
-      userName: that.data.userName.data,
+      userName: that.data.userId,
       alipayAccount: that.data.account,
       realName: that.data.name,
       sign: sign
@@ -133,11 +134,11 @@ Page({
     var that = this;
     var time = new Date().getTime();
     var sign = app.common.createSign({
-      userName: that.data.userName.data,
+      userName: that.data.userId,
       timestamp: time,
     })
     var params = {
-      userName: that.data.userName.data,
+      userName: that.data.userId,
       timestamp: time,
       sign: sign
     }
@@ -146,14 +147,9 @@ Page({
       content: '确定取消？',
       success: function (res) {
         app.req.requestPostApi('/miniprogram/cancel_V1', params, this, function (res) {
-          my.showToast({
-            content: '已取消',
-            type: 'success',
-            duration: 1500,
-            success: function (res) {
-              my.navigateBack({})
-            }
-          })
+          my.navigateBack({
+            
+          });
         })
       }
     })

@@ -3,35 +3,32 @@ var WxNotificationCenter = require('../../utils/WxNotificationCenter.js')
 
 Page({
   data: {
-    userName: '',
+    userId: '',
     comment: [],
-  },
-  onLoad: function (options) {
-    this.getComment();
   },
 
   onShow: function () {
-    this.getComment();
+    let userId = my.getStorage({
+      key: 'userId', // 缓存数据的key
+      success: (res) => {
+        this.setData({ userId: res.data })
+        this.getComment();
+      },
+    });
   },
 
   getComment() {
     let that = this;
-    let userName = my.getStorageSync({
-      key: 'userName', // 缓存数据的key
-    });
     let time = new Date().getTime();
-    that.setData({
-      userName: userName.data,
-    });
     var url = '/miniprogram/feedback/list';
     var params = {
-      userName: userName.data,
+      userName: that.data.userId,
       timestamp: new Date().getTime(),
       ps: 15,
       pn: 1,
       // 传递参数的时候 通过sign加密
       sign: app.common.createSign({
-        userName: userName.data,
+        userName: that.data.userId,
         timestamp: new Date().getTime(),
         ps: 15,
         pn: 1,
@@ -44,7 +41,7 @@ Page({
       })
     })
   },
-   // 按钮跳转
+  // 按钮跳转
   gotoComment: function () {
     my.navigateTo({
       url: '../comment/comment',

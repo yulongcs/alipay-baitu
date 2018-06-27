@@ -3,7 +3,7 @@ Page({
   data: {
     screenHeight: 0,
     ratio: 0,
-    username: '',
+    userId: '',
 
     re_array: [],
     co_array: [],
@@ -42,10 +42,10 @@ Page({
     var that = this;
     this.setSwiperHeight();
     my.getStorage({
-      key: 'userName',
+      key: 'userId',
       success: function(res) {
         that.setData({
-          userName: res.data
+          userId: res.data
         })
         that.getRecharge(1)
         that.getConsumption(1)
@@ -60,7 +60,6 @@ Page({
     var that = this;
     my.getAuthUserInfo({
       success: function(res) {
-        //console.log(res)
         that.setData({
           screenHeight: res.windowHeight,
           ratio:res.screenWidth/750
@@ -76,12 +75,12 @@ Page({
     var time = new Date().getTime();
     var sign = app.common.createSign({
       timestamp: time,
-      userName: that.data.userName,
+      userName: that.data.userId,
       pn:page,
       ps:that.data.pageNum
     })
     var params = {
-      userName: that.data.userName,
+      userName: that.data.userId,
       timestamp: time,
       pn: page,
       ps: that.data.pageNum,
@@ -102,7 +101,6 @@ Page({
         var minute = date.getMinutes();
         if (minute < 10) {
           minute = '0' + minute;
-          //console.log(minute)
         }
         res.res[i].timestamp = date.getFullYear() + '-' + month + '-' + date.getDate() + ' ' + date.getHours() + ':' + minute;
         array.push(res.res[i]);
@@ -118,15 +116,15 @@ Page({
     var time = new Date().getTime();
     var sign = app.common.createSign({
       timestamp: time,
-      userName: that.data.userName,
+      userName: that.data.userId,
       pn: page,
       ps: that.data.pageNum
     });
     var params = {
-      userName: this.data.userName,
+      userName: that.data.userId,
       timestamp: time,
       pn: page,
-      ps: this.data.pageNum,
+      ps: that.data.pageNum,
       sign: sign
     }
     app.req.requestPostApi('/miniprogram/stu/useorders', params, this, function (res) {

@@ -12,7 +12,6 @@ function createSign(obj){
   }
 
   var sign = signArray.sort().join('&') + '&key=' + macro.key;
-  console.log(sign)
   var new_sign = md5.hexMD5(sign).toUpperCase();
   return new_sign;
 }

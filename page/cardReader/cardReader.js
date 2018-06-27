@@ -49,7 +49,7 @@ Page({
             });
             clearInterval(timer);
             my.setStorage({
-              key: 'card',
+              key: 'cardNo',
               data: res.res.sa_card_no,
             });
             my.redirectTo({

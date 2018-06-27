@@ -125,13 +125,13 @@ Page({
     var time = new Date().getTime();
     var url = '/miniprogram/alipay';
     var sign = app.common.createSign({
-      userName: that.data.userName,
+      userName: that.data.userId,
       stuId: this.data.sa_id,
       money: this.data.money,
       timestamp: time
     })
     var params = {
-      userName: that.data.userName,
+      userName: that.data.userId,
       stuId: this.data.sa_id,
       money: this.data.money,
       timestamp: time,
@@ -187,10 +187,10 @@ Page({
     var time = new Date().getTime();
     var sign = app.common.createSign({
       timestamp: time,
-      userName: that.data.userName
+      userName: that.data.userId
     })
     var params = {
-      userName: that.data.userName,
+      userName: that.data.userId,
       timestamp: time,
       sign: sign
     }
@@ -225,10 +225,10 @@ Page({
       },
     });
     my.getStorage({
-      key: 'userName',
+      key: 'userId',
       success: function (res) {
         that.setData({
-          userName: res.data
+          userId: res.data
         })
         that.getGive();
       },
