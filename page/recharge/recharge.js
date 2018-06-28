@@ -115,7 +115,7 @@ Page({
 
     if (this.data.money == 0) {//充值数目不为空
       my.alert({
-        title: 'error',
+        title: '提示',
         content: '请输入或选择充值金额',
       })
       return;
@@ -126,13 +126,13 @@ Page({
     var url = '/miniprogram/alipay';
     var sign = app.common.createSign({
       userName: that.data.userId,
-      stuId: this.data.sa_id,
-      money: this.data.money,
+      stuId: that.data.sa_id,
+      money: this.data.money,      
       timestamp: time
     })
     var params = {
       userName: that.data.userId,
-      stuId: this.data.sa_id,
+      stuId: that.data.sa_id,
       money: this.data.money,
       timestamp: time,
       sign: sign

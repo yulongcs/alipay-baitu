@@ -24,7 +24,7 @@ Page({
     bigPrice: '',//大物
     state: 0,//状态，0：空闲，1：运行中
   },
-  onShow() {
+  onLoad() {
     // 请求授权操作    
     my.getAuthCode({
       scopes: 'auth_user',
@@ -65,6 +65,13 @@ Page({
             // 网络请求
             app.req.requestPostApi(url, params, this, res => {
               let that = this;
+              let stu_id = my.setStorage({
+                key: 'id', // 缓存数据的key
+                data: res.res.id, // 要缓存的数据
+                success: (res) => {
+                  that.setData({ id: res.data })
+                },
+              });
               let schoolName = my.setStorage({
                 key: 'schoolName', // 缓存数据的key
                 data: res.res.schoolName, // 要缓存的数据
