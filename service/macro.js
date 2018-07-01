@@ -7,7 +7,7 @@ var version = '1.7.1';
 
 
 var api = 'https://app.hzchengshan.cn/CSProject';
-// var api = 'http://192.168.0.108:9000/app_server'; 
+// var api = 'http://192.168.0.108:10051/'; 
 // var api = 'https://mid.zjbaitu.cn/CSProject';
 // var api = 'http://192.168.0.106:8013/appServer';
 // var api = 'http://192.168.0.107:8080';

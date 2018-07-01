@@ -200,122 +200,70 @@ Page({
       }
     });
   },
-
   // 获取模式
-  getType() {
-    let that = this;
-    let time = new Date().getTime();
+  getType: function () {
+    var that = this;
     let userId = this.data.userId;
-    let sign = app.common.createSign({
-      timestamp: time,
-      userName: userId,
-      mac: that.data.mac,
-    })
-    let params = {
+    var time = new Date().getTime();
+    var sign = app.common.createSign({
       mac: that.data.mac,
       timestamp: time,
-      userName: userId,
-      sign: sign,
-    }
-    // 网络请求
-    app.req.requestPostApi('/miniprogram/machine/scan', params, this, res => {
-      if (res.res.type == 1) {
-        that.setData({
-          showWater: true,
-        })
-      }
-      else if (res.res.type == 2) {
-        that.setData({
-          showWasher: true,
-        })
-        that.getPrice();
-      }
-    })
-  },
-  // 获取洗衣机价格
-  getPrice() {
-    let that = this;
-    let userId = this.data.userId;
-    let time = new Date().getTime();
-    let sign = app.common.createSign({
-      userName: userId,
-      timestamp: time
-    })
-    let params = {
-      userName: userId,
+      userName: userId
+    });
+    var params = {
+      mac: that.data.mac,
       timestamp: time,
+      userName: userId,
       sign: sign
     }
-    // 网络请求
-    app.req.requestPostApi('/miniprogram/machine/price', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/machine/scan', params, this, function (res) {
       that.setData({
-        bigPrice: res.res.big,
-        fastPrice: res.res.fast,
-        stdPrice: res.res.std,
-        dryPrice: res.res.dry
-      });
+        modeType: res.res.type,
+        modeName: res.res.name,
+        showMode: true,
+        hotMode: res.res.modeList
+      })
     })
   },
 
   /**
-   * 取消功能
-   */
+  * 取消功能
+  */
   cancel: function (e) {
-    switch (e.target.id) {
-      case 'cancelWater':
-        this.setData({
-          showWater: false
-        })
-        break;
-      case 'cancelWasher':
-        this.setData({
-          showWasher: false
-        })
-        break;
-    }
+    this.setData({
+      showMode: false,
+    })
   },
   /**
    * 获取打水或洗衣模式
    */
-  getWaterType: function (e) {
-    switch (e.target.id) {
-      case 'large':
+  getModeType: function (e) {
+    switch (this.data.modeType) {
+      case 1:
         this.setData({
-          waterType: 2
+          waterType: e.target.id
         })
+        this.openHot();
         break;
-      case 'small':
+      case 2:
         this.setData({
-          waterType: 1
+          washerType: e.target.id
         })
+        this.openWasher();
         break;
-    }
-    this.openHot()
-  },
-  getWasherType: function (e) {
-    switch (e.target.id) {
-      case 'dewater':
+      case 3:
         this.setData({
-          washerType: 1
+          blowerType: e.target.id
         })
+        this.openBlower();
         break;
-      case 'fast':
+      case 4:
         this.setData({
-          washerType: 2
+          dryerType: e.target.id
         })
-        break;
-      case 'standard':
-        this.setData({
-          washerType: 3
-        })
-        break;
-      case 'big':
-        this.setData({
-          washerType: 4
-        })
+        this.openDryer();
         break;
     }
-    this.openWasher();
   },
   /**
    * 开启/关闭机器
@@ -341,7 +289,7 @@ Page({
       if (res.res.openType == 1) {
         var time = res.res.missionTime;
         that.setData({
-          showWater: false,
+          showMode: false,
           showClose: true
         });
         that.getAraw(time);
@@ -376,7 +324,7 @@ Page({
         }
       } else {
         that.setData({
-          showWater: false,
+          showMode: false,
           showClose: false,
         });
         my.alert({
@@ -415,8 +363,39 @@ Page({
     })
 
   },
+  /**
+   * 直接出水模式打水动画
+   */
+  getAraw: function (t) {
+    var that = this;
+    var step = 2;
+    interval = setInterval(function () {
+      var start = Math.PI * 1.5, end, n = t; //初始角度，终止角度,时间
+      if (step <= n) {
+        end = step / n * 2 * Math.PI + 3 / 2 * Math.PI;
+        that.draw(start, end)
+        step++;
+      } else {
+        clearInterval(interval)
+        clearInterval(polling)
+        that.setData({
+          showClose: false
+        })
+        my.confirm({
+          title: "提示",
+          content: '再打一次',
+          success: (res) => {
+            if (res.confirm) {
+              that.openHot();
+            }
+          },
+        });
+      }
+    }, 1000)
+  },
   openWasher: function () {//开启洗衣机
     var that = this;
+    let userId = this.data.userId;
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
@@ -438,27 +417,95 @@ Page({
     })
   },
   /**
-   * 直接出水模式打水动画
-   */
-  getAraw: function (t) {
+ * 开启洗衣机
+ */
+  openWasher: function () {
     var that = this;
-    var step = 2;
-    interval = setInterval(function () {
-      var start = Math.PI * 1.5, end, n = t; //初始角度，终止角度,时间
-      if (step <= n) {
-        end = step / n * 2 * Math.PI + 3 / 2 * Math.PI;
-        that.draw(start, end)
-        step++;
-      } else {
-        clearInterval(interval)
-        clearInterval(polling)
-        that.setData({
-          showClose: false
-        })
-        return;
-      }
-    }, 1000)
+    let userId = this.data.userId;
+    var time = new Date().getTime();
+    var sign = app.common.createSign({
+      mac: that.data.mac,
+      timestamp: time,
+      type: that.data.washerType,
+      userName: userId
+    });
+    var params = {
+      sign: sign,
+      userName: userId,
+      timestamp: time,
+      type: this.data.washerType,
+      mac: this.data.mac
+    };
+    app.req.requestPostApi('/miniprogram/machine/openwater', params, this, function (res) {
+      that.setData({
+        showMode: false
+      })
+      my.showToast({
+        title: '机器开启成功',
+      })
+    })
   },
+  /**
+   * 开启吹风机
+   */
+  openBlower: function () {
+    var that = this;
+    let userId = this.data.userId;
+    var time = new Date().getTime();
+    var sign = app.common.createSign({
+      mac: that.data.mac,
+      timestamp: time,
+      number: that.data.blowerType,
+      userName: userId
+    });
+    var params = {
+      sign: sign,
+      userName: userId,
+      timestamp: time,
+      mac: this.data.mac,
+      number: that.data.blowerType,
+    };
+    app.req.requestPostApi('/miniprogram/openblow', params, this, function (res) {
+      console.log('成功开启吹风机')
+      that.setData({
+        showMode: false
+      })
+      my.showToast({
+        title: '机器开启成功',
+      })
+    })
+  },
+  /**
+   * 开启烘干机
+   */
+  openDryer: function () {
+    var that = this;
+    let userId = this.data.userId;
+    var time = new Date().getTime();
+    var sign = app.common.createSign({
+      mac: that.data.mac,
+      timestamp: time,
+      userName: userId
+    });
+    var params = {
+      sign: sign,
+      userName: userId,
+      timestamp: time,
+      mac: this.data.mac,
+    };
+    app.req.requestPostApi('/miniprogram/opendryer ', params, this, function (res) {
+      console.log('成功开启烘干机')
+      that.setData({
+        showMode: false
+      })
+      my.showToast({
+        title: '机器开启成功',
+      })
+    })
+  },
+  /**
+ * 绘制图形
+ */
   draw: function (s, e) {
     var x = this.data.screenWidth / 2,
       y = this.data.screenWidth / 2,
@@ -509,6 +556,19 @@ Page({
         info: res.res
       })
     })
+  },
+  jumpTo(e){
+    switch (e.currentTarget.dataset.info){
+      case 0:
+      break;
+      case 1:
+        my.navigateTo({
+          url: '/page/webview/webview?url=' + e.currentTarget.dataset.url + '&id=' + e.currentTarget.dataset.id,
+        })
+      break;
+      case 2:
+      break;
+    }
   },
   /**
    * 二维码绘制

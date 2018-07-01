@@ -3,12 +3,10 @@ require('./config$');
 function success() {
 require('../..//app');
 require('../../page/index/index');
-require('../../page/login/login');
-require('../../page/register/register');
 require('../../page/userService/userService');
-require('../../page/getback/getback');
 require('../../page/school/school');
 require('../../page/mine/mine');
+require('../../page/logs/logs');
 require('../../page/person/person');
 require('../../page/wallet/wallet');
 require('../../page/comment_list/comment_list');

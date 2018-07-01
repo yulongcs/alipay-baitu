@@ -79,6 +79,12 @@ canvas{
   margin-top: 20rpx;
   border-radius: 20rpx;
 }
+.detail text{
+  width:100%;
+  display:block;
+  text-align:center;
+  font-size:36rpx
+}
 span{
   display:inline-block;
   margin-left: 10rpx; 

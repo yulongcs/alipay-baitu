@@ -3,8 +3,8 @@
   <view class='header'>
     <swiper indicator-dots="true" autoplay="true" interval="3000" duration="1000">
       <block a:for="{{info}}" a:for-index="index" a:key='index'>
-        <swiper-item style='height:350rpx;'>
-          <image src="{{item.img}}" class='image' id="{{item.action}}" onTap='jumpTo'></image>
+        <swiper-item>
+          <image src="{{item.img}}" class='image' data-info="{{item.action}}"  data-url="{{item.h5url}}" data-id="{{item.id}}" />
         </swiper-item>
       </block>
     </swiper>
@@ -25,36 +25,17 @@
         <canvas canvas-id='qrcode' id="qrcode"></canvas>
       </view>
     </view>
-  </view>
+  </view>d  
   <!-- 选择模式下模态框 -->
-  <!-- 开水器 -->
-  <view class='water' a:if="{{showWater}}">
-    <view class="shadow" style="height:{{screenHeight}}px" a:if="{{showWater}}"></view>
+  <!-- 所有机器 -->
+  <view class='water' a:if="{{showMode}}">
+    <view class="shadow" style="height:{{screenHeight}}px"></view>
     <view class='detail'>
-      <view onTap='getWaterType' id="large">大瓶</view>
-      <view onTap='getWaterType' id="small">小瓶</view>
+      <text>请选择{{modeName}}模式</text>
+      <block a:for="{{hotMode}}" a:for-index="index" a:key='index'>
+        <view id="{{item.modeId}}" catchTap='getModeType'>{{item.name}}</view>
+      </block>
       <view catchTap='cancel' id="cancelWater">取消</view>
-    </view>
-  </view>
-  <!-- 洗衣机 -->
-  <view class='washer' a:if="{{showWasher}}">
-    <view class='shadow' style='height:{{screenHeight}}px'></view>
-    <view class='detail'>
-      <view onTap='getWasherType' id="dewater">单脱                        
-        <span>{{dryPrice}}</span>
-      </view>
-      <view onTap='getWasherType' id="fast">快速                        
-        <span>{{fastPrice}}</span>
-      </view>
-      <view onTap='getWasherType' id="standard">标准                        
-        <span>{{stdPrice}}</span>
-      </view>
-      <view onTap='getWasherType' id="big">大物                        
-        <span>{{bigPrice}}</span>
-      </view>
-      <view catchTap='cancel' id="cancelWasher" class='cancel'>取消                        
-        <span></span>
-      </view>
     </view>
   </view>
 </view>
