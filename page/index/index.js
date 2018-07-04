@@ -27,7 +27,7 @@ Page({
   onLoad() {
     // 请求授权操作    
     my.getAuthCode({
-      scopes: 'auth_user',
+      scopes: 'auth_base',
       success: (res) => {
         my.getAuthUserInfo({
           success: (userInfo) => {
@@ -44,11 +44,16 @@ Page({
         // 网络请求
         app.req.requestPostApi(url, params, this, res => {
           // 获取反馈数据的userId
-          let userId = res.res;
+          let userId = res.res.UserId;
+          let actoken = res.res.AccessToken;
           my.setStorageSync({
             key: 'userId', // 缓存数据的key
             data: userId, // 要缓存的数据
           });
+          my.setStorageSync({
+            key: 'actoken',
+            data: actoken,
+          })
           if (res.message == 10002) {
             my.navigateTo({
               url: '/page/school/school'
@@ -557,17 +562,17 @@ Page({
       })
     })
   },
-  jumpTo(e){
-    switch (e.currentTarget.dataset.info){
+  jumpTo(e) {
+    switch (e.currentTarget.dataset.info) {
       case 0:
-      break;
+        break;
       case 1:
         my.navigateTo({
           url: '/page/webview/webview?url=' + e.currentTarget.dataset.url + '&id=' + e.currentTarget.dataset.id,
         })
-      break;
+        break;
       case 2:
-      break;
+        break;
     }
   },
   /**

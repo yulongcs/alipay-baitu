@@ -5,8 +5,9 @@ Page({
     schoolList: [],      //  学校列表
     inputVal: '',        //  获取输入框的值
     account: '',         //  userID
-    schoolName:'',       //  学校名称
-    cardNo:'',           //  虚拟卡号
+    schoolName: '',       //  学校名称
+    cardNo: '',           //  虚拟卡号
+    actoken:'',           //  令牌
 
   },
   // load函数
@@ -53,27 +54,33 @@ Page({
         this.setData({ account: res.data })
       },
     });
+    let actoken = my.getStorage({
+      key: 'actoken', // 缓存数据的key
+      success: (res) => {
+        this.setData({ actoken: res.data })
+      },
+    });
     var obj = { id: e.target.id, account: this.data.account }
     let url = '/alipay/miniprogram/register'
-    let params = { schoolId: obj.id, account: obj.account }
+    let params = { schoolId: obj.id, account: obj.account, accessToken: this.data.actoken }
     // 网络请求
     app.req.requestPostApi(url, params, this, res => {
       my.alert({
         title: '提示',
         content: '选错学校设备会不能用的哦',
-        success:()=> {
+        success: () => {
           let that = this;
           let url = '/alipay/miniprogram/autologin';
           let params = { account: obj.account };
           // 网络请求
           app.req.requestPostApi(url, params, this, res => {
             console.log(res);
-            let schoolName  =  my.setStorage({
+            let schoolName = my.setStorage({
               key: 'schoolName', // 缓存数据的key
               data: res.res.schoolName, // 要缓存的数据
               success: (res) => {
-                console.log(res)                
-                that.setData({schoolName:res.data})
+                console.log(res)
+                that.setData({ schoolName: res.data })
               },
             });
             let cardNo = my.setStorage({
@@ -81,10 +88,12 @@ Page({
               data: res.res.cardNo, // 要缓存的数据
               success: (res) => {
                 console.log(res)
-                that.setData({cardNo:res.data})
+                that.setData({ cardNo: res.data })
               },
             });
-            my.navigateBack({});
+            my.reLaunch({
+              url: '/page/index/index', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+            });
           })
         }
       })

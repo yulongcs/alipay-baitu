@@ -3,7 +3,7 @@
   <view class='header'>
     <swiper indicator-dots="true" autoplay="true" interval="3000" duration="1000">
       <block a:for="{{info}}" a:for-index="index" a:key='index'>
-        <swiper-item>
+        <swiper-item style='height:150px'>
           <image src="{{item.img}}" class='image' data-info="{{item.action}}"  data-url="{{item.h5url}}" data-id="{{item.id}}" />
         </swiper-item>
       </block>
@@ -25,7 +25,7 @@
         <canvas canvas-id='qrcode' id="qrcode"></canvas>
       </view>
     </view>
-  </view>d  
+  </view>
   <!-- 选择模式下模态框 -->
   <!-- 所有机器 -->
   <view class='water' a:if="{{showMode}}">

@@ -20,7 +20,6 @@ Page({
     my.getStorage({
       key: 'cardNo', // 缓存数据的key
       success: (res) => {
-        console.log(res)
         that.setData({
           cardNo: res.data
         })

@@ -32,7 +32,7 @@ Page({
             if (res.message == '绑定失败') {
               clearInterval(timer);
               my.alert({
-                title: 'error',
+                title: '提示',
                 content: '绑卡失败,该卡可能已经被绑定',
                 success: (res) => {
                   my.redirectTo({
@@ -60,7 +60,7 @@ Page({
       } else {
         clearInterval(timer);
         my.alert({
-          title: 'error',
+          title: '提示',
           content: '绑卡失败',
           success: (res) => {
             my.redirectTo({
