@@ -23,9 +23,10 @@ Page({
     stdPrice: '',//标准
     bigPrice: '',//大物
     state: 0,//状态，0：空闲，1：运行中
+    tradeNO: '',//订单号
   },
   onLoad() {
-    // 请求授权操作    
+    // 请求授权操作
     my.getAuthCode({
       scopes: 'auth_base',
       success: (res) => {
@@ -248,7 +249,51 @@ Page({
         this.setData({
           waterType: e.target.id
         })
-        this.openHot();
+        let userId = this.data.userId;
+        let mapping = this.data.mac;
+        let modeId = this.data.waterType
+        let url = '/alipay/miniprogram/facepay';
+        let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
+        // 网络请求
+        app.req.requestPostApi(url, params, this, res => {
+          let tradeNO = res.res;
+          this.setData({ tradeNO: tradeNO })
+          my.tradePay({
+            tradeNO: tradeNO,
+            success: (res) => {
+              if (res.resultCode == 9000) {
+                my.showToast({
+                  type: 'success',
+                  content: '支付成功',
+                  duration: 1000,
+                  success: (res) => {
+                    this.openHot();
+                  },
+                });
+              } else if (res.resultCode == 4000) {
+                my.showToast({
+                  type: 'fail',
+                  content: '支付失败',
+                  duration: 1200,
+                });
+              } else if (res.resultCode == 6001) {
+                my.showToast({
+                  type: 'fail',
+                  content: '已取消支付',
+                  duration: 1200,
+                });
+              } else {
+                console.log(res);
+              }
+            },
+            fail: (res) => {
+              console.log(res);
+            },
+            complete: (res) => {
+              console.log(res);
+            }
+          })
+        })
         break;
       case 2:
         this.setData({
@@ -276,21 +321,16 @@ Page({
   openHot: function () {//开启开水器
     var that = this;
     var time = new Date().getTime();
+    let tradeNO = this.data.tradeNO;
     let userId = this.data.userId;
-    var sign = app.common.createSign({
-      mac: that.data.mac,
-      timestamp: time,
-      type: that.data.waterType,
-      userName: userId
-    });
     var params = {
-      sign: sign,
-      userName: userId,
+      tradeNo: tradeNO,
+      alipayPid: userId,
       timestamp: time,
       type: this.data.waterType,
       mac: this.data.mac
     }
-    app.req.requestPostApi('/miniprogram/machine/openhot', params, this, function (res) {
+    app.req.requestPostApi('/alipay/miniprogram/facepay_open_machine', params, this, function (res) {
       if (res.res.openType == 1) {
         var time = res.res.missionTime;
         that.setData({
@@ -515,13 +555,13 @@ Page({
     var x = this.data.screenWidth / 2,
       y = this.data.screenWidth / 2,
       radius = this.data.screenWidth / 3 + 3;
-    var cxt_arc = my.createCanvasContext('scan');//创建并返回绘图上下文context对象。 
+    var cxt_arc = my.createCanvasContext('scan');//创建并返回绘图上下文context对象。
     cxt_arc.setLineWidth(6);
     cxt_arc.setStrokeStyle('#3ea6ff');
     cxt_arc.setLineCap('round')
-    cxt_arc.beginPath();//开始一个新的路径 
+    cxt_arc.beginPath();//开始一个新的路径
     cxt_arc.arc(x, y, radius, s, e, false);
-    cxt_arc.stroke();//对当前路径进行描边 
+    cxt_arc.stroke();//对当前路径进行描边
 
     cxt_arc.draw();
   },
