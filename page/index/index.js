@@ -47,11 +47,11 @@ Page({
           // 获取反馈数据的userId
           let userId = res.res.UserId;
           let actoken = res.res.AccessToken;
-          my.setStorageSync({
+          my.setStorage({
             key: 'userId', // 缓存数据的key
             data: userId, // 要缓存的数据
           });
-          my.setStorageSync({
+          my.setStorage({
             key: 'actoken',
             data: actoken,
           })
@@ -92,7 +92,7 @@ Page({
                   that.setData({ cardNo: res.data })
                 },
               });
-              this.getMoney();
+              // this.getMoney();
               this.getInfo();
               this.getAdInfo();
             })
@@ -118,36 +118,36 @@ Page({
       },
     });
   },
-  // 获取钱包金额
-  getMoney() {
-    let that = this;
-    let userId = this.data.userId;
-    let url = '/miniprogram/stu/money'
-    let time = new Date().getTime();
-    let sign = app.common.createSign({
-      userName: userId,
-      timestamp: time,
-    })
-    let params = {
-      userName: userId,
-      timestamp: time,
-      sign: sign,
-    };
-    // 网络请求
-    app.req.requestPostApi(url, params, this, (res) => {
-      if (res.message <= 0) {
-        my.alert({
-          title: '提示',
-          content: '余额不足，请前去充值',
-          success: (res) => {
-            my.navigateTo({
-              url: '../wallet/wallet',
-            });
-          }
-        })
-      }
-    })
-  },
+  // // 获取钱包金额
+  // getMoney() {
+  //   let that = this;
+  //   let userId = this.data.userId;
+  //   let url = '/miniprogram/stu/money'
+  //   let time = new Date().getTime();
+  //   let sign = app.common.createSign({
+  //     userName: userId,
+  //     timestamp: time,
+  //   })
+  //   let params = {
+  //     userName: userId,
+  //     timestamp: time,
+  //     sign: sign,
+  //   };
+  //   // 网络请求
+  //   app.req.requestPostApi(url, params, this, (res) => {
+  //     if (res.message <= 0) {
+  //       my.alert({
+  //         title: '提示',
+  //         content: '余额不足，请前去充值',
+  //         success: (res) => {
+  //           my.navigateTo({
+  //             url: '../wallet/wallet',
+  //           });
+  //         }
+  //       })
+  //     }
+  //   })
+  // },
 
   // bar 功能以及swiper联动
   show(e) {
@@ -251,7 +251,7 @@ Page({
         })
         let userId = this.data.userId;
         let mapping = this.data.mac;
-        let modeId = this.data.waterType
+        let modeId = this.data.waterType;
         let url = '/alipay/miniprogram/facepay';
         let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
         // 网络请求
@@ -321,16 +321,14 @@ Page({
   openHot: function () {//开启开水器
     var that = this;
     var time = new Date().getTime();
+    let url =  '/alipay/miniprogram/facepay_open_machine';
     let tradeNO = this.data.tradeNO;
     let userId = this.data.userId;
     var params = {
       tradeNo: tradeNO,
       alipayPid: userId,
-      timestamp: time,
-      type: this.data.waterType,
-      mac: this.data.mac
     }
-    app.req.requestPostApi('/alipay/miniprogram/facepay_open_machine', params, this, function (res) {
+    app.req.requestPostApi(url, params, this, res => {
       if (res.res.openType == 1) {
         var time = res.res.missionTime;
         that.setData({
@@ -352,8 +350,9 @@ Page({
           userName: userId,
         }
         if (res.res.isPollingEnable) {
+          console.log(res.res)
           polling = setInterval(() => {
-            app.req.requestPostApi('/miniprogram/machine/queryHotState', param_polling, this, function (res) {
+            app.req.requestPostApi('/miniprogram/machine/queryHotState', param_polling, this, res => {
               if (res.res == 1) {
                 clearInterval(polling);
                 clearInterval(interval);

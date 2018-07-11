@@ -14,7 +14,7 @@
   line-height: 60rpx;
 }
 .section>view:first-child{
-  border-right: solid 1rpx #eee;
+  /* border-right: solid 1rpx #eee; */
 }
 .select{
   color: #31a4eb;
@@ -62,3 +62,7 @@ swiper-item{
   display: inline-block;
   padding-top: 32rpx;
 }
+/* #rech {
+  margin: 0 300rpx;
+  border: 2rpx solid #31a4eb;
+} */

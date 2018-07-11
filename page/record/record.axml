@@ -1,11 +1,11 @@
 <view class='section'>
-  <view onTap='select' id="rech" class="{{show?'select':'normal'}}">充值记录</view>
-  <view onTap='select' id="cosu" class="{{!show?'select':'normal'}}">消费记录</view>
+  <!-- <view onTap='select' id="rech" class="{{show?'select':'normal'}}">充值记录</view> -->
+  <view onTap='select' id="rech">消费记录</view>
 </view>
 <view>
   <swiper current='{{current}}' onChange='changeSwiper' style="height:{{(screenHeight-30)/pixelRatio}}rpx">
     <!-- 充值记录 -->
-    <swiper-item>
+    <!-- <swiper-item>
       <view>
         <block a:for="{{re_array}}" a:key="index">
           <view class='item'>
@@ -20,7 +20,7 @@
       <view class='loading'>
         <text onTap='fresh' id="re_loading">{{re_loading}}</text>
       </view>
-    </swiper-item>
+    </swiper-item> -->
     <!-- 消费记录 -->
     <swiper-item>
       <view>

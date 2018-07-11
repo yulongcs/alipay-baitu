@@ -12,11 +12,11 @@
 .record{
   width: 100%;
   position: absolute;
-  bottom: 40rpx;
+  top: 40rpx;
   text-align: center;
 }
 .record>text{
-  color: #c4e8f8;
+  color: #000000;
 }
 button{
  margin: 60rpx;
