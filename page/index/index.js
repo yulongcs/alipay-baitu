@@ -25,6 +25,10 @@ Page({
     state: 0,//状态，0：空闲，1：运行中
     tradeNO: '',//订单号
   },
+  onLaunch(options){
+    let mac = JSON.stringify(options.query.mac);
+    that.getType();
+  },
   onLoad() {
     // 请求授权操作
     my.getAuthCode({

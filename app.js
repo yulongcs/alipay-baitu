@@ -5,9 +5,10 @@ var common = require('./service/common.js');
 var md5 = require('./service/md5.js');
 App({
   onLaunch(options) {
+
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
   },
   common: common,
   req: req,
