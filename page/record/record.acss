@@ -62,7 +62,6 @@ swiper-item{
   display: inline-block;
   padding-top: 32rpx;
 }
-/* #rech {
-  margin: 0 300rpx;
-  border: 2rpx solid #31a4eb;
-} */
+#rech {
+  color: #63B8ff;
+}

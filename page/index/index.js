@@ -321,7 +321,7 @@ Page({
   openHot: function () {//开启开水器
     var that = this;
     var time = new Date().getTime();
-    let url =  '/alipay/miniprogram/facepay_open_machine';
+    let url = '/alipay/miniprogram/facepay_open_machine';
     let tradeNO = this.data.tradeNO;
     let userId = this.data.userId;
     var params = {
@@ -329,7 +329,7 @@ Page({
       alipayPid: userId,
     }
     app.req.requestPostApi(url, params, this, res => {
-      if (res.res.openType == 1) {
+      if (res.res.openType === 1) {
         var time = res.res.missionTime;
         that.setData({
           showMode: false,
@@ -350,7 +350,6 @@ Page({
           userName: userId,
         }
         if (res.res.isPollingEnable) {
-          console.log(res.res)
           polling = setInterval(() => {
             app.req.requestPostApi('/miniprogram/machine/queryHotState', param_polling, this, res => {
               if (res.res == 1) {
@@ -366,7 +365,20 @@ Page({
           }, 2000)
 
         }
-      } else {
+      }
+      else if (res.res.openType === 2) {
+        my.alert({
+          title: '提示',
+          content: '请按键',
+          success: (res) => {
+            that.setData({
+              showMode: false,
+              showClose: true
+            });
+          },
+        });
+      }
+      else {
         that.setData({
           showMode: false,
           showClose: false,
@@ -393,7 +405,7 @@ Page({
       mac: that.data.mac,
       sign: sign
     };
-    app.req.requestPostApi('/miniprogram/machine/stophot', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/machine/stophot', params, this, res => {
       clearInterval(interval);
       clearInterval(polling);
       that.setData({
@@ -454,7 +466,7 @@ Page({
       type: this.data.washerType,
       mac: this.data.mac
     };
-    app.req.requestPostApi('/miniprogram/machine/openwater', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/machine/openwater', params, this,  res => {
       that.setData({
         showWasher: false
       })
@@ -480,7 +492,7 @@ Page({
       type: this.data.washerType,
       mac: this.data.mac
     };
-    app.req.requestPostApi('/miniprogram/machine/openwater', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/machine/openwater', params, this,  res => {
       that.setData({
         showMode: false
       })
@@ -509,7 +521,7 @@ Page({
       mac: this.data.mac,
       number: that.data.blowerType,
     };
-    app.req.requestPostApi('/miniprogram/openblow', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/openblow', params, this, res => {
       console.log('成功开启吹风机')
       that.setData({
         showMode: false
@@ -537,7 +549,7 @@ Page({
       timestamp: time,
       mac: this.data.mac,
     };
-    app.req.requestPostApi('/miniprogram/opendryer ', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/opendryer ', params, this, res => {
       console.log('成功开启烘干机')
       that.setData({
         showMode: false
