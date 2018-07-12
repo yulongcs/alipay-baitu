@@ -1,5 +1,9 @@
 <view class='baitu_person'>
   <view class='item'>
+    <view class="phoneNum">用户ID</view>
+    <view>{{ id }}</view>
+  </view>
+  <view class='item'>
     <view class='phoneNum'>昵称</view>
     <view>{{nickName}}</view>
   </view>

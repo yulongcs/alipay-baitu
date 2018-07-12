@@ -1,6 +1,7 @@
 Page({
   data: {
     nickName: '',    //  电话号码
+    id: '',
     school: '',  //  学校
   },
   onLoad() {
@@ -21,5 +22,13 @@ Page({
         })
       },
     });
+    my.getStorage({
+      key: 'id',// 缓存数据的key
+      success: res => {
+        that.setData({
+          id: res.data
+        })
+      }
+    })
   },
 });

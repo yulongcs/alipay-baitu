@@ -118,37 +118,6 @@ Page({
       },
     });
   },
-  // // 获取钱包金额
-  // getMoney() {
-  //   let that = this;
-  //   let userId = this.data.userId;
-  //   let url = '/miniprogram/stu/money'
-  //   let time = new Date().getTime();
-  //   let sign = app.common.createSign({
-  //     userName: userId,
-  //     timestamp: time,
-  //   })
-  //   let params = {
-  //     userName: userId,
-  //     timestamp: time,
-  //     sign: sign,
-  //   };
-  //   // 网络请求
-  //   app.req.requestPostApi(url, params, this, (res) => {
-  //     if (res.message <= 0) {
-  //       my.alert({
-  //         title: '提示',
-  //         content: '余额不足，请前去充值',
-  //         success: (res) => {
-  //           my.navigateTo({
-  //             url: '../wallet/wallet',
-  //           });
-  //         }
-  //       })
-  //     }
-  //   })
-  // },
-
   // bar 功能以及swiper联动
   show(e) {
     if (e.target.id == 'scan') {
@@ -171,7 +140,6 @@ Page({
     var mac;
     my.scan({
       success: (res) => {
-        console.log(res);
         // 扫描二维码
         if (res.code.indexOf('mac=') >= 0) {
           mac = res.code.split('mac=')[1];
@@ -367,6 +335,7 @@ Page({
         }
       }
       else if (res.res.openType === 2) {
+        console.log(res.res.openType,'openType')
         my.alert({
           title: '提示',
           content: '请按键',
@@ -393,6 +362,7 @@ Page({
   endHot: function () {//关闭开水器
     var that = this;
     let userId = this.data.userId;
+    let url = '/miniprogram/machine/stophot';
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
@@ -405,7 +375,7 @@ Page({
       mac: that.data.mac,
       sign: sign
     };
-    app.req.requestPostApi('/miniprogram/machine/stophot', params, this, res => {
+    app.req.requestPostApi(url, params, this, res => {
       clearInterval(interval);
       clearInterval(polling);
       that.setData({
@@ -452,6 +422,7 @@ Page({
   openWasher: function () {//开启洗衣机
     var that = this;
     let userId = this.data.userId;
+    let url = '/miniprogram/machine/openwater';
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
@@ -466,7 +437,7 @@ Page({
       type: this.data.washerType,
       mac: this.data.mac
     };
-    app.req.requestPostApi('/miniprogram/machine/openwater', params, this,  res => {
+    app.req.requestPostApi(url, params, this, res => {
       that.setData({
         showWasher: false
       })
@@ -478,6 +449,7 @@ Page({
   openWasher: function () {
     var that = this;
     let userId = this.data.userId;
+    let url = '/miniprogram/machine/openwater';
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
@@ -492,7 +464,7 @@ Page({
       type: this.data.washerType,
       mac: this.data.mac
     };
-    app.req.requestPostApi('/miniprogram/machine/openwater', params, this,  res => {
+    app.req.requestPostApi(url, params, this, res => {
       that.setData({
         showMode: false
       })
@@ -507,6 +479,7 @@ Page({
   openBlower: function () {
     var that = this;
     let userId = this.data.userId;
+    let url = '/miniprogram/openblow';
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
@@ -521,7 +494,7 @@ Page({
       mac: this.data.mac,
       number: that.data.blowerType,
     };
-    app.req.requestPostApi('/miniprogram/openblow', params, this, res => {
+    app.req.requestPostApi(url, params, this, res => {
       console.log('成功开启吹风机')
       that.setData({
         showMode: false
@@ -537,6 +510,7 @@ Page({
   openDryer: function () {
     var that = this;
     let userId = this.data.userId;
+    let url = '/miniprogram/opendryer';
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
@@ -549,7 +523,7 @@ Page({
       timestamp: time,
       mac: this.data.mac,
     };
-    app.req.requestPostApi('/miniprogram/opendryer ', params, this, res => {
+    app.req.requestPostApi(url, params, this, res => {
       console.log('成功开启烘干机')
       that.setData({
         showMode: false
@@ -597,6 +571,7 @@ Page({
   getAdInfo: function () {
     var that = this;
     let userId = this.data.userId;
+    let url = '/miniprogram/ad/adList';
     var time = new Date().getTime();
     var sign = app.common.createSign({
       userName: userId,
@@ -607,7 +582,7 @@ Page({
       timestamp: time,
       sign: sign
     }
-    app.req.requestPostApi('/miniprogram/ad/adList', params, this, function (res) {
+    app.req.requestPostApi(url, params, this, function (res) {
       that.setData({
         info: res.res
       })
