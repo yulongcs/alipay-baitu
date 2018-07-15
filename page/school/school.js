@@ -7,7 +7,7 @@ Page({
     account: '',         //  userID
     schoolName: '',       //  学校名称
     cardNo: '',           //  虚拟卡号
-    actoken:'',           //  令牌
+    actoken: '',           //  令牌
 
   },
   // load函数
@@ -20,6 +20,19 @@ Page({
         schoolList: res.res
       })
     })
+    let account = my.getStorage({
+      key: 'userId', // 缓存数据的key
+      success: (res) => {
+        this.setData({ account: res.data })
+        console.log(this.data.userId)
+      },
+    });
+    let actoken = my.getStorage({
+      key: 'actoken', // 缓存数据的key
+      success: (res) => {
+        this.setData({ actoken: res.data })
+      },
+    });
   },
   // 输入事件
   onInput(e) {
@@ -48,19 +61,8 @@ Page({
   },
   // 获取学校
   selectSchool: function (e) {
-    let account = my.getStorage({
-      key: 'userId', // 缓存数据的key
-      success: (res) => {
-        this.setData({ account: res.data })
-      },
-    });
-    let actoken = my.getStorage({
-      key: 'actoken', // 缓存数据的key
-      success: (res) => {
-        this.setData({ actoken: res.data })
-      },
-    });
     var obj = { id: e.target.id, account: this.data.account }
+    console.log(obj)
     let url = '/alipay/miniprogram/register'
     let params = { schoolId: obj.id, account: obj.account, accessToken: this.data.actoken }
     // 网络请求
@@ -74,12 +76,11 @@ Page({
           let params = { account: obj.account };
           // 网络请求
           app.req.requestPostApi(url, params, this, res => {
-            console.log(res);
+            ;
             let schoolName = my.setStorage({
               key: 'schoolName', // 缓存数据的key
               data: res.res.schoolName, // 要缓存的数据
               success: (res) => {
-                console.log(res)
                 that.setData({ schoolName: res.data })
               },
             });
@@ -87,7 +88,6 @@ Page({
               key: 'cardNo', // 缓存数据的key
               data: res.res.cardNo, // 要缓存的数据
               success: (res) => {
-                console.log(res)
                 that.setData({ cardNo: res.data })
               },
             });
