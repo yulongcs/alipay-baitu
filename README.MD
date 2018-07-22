@@ -33,7 +33,6 @@
 │   ├── person                  // 个人信息页
 │   ├── recharge                // 充值页
 │   ├── record                  // 消费信息页
-│   ├── refund                  // 退款页(暂支持一个学校)
 │   ├── school                  // 选择学校页
 │   ├── swingCard               // 刷卡绑定页
 │   ├── wallet                  // 钱包页
