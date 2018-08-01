@@ -31,19 +31,38 @@ Page({
     state: 0,//状态，0：空闲，1：运行中
     tradeNO: '',//订单号
   },
+
+  // 页面加载时触发
   onLoad() {
+    let mac = my.getStorageSync({
+      key: 'mac', // 缓存数据的key
+    })
+    this.setData({ mac: mac.data })
+    if (!this.data.mac) {
+      console.log('mac为空')
+      my.getStorage({
+        key: 'userId', // 缓存数据的key
+        success: (res) => {
+          this.setData({ userId: res.data })
+        },
+      });
+    } else {
+      console.log('mac不为空')
+      my.getStorage({
+        key: 'userId', // 缓存数据的key
+        success: (res) => {
+          this.setData({ userId: res.data })
+          this.getType();
+        },
+      });
+    }
+  },
+  // 页面显示时触发
+  onShow() {
     // 请求授权操作
     my.getAuthCode({
       scopes: 'auth_base',
       success: (res) => {
-        my.getAuthUserInfo({
-          success: (userInfo) => {
-            let nickName = my.setStorage({
-              key: 'nickName', 
-              data: userInfo.nickName,
-            });
-          }
-        })
         // 将authCode传输给后台
         let authCode = res.authCode;
         let params = { authCode: authCode }
@@ -55,7 +74,7 @@ Page({
           let actoken = res.res.AccessToken;
           my.setStorage({
             key: 'userId',
-            data: userId, 
+            data: userId,
           });
           my.setStorage({
             key: 'actoken',
@@ -71,51 +90,64 @@ Page({
             // 网络请求
             app.req.requestPostApi(url, params, this, res => {
               let that = this;
-              let stu_id = my.setStorage({
+              my.setStorageSync({
                 key: 'id', // 缓存数据的key
                 data: res.res.id, // 要缓存的数据
-                success: (res) => {
-                  that.setData({ id: res.data })
-                },
               });
-              let schoolName = my.setStorage({
+              my.setStorageSync({
                 key: 'schoolName', // 缓存数据的key
                 data: res.res.schoolName, // 要缓存的数据
-                success: (res) => {
-                  that.setData({ schoolName: res.data })
-                },
               });
-              let cardNo = my.setStorage({
+              my.setStorageSync({
                 key: 'cardNo', // 缓存数据的key
                 data: res.res.cardNo, // 要缓存的数据
-                success: (res) => {
-                  that.setData({ cardNo: res.data })
-                },
               });
               this.getInfo();
               this.getAdInfo();
             })
           }
         })
+        my.getAuthUserInfo({
+          success: (userInfo) => {
+            my.setStorage({
+              key: 'nickName',
+              data: userInfo.nickName,
+            });
+          }
+        })
       }
     })
-     // 加载判断缓存中是否有mac
-    let mac = this.data.mac;
-    if (mac) {
-      my.getStorage({
-        key: 'mac',
+  },
+  // 公共获取signStr方法
+  signing() {
+    // 支付成功以后，请求代扣接口
+    let url = '/alipay/miniprogram/get_withhold_sign_str';
+    let params = { userName: this.data.userId };
+    // 请求获取signStr参数，传递给代扣方法
+    app.req.requestPostApi(url, params, this, res => {
+      let sign = res.message;
+      // 代扣方法 判断不同状态 给反馈信息
+      my.paySignCenter({
+        signStr: sign,
         success: res => {
-          this.setData({ mac: res.data })
-            this.getType();          
+          if (res === 7000) {
+            console.log('签约成功')
+          } else if (res === 7001) {
+            console.log('签约结果未知,请根据外部签约号查询状态')
+          } else if (res === 7002) {
+            console.log('签约失败')
+          } else {
+            console.log('其他原因')
+          }
+        },
+        fail: res => {
+          console.log(res)
         }
-      })
-    }
-    my.getStorage({
-      key: 'userId', // 缓存数据的key
-      success: (res) => {
-        this.setData({ userId: res.data })
-      },
-    });
+      });
+    })
+  },
+  a() {
+    this.signing();
   },
   // bar 功能以及swiper联动
   show(e) {
@@ -175,6 +207,12 @@ Page({
   // 获取模式
   getType: function () {
     var that = this;
+    my.getStorage({
+      key: 'userId', // 缓存数据的key
+      success: (res) => {
+        this.setData({ userId: res.data })
+      },
+    });
     let userId = this.data.userId;
     var time = new Date().getTime();
     var sign = app.common.createSign({
@@ -244,10 +282,12 @@ Page({
     app.req.requestPostApi(url, params, this, res => {
       let tradeNO = res.res;
       this.setData({ tradeNO: tradeNO })
+      this.signing();
       my.tradePay({
         tradeNO: tradeNO,
         success: (res) => {
-          if (res.resultCode == 9000) {
+          if (res.resultCode === 9000) {
+            this.signing();
             my.showToast({
               type: 'success',
               content: '支付成功',
@@ -290,7 +330,7 @@ Page({
                     if (res.res.isPollingEnable) {
                       polling = setInterval(() => {
                         app.req.requestPostApi('/miniprogram/machine/queryHotState', param_polling, this, res => {
-                          if (res.res == 1) {
+                          if (res.res === 1) {
                             clearInterval(polling);
                             clearInterval(interval);
                             that.setData({
