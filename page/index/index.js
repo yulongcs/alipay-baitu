@@ -240,14 +240,13 @@ Page({
   },
   // 开水器当面付功能(已签约代扣协议的时候调用)
   signed(tradeNO) {
-    let that = this;
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
     let parmas = { tradeNo: tradeNO, alipayPid: userId };
     my.removeStorage({ key: 'mac', });
     // 网络请求
     app.req.requestPostApi(url, parmas, this, res => {
-      console.log(JSON.stringify(res));
+      var that = this;  
       if (res.res.openType === 1) {
         var time = res.res.missionTime;
         that.setData({
@@ -334,6 +333,7 @@ Page({
                 alipayPid: userId,
               }
               app.req.requestPostApi(url, params, this, res => {
+                var that = this;
                 if (res.res.openType === 1) {
                   var time = res.res.missionTime;
                   that.setData({
@@ -403,7 +403,6 @@ Page({
   },
   // 开启开水器
   openHot() {
-    let that = this;
     let userId = this.data.userId;
     let mapping = this.data.mac;
     let modeId = this.data.waterType;
