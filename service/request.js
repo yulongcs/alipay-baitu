@@ -42,7 +42,7 @@ function requestApi(url, params, method, headers, sourceObj, successFun, failFun
   // 公共头部
   var headerOptions = {
     'HTTP_USER_AGENT': httpUserAgent,
-    'app_version': version,
+    'X-App-Version': version,
     'Accept': 'application/json',
     'x-platform': 'Alipay'
   };
