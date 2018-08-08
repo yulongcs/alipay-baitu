@@ -11,4 +11,14 @@
     <view class='school'>学校</view>
     <view>{{schoolName}}</view>
   </view>
+  <view class="item" a:if="{{telephone}}">
+    <view class="phoneNum">手机号</view>
+    <view>{{telephone}}</view>
+  </view>
+  <view class="item" a:else>
+    <view class="phoneNum">手机号</view>
+    <view>
+      <text onTap="bindTel">未绑定手机号(点击绑定)</text>
+    </view>
+  </view>
 </view>

@@ -79,39 +79,50 @@ Page({
             key: 'actoken',
             data: actoken,
           })
-          if (res.message == 10002) {
+          if (res.message === '10002') {
             my.navigateTo({
               url: '/page/school/school'
             });
-          } else if (res.message == 10001) {
-            let url = '/alipay/miniprogram/autologin';
-            let params = { account: this.data.userId, };
-            // 网络请求
-            app.req.requestPostApi(url, params, this, res => {
-              let that = this;
-              my.setStorageSync({
-                key: 'id', // 缓存数据的key
-                data: res.res.id, // 要缓存的数据
-              });
-              my.setStorageSync({
-                key: 'schoolName', // 缓存数据的key
-                data: res.res.schoolName, // 要缓存的数据
-              });
-              my.setStorageSync({
-                key: 'cardNo', // 缓存数据的key
-                data: res.res.cardNo, // 要缓存的数据
-              });
-              this.getInfo();
-              this.getAdInfo();
-            })
+          } else if (res.message === '10001') {
+            if (userId !== null) {
+              let url = '/alipay/miniprogram/autologin';
+              let params = { account: this.data.userId, };
+              // 网络请求
+              app.req.requestPostApi(url, params, this, res => {
+                let that = this;
+                my.setStorageSync({
+                  key: 'id', // 缓存数据的key
+                  data: res.res.id, // 要缓存的数据
+                });
+                my.setStorageSync({
+                  key: 'schoolName', // 缓存数据的key
+                  data: res.res.schoolName, // 要缓存的数据
+                });
+                my.setStorageSync({
+                  key: 'cardNo', // 缓存数据的key
+                  data: res.res.cardNo, // 要缓存的数据
+                });
+                this.getInfo();
+                this.getAdInfo();
+              })
+            } else {
+              return null;
+            }
           }
         })
         my.getAuthUserInfo({
           success: (userInfo) => {
-            my.setStorage({
-              key: 'nickName',
-              data: userInfo.nickName,
-            });
+            if (userInfo.nickName != null && userInfo.nickName !='' &&userInfo.nickName != "") {
+              my.setStorage({
+                key: 'nickName',
+                data: userInfo.nickName,
+              });
+            } else {
+              my.setStorage({
+                key: 'nickName', // 缓存数据的key
+                data: '未设置支付宝昵称', // 要缓存的数据
+              });
+            }
           }
         })
       }
@@ -246,7 +257,7 @@ Page({
     my.removeStorage({ key: 'mac', });
     // 网络请求
     app.req.requestPostApi(url, parmas, this, res => {
-      var that = this;  
+      var that = this;
       if (res.res.openType === 1) {
         var time = res.res.missionTime;
         that.setData({
@@ -309,9 +320,14 @@ Page({
     })
   },
   // 开水器当面付功能(不签约代扣协议的时候调用)
-  notSigned() {
+  notSigned(tradeNO) {
+    console.log(tradeNO)
+    my.showToast({
+      content: '1231231231',
+      duration: 2000,
+    })
     my.tradePay({
-      tradeNO: tradeNo,
+      tradeNO: tradeNO,
       success: res => {
         console.log(res)
         if (res.resultCode === 9000) {
@@ -437,7 +453,7 @@ Page({
               })
             } else {
               // 未签约选择后调用函数
-              this.notSigned();
+              this.notSigned(tradeNO);
             }
           },
         })

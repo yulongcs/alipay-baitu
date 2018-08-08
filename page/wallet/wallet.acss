@@ -12,7 +12,7 @@
 .record{
   width: 100%;
   position: absolute;
-  top: 40rpx;
+  bottom: 40rpx;
   text-align: center;
 }
 .record>text{

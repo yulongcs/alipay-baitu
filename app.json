@@ -1,17 +1,15 @@
 {
     "pages": [
         "page/index/index",
-        "page/userService/userService",
+        "page/person/person",
+        "page/bindNum/bindNum",
         "page/school/school",
         "page/mine/mine",
-        "page/logs/logs",
-        "page/person/person",
         "page/wallet/wallet",
         "page/comment_list/comment_list",
         "page/comment/comment",
         "page/recharge/recharge",
         "page/record/record",
-        "page/refund/refund",
         "page/swingCard/swingCard",
         "page/cardReader/cardReader"
     ],

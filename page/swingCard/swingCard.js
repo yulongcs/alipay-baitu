@@ -106,28 +106,39 @@ Page({
       userName: userId,
     }
     // 网络请求
-    app.req.requestPostApi(url, params, this, res => {
-      my.alert({
-        title: '提示',
-        content: '确认解绑吗',
-        success: (res) => {
+    my.confirm({
+      title: '提示',
+      content: '确认解绑吗',
+      success: (res) => {
+        if (res.confirm) {
           my.showToast({
             content: '解绑成功',
             type: 'success',
             duration: 1000,
-            success: (res) => {
-              my.setStorage({
-                key: 'cardNo', // 缓存数据的key
-                success: (res) => {
-                  that.setData({ cardNo: '' })
-
-                },
-              });
-              that.onShow();
+            success: res => {
+              app.req.requestPostApi(url, params, this, res => {
+                that.onShow();
+                my.setStorage({
+                  key: 'cardNo', // 缓存数据的key
+                  success: (res) => {
+                    that.setData({ cardNo: '' })
+                  },
+                });
+              })
             }
           })
-        },
-      });
-    })
+        } else {
+          my.showToast({
+            content: '已取消',
+            type: 'fail',
+            duration: 1000,
+            success: res => {
+              return false;
+            }
+          })
+        }
+      },
+    });
+
   }
 });
