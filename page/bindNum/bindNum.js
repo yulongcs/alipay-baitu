@@ -1,11 +1,20 @@
 const app = getApp();
 Page({
   data: {
-    telephone: '',             // 手机号码
-    code: '',                //  短信验证码
-    codes: '获取验证码',     //   页面文字
-    count: 60,              //   存储倒计时
-    buttonDsiable: false,   //   三元禁用按钮
+    userId: '',                // 用户标识
+    telephone: '',            // 手机号码
+    code: '',                 //  短信验证码
+    codes: '获取验证码',       //   页面文字
+    count: 60,                //   存储倒计时
+    buttonDsiable: false,     //   三元禁用按钮
+  },
+  onLoad() {
+    my.getStorage({
+      key: 'userId', // 缓存数据的key
+      success: (res) => {
+        this.setData({ userId: res.data })
+      },
+    });
   },
   // 获取手机号码
   getTel(e) {
@@ -24,10 +33,10 @@ Page({
     let url = '/miniprogram/sendMessage'
     let params = {
       phoneNum: telephone,
-      msgType: 'resetPwd',
+      msgType: 'bindPhone',
       timestamp: new Date().getTime(),
       sign: app.common.createSign({
-        msgType: 'resetPwd',   //  传递信息类型        
+        msgType: 'bindPhone',   //  传递信息类型        
         phoneNum: telephone,
         timestamp: new Date().getTime(),
       })
@@ -63,15 +72,21 @@ Page({
   // 表单提交
   baitu_getBack(e) {
     let that = this;
-    let telephone = that.data.telephone;
-    let code = that.data.code;
-    let params = { xxx: telephone, xxx: code }
-    my.setStorage({
-      key: 'telephone', // 缓存数据的key
-      data: telephone, // 要缓存的数据
-    });
+    let userId = that.data.userId;
+    let telephone = e.detail.value.telephone;
+    let code = e.detail.value.code;
+    let url = '/alipay/miniprogram/bind_phone'
+    let params = { userName: userId, phoneNum: telephone, smsCode: code }
     // 网络请求
     app.req.requestPostApi(url, params, this, res => {
+      my.setStorage({
+        key: 'id',
+        data: res.res.sa_id
+      })
+      my.setStorage({
+        key:'telephone',
+        data:res.res.sa_phone
+      })
       my.showToast({
         content: '绑定成功',
         type: 'success',

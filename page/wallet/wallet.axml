@@ -2,7 +2,7 @@
   <view class='money'>
     <text class='font_42'>余额：{{money}}元</text>
   </view>
-  <view>
+  <view a:if="{{showPay}}">
     <button onTap='goto'>充值</button>
   </view>
    <view a:if="{{showRefund}}">

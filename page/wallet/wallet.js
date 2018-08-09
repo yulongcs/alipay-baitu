@@ -3,10 +3,11 @@ Page({
   data: {
     money: '',
     showRefund: false,
+    showPay: false,
   },
   getMoney() {
     let that = this;
-    let userId = that.data.userId;    
+    let userId = that.data.userId;
     let time = new Date().getTime();
     let url = '/miniprogram/stu/money';
     let sign = app.common.createSign({
@@ -45,6 +46,9 @@ Page({
         that.setData({
           showRefund: true
         })
+      }
+      if (res.res.isRecharge) {
+        that.setData({ showPay: true })
       }
     })
   },

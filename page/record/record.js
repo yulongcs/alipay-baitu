@@ -22,19 +22,19 @@ Page({
    /**
    * 选择消费swiper-item
    */
-  // select: function (e) {
-  //   if (e.target.id == 'rech') {
-  //     this.setData({
-  //       show: true,
-  //       current: 0
-  //     })
-  //   } else {
-  //     this.setData({
-  //       show:false,
-  //       current: 1
-  //     })
-  //   }
-  // },
+  select: function (e) {
+    if (e.target.id == 'rech') {
+      this.setData({
+        show: true,
+        current: 0
+      })
+    } else {
+      this.setData({
+        show:false,
+        current: 1
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -70,47 +70,47 @@ Page({
   /**
    * 获取充值，消费信息
    */
-  // getRecharge:function(page){
-  //   var that = this;
-  //   var time = new Date().getTime();
-  //   var sign = app.common.createSign({
-  //     timestamp: time,
-  //     userName: that.data.userId,
-  //     pn:page,
-  //     ps:that.data.pageNum
-  //   })
-  //   var params = {
-  //     userName: that.data.userId,
-  //     timestamp: time,
-  //     pn: page,
-  //     ps: that.data.pageNum,
-  //     sign: sign
-  //   }
-  //   app.req.requestPostApi('/miniprogram/stu/rechargeorders',params,this,function(res){
-  //     that.setData({
-  //       re_loading: '点击加载'
-  //     })
-  //     if (res.res.length == 0) {
-  //       return;
-  //     }
-  //     var array = that.data.re_array;
-  //     for(var i = 0;i < res.res.length;i ++){
-  //       //后端数据坑，需要自己解时间
-  //       var date = new Date(res.res[i].timestamp);
-  //       var month = date.getMonth() + 1;
-  //       var minute = date.getMinutes();
-  //       if (minute < 10) {
-  //         minute = '0' + minute;
-  //       }
-  //       res.res[i].timestamp = date.getFullYear() + '-' + month + '-' + date.getDate() + ' ' + date.getHours() + ':' + minute;
-  //       array.push(res.res[i]);
-  //     }
-  //     that.setData({
-  //       re_array: array,
-  //       re_page: page
-  //     })    
-  //   })
-  // },
+  getRecharge:function(page){
+    var that = this;
+    var time = new Date().getTime();
+    var sign = app.common.createSign({
+      timestamp: time,
+      userName: that.data.userId,
+      pn:page,
+      ps:that.data.pageNum
+    })
+    var params = {
+      userName: that.data.userId,
+      timestamp: time,
+      pn: page,
+      ps: that.data.pageNum,
+      sign: sign
+    }
+    app.req.requestPostApi('/miniprogram/stu/rechargeorders',params,this,function(res){
+      that.setData({
+        re_loading: '点击加载'
+      })
+      if (res.res.length == 0) {
+        return;
+      }
+      var array = that.data.re_array;
+      for(var i = 0;i < res.res.length;i ++){
+        //后端数据坑，需要自己解时间
+        var date = new Date(res.res[i].timestamp);
+        var month = date.getMonth() + 1;
+        var minute = date.getMinutes();
+        if (minute < 10) {
+          minute = '0' + minute;
+        }
+        res.res[i].timestamp = date.getFullYear() + '-' + month + '-' + date.getDate() + ' ' + date.getHours() + ':' + minute;
+        array.push(res.res[i]);
+      }
+      that.setData({
+        re_array: array,
+        re_page: page
+      })    
+    })
+  },
   getConsumption:function(page){
     var that = this;
     var time = new Date().getTime();
@@ -165,17 +165,17 @@ Page({
   /**
    * swiper滑动事件
    */
-  // changeSwiper: function (e) {
-  //   if (e.detail.current == 1) {
-  //     this.setData({
-  //       current: 1,
-  //       show: false
-  //     })
-  //   } else {
-  //     this.setData({
-  //       current: 0,
-  //       show: true
-  //     })
-  //   };
-  // },
+  changeSwiper: function (e) {
+    if (e.detail.current == 1) {
+      this.setData({
+        current: 1,
+        show: false
+      })
+    } else {
+      this.setData({
+        current: 0,
+        show: true
+      })
+    };
+  },
 });

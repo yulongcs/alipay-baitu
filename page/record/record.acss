@@ -63,5 +63,5 @@ swiper-item{
   padding-top: 32rpx;
 }
 #rech {
-  color: #63B8ff;
+  /* color: #63B8ff; */
 }

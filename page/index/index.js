@@ -38,7 +38,6 @@ Page({
     })
     this.setData({ mac: mac.data })
     if (!this.data.mac) {
-      console.log('mac为空')
       my.getStorage({
         key: 'userId', // 缓存数据的key
         success: (res) => {
@@ -46,7 +45,6 @@ Page({
         },
       });
     } else {
-      console.log('mac不为空')
       my.getStorage({
         key: 'userId', // 缓存数据的key
         success: (res) => {
@@ -70,6 +68,7 @@ Page({
         app.req.requestPostApi(url, params, this, res => {
           // 获取反馈数据的userId
           let userId = res.res.UserId;
+          let phone = res.res.phone;
           let actoken = res.res.AccessToken;
           my.setStorage({
             key: 'userId',
@@ -90,6 +89,17 @@ Page({
               // 网络请求
               app.req.requestPostApi(url, params, this, res => {
                 let that = this;
+                if (res.res.phone == 'null') {
+                  my.setStorage({
+                    key: 'telephone',
+                    data: '',
+                  })
+                } else {
+                  my.setStorage({
+                    key: 'telephone',
+                    data: res.res.phone
+                  })
+                }
                 my.setStorageSync({
                   key: 'id', // 缓存数据的key
                   data: res.res.id, // 要缓存的数据
@@ -112,7 +122,7 @@ Page({
         })
         my.getAuthUserInfo({
           success: (userInfo) => {
-            if (userInfo.nickName != null && userInfo.nickName !='' &&userInfo.nickName != "") {
+            if (userInfo.nickName != null && userInfo.nickName != '' && userInfo.nickName != "") {
               my.setStorage({
                 key: 'nickName',
                 data: userInfo.nickName,
@@ -295,7 +305,6 @@ Page({
         }
       }
       else if (res.res.openType === 2) {
-        console.log(res.res.openType, 'openType')
         my.alert({
           title: '提示',
           content: '请按键',
@@ -321,15 +330,9 @@ Page({
   },
   // 开水器当面付功能(不签约代扣协议的时候调用)
   notSigned(tradeNO) {
-    console.log(tradeNO)
-    my.showToast({
-      content: '1231231231',
-      duration: 2000,
-    })
     my.tradePay({
       tradeNO: tradeNO,
       success: res => {
-        console.log(res)
         if (res.resultCode === 9000) {
           my.showToast({
             content: '支付成功',
@@ -388,7 +391,6 @@ Page({
                   }
                 }
                 else if (res.res.openType === 2) {
-                  console.log(res.res.openType, 'openType')
                   my.alert({
                     title: '提示',
                     content: '请按键',
@@ -427,37 +429,77 @@ Page({
     // 网络请求
     app.req.requestPostApi(url, params, this, res => {
       let tradeNO = res.res.tradeNo;
+      let balanceOf = res.res.is_money_enough;
+      console.log(JSON.stringify(res.res))
+      console.log(balanceOf, '430行');
       let withHold = res.res.is_alipay_withhold_sign;
-      if (withHold) {
-        this.signed(tradeNO)
+      if (balanceOf) {
+        console.log('执行有余额的判断', "433行")
+        console.log(balanceOf);
+        if (withHold) {
+          this.signed(tradeNO)
+        } else {
+          my.confirm({
+            title: '温馨提示',
+            content: '您是否开通免密支付?',
+            confirmButtonText: '马上签约',
+            cancelButtonText: '暂不需要',
+            success: res => {
+              if (res.confirm) {
+                let url = '/alipay/miniprogram/get_withhold_sign_str';
+                let userId = this.data.userId;
+                let params = { userName: userId }
+                // 选择签约后的网络请求
+                app.req.requestPostApi(url, params, this, res => {
+                  let signStr = res.res;
+                  my.paySignCenter({
+                    signStr: signStr,
+                    success: res => {
+                      console.log(JSON.stringify(res));
+                    }
+                  });
+                })
+              } else {
+                // 未签约选择后调用函数
+                this.notSigned(tradeNO);
+              }
+            },
+          })
+        }
       } else {
-        my.confirm({
-          title: '温馨提示',
-          content: '您是否开通免密支付?',
-          confirmButtonText: '马上签约',
-          cancelButtonText: '暂不需要',
-          success: res => {
-            if (res.confirm) {
-              let url = '/alipay/miniprogram/get_withhold_sign_str';
-              let userId = this.data.userId;
-              let params = { userName: userId }
-              // 选择签约后的网络请求
-              app.req.requestPostApi(url, params, this, res => {
-                let signStr = res.res;
-                my.paySignCenter({
-                  signStr: signStr,
-                  success: res => {
-                    console.log(JSON.stringify(res));
-                  }
-                });
-              })
-            } else {
-              // 未签约选择后调用函数
-              this.notSigned(tradeNO);
-            }
-          },
-        })
+        console.log('执行没有余额的判断', '466行')
+        if (withHold) {
+          this.signed(tradeNO)
+        } else {
+          my.confirm({
+            title: '温馨提示',
+            content: '您是否开通免密支付?',
+            confirmButtonText: '马上签约',
+            cancelButtonText: '暂不需要',
+            success: res => {
+              if (res.confirm) {
+                let url = '/alipay/miniprogram/get_withhold_sign_str';
+                let userId = this.data.userId;
+                let params = { userName: userId }
+                // 选择签约后的网络请求
+                app.req.requestPostApi(url, params, this, res => {
+                  let signStr = res.res;
+                  my.paySignCenter({
+                    signStr: signStr,
+                    success: res => {
+                      console.log(JSON.stringify(res));
+                    }
+                  });
+                })
+              } else {
+                // 未签约选择后调用函数
+                this.notSigned(tradeNO);
+              }
+            },
+          })
+        }
       }
+
     })
   },
   // 关闭开水器
