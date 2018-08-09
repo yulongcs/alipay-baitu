@@ -47,7 +47,7 @@ Page({
         that.setData({
           userId: res.data
         })
-        // that.getRecharge(1)
+        that.getRecharge(1)
         that.getConsumption(1)
       },
     })

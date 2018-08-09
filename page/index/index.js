@@ -259,7 +259,7 @@ Page({
         break;
     }
   },
-  // 开水器当面付功能(已签约代扣协议的时候调用)
+  // 开水器支付功能(已签约免密协议的时候调用 - 不需要拉起支付直接开启机器)
   signed(tradeNO) {
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
@@ -328,7 +328,7 @@ Page({
       }
     })
   },
-  // 开水器当面付功能(不签约代扣协议的时候调用)
+  // 开水器支付功能(不签约免密协议的时候调用 - 需要拉起支付后开启机器 )
   notSigned(tradeNO) {
     my.tradePay({
       tradeNO: tradeNO,
@@ -430,46 +430,18 @@ Page({
     app.req.requestPostApi(url, params, this, res => {
       let tradeNO = res.res.tradeNo;
       let balanceOf = res.res.is_money_enough;
-      console.log(JSON.stringify(res.res))
-      console.log(balanceOf, '430行');
       let withHold = res.res.is_alipay_withhold_sign;
+      // 判断 用户余额是否充足  为true 
       if (balanceOf) {
-        console.log('执行有余额的判断', "433行")
-        console.log(balanceOf);
-        if (withHold) {
-          this.signed(tradeNO)
-        } else {
-          my.confirm({
-            title: '温馨提示',
-            content: '您是否开通免密支付?',
-            confirmButtonText: '马上签约',
-            cancelButtonText: '暂不需要',
-            success: res => {
-              if (res.confirm) {
-                let url = '/alipay/miniprogram/get_withhold_sign_str';
-                let userId = this.data.userId;
-                let params = { userName: userId }
-                // 选择签约后的网络请求
-                app.req.requestPostApi(url, params, this, res => {
-                  let signStr = res.res;
-                  my.paySignCenter({
-                    signStr: signStr,
-                    success: res => {
-                      console.log(JSON.stringify(res));
-                    }
-                  });
-                })
-              } else {
-                // 未签约选择后调用函数
-                this.notSigned(tradeNO);
-              }
-            },
-          })
-        }
+        // 为true 直接开启设备（不需要拉起支付窗口）
+        this.signed(tradeNO)
+        // 用户余额不充足的情况下 为false
       } else {
-        console.log('执行没有余额的判断', '466行')
+        // 判断用户是否签约免密支付协议
         if (withHold) {
+          // 为true的时候 直接开启设备(不需要开拉起支付窗口)
           this.signed(tradeNO)
+          // 为false的时候 提醒用户签约免密支付协议
         } else {
           my.confirm({
             title: '温馨提示',
@@ -477,6 +449,7 @@ Page({
             confirmButtonText: '马上签约',
             cancelButtonText: '暂不需要',
             success: res => {
+              // 用户点击马上签约以后 执行签约功能 跳转至内嵌页面
               if (res.confirm) {
                 let url = '/alipay/miniprogram/get_withhold_sign_str';
                 let userId = this.data.userId;
@@ -484,6 +457,7 @@ Page({
                 // 选择签约后的网络请求
                 app.req.requestPostApi(url, params, this, res => {
                   let signStr = res.res;
+                  // 获取签约字符串 返回结果
                   my.paySignCenter({
                     signStr: signStr,
                     success: res => {
@@ -492,7 +466,7 @@ Page({
                   });
                 })
               } else {
-                // 未签约选择后调用函数
+                // 未签约选择后 调用拉起支付窗口进行支付
                 this.notSigned(tradeNO);
               }
             },
