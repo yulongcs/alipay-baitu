@@ -333,7 +333,7 @@ Page({
     my.tradePay({
       tradeNO: tradeNO,
       success: res => {
-        if (res.resultCode === 9000) {
+        if (res.resultCode == 9000) {
           my.showToast({
             content: '支付成功',
             type: 'success',
@@ -352,6 +352,7 @@ Page({
                 alipayPid: userId,
               }
               app.req.requestPostApi(url, params, this, res => {
+                console.log('sss')
                 var that = this;
                 if (res.res.openType === 1) {
                   var time = res.res.missionTime;
@@ -414,6 +415,18 @@ Page({
                 }
               })
             }
+          })
+        } else if (res.resultCode == 4000) {
+          my.showToast({
+            content: '订单支付失败',
+            type: 'fail',
+            duration: 1000,
+          })
+        } else if(res.resultCode == 6001){
+          my.showToast({
+            content:'订单中途取消',
+            type:'fail',
+            duration:1000,
           })
         }
       }
