@@ -8,6 +8,7 @@ App({
     userInfo: null,
   },
   onLaunch(options) {
+    // 获取到支付宝扫码进入的参数
     if (!options.query) {
       my.removeStorage({
         key: 'mac',

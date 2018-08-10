@@ -105,40 +105,45 @@ Page({
       timestamp: time,
       userName: userId,
     }
-    // 网络请求
-    my.confirm({
-      title: '提示',
-      content: '确认解绑吗',
-      success: (res) => {
-        if (res.confirm) {
-          my.showToast({
-            content: '解绑成功',
-            type: 'success',
-            duration: 1000,
-            success: res => {
-              app.req.requestPostApi(url, params, this, res => {
-                that.onShow();
-                my.setStorage({
-                  key: 'cardNo', // 缓存数据的key
-                  success: (res) => {
-                    that.setData({ cardNo: '' })
-                  },
-                });
+    if (cardNo !== null && cardNo !== '' && cardNo !== "") {
+      my.confirm({
+        title: '提示',
+        content: '确认解绑吗',
+        success: res => {
+          if (res.confirm) {
+            app.req.requestPostApi(url, params, this, res => {
+              my.showToast({
+                content: '解绑成功',
+                type: 'success',
+                duration: 1000,
               })
-            }
-          })
-        } else {
-          my.showToast({
-            content: '已取消',
-            type: 'fail',
-            duration: 1000,
-            success: res => {
-              return false;
-            }
-          })
+              my.setStorage({
+                key: 'cardNo', // 缓存数据的key
+                data: '',
+              });
+              that.setData({ cardNo: '' })
+            })
+          } else {
+            my.showToast({
+              content: '已取消',
+              type: 'fail',
+              duration: 1000,
+              success: (res) => {
+                return false;
+              },
+            });
+          }
         }
-      },
-    });
-
+      })
+    } else {
+      my.showToast({
+        content: '未绑卡',
+        type: 'fail',
+        duration: 1000,
+        success: res => {
+          return false;
+        }
+      })
+    }
   }
 });

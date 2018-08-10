@@ -33,10 +33,13 @@ Page({
   },
   // 页面加载时触发
   onLoad() {
+    // 获取mac扫码进入的mac变量
     let mac = my.getStorageSync({
       key: 'mac', // 缓存数据的key
     })
+    // 将其赋值给mac变量（此时mac已有值）
     this.setData({ mac: mac.data })
+    // 判断如果mac 没有的话，获取用户标识 为了触发后面操作
     if (!this.data.mac) {
       my.getStorage({
         key: 'userId', // 缓存数据的key
@@ -44,6 +47,7 @@ Page({
           this.setData({ userId: res.data })
         },
       });
+      // 如果有存在mac 执行
     } else {
       my.getStorage({
         key: 'userId', // 缓存数据的key
@@ -78,11 +82,11 @@ Page({
             key: 'actoken',
             data: actoken,
           })
-          if (res.message === '10002') {
+          if (res.message == '10002') {
             my.navigateTo({
               url: '/page/school/school'
             });
-          } else if (res.message === '10001') {
+          } else if (res.message == '10001') {
             if (userId !== null) {
               let url = '/alipay/miniprogram/autologin';
               let params = { account: this.data.userId, };

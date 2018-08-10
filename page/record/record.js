@@ -136,6 +136,14 @@ Page({
       }
       var array = that.data.co_array;
       for (var i = 0; i < res.res.length; i++) {
+        //后端数据坑，需要自己解时间
+        var date = new Date(res.res[i].timestamp);
+        var month = date.getMonth() + 1;
+        var minute = date.getMinutes();
+        if (minute < 10) {
+          minute = '0' + minute;
+        }
+        res.res[i].timestamp = date.getFullYear() + '-' + month + '-' + date.getDate() + ' ' + date.getHours() + ':' + minute;
         array.push(res.res[i]);
       }
       that.setData({

@@ -65,3 +65,9 @@ swiper-item{
 #rech {
   /* color: #63B8ff; */
 }
+/* 拉到底没有的提示  */
+.noMore {
+  text-align: center;
+  background: #f4f8fb;
+  padding: 20rpx;
+}
