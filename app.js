@@ -12,11 +12,11 @@ App({
       my.removeStorage({ key: 'mac', });
       my.removeStorage({ key: 'target_page', });
     } else {
+      console.warn(JSON.stringify(options.query))
       my.setStorage({ key: 'mac', data: options.query.mac });
       my.setStorage({ key: 'page', data: options.query.target_page });
       my.setStorage({ key: 'promoters', data: options.query.ground_promotion_no });
-      my.setStorage({ key: 'cacheTime', data: Date.parse(new Date() + 9000000) })
-      console.warn(Date.parse(new Date()), Date.parse(new Date()) + 9000000)
+      my.setStorage({ key: 'cacheTime', data: Date.parse(new Date()) + 900000 })
     }
   },
 

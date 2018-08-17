@@ -6,88 +6,75 @@ Page({
   data: {
     screenHeight: 0,
     screenWidth: 0,
-    ratio: 0,     //  比率：screenWidth/750
-    info: [],     //  广告位轮播
-    current: 0,   //  功能位轮播
-    show: true,   //  功能bar
-    userId: '', //  接口参数
-    mac: null,        //  mac 支付宝扫一扫
-    page: null,//  字段扫码进入充值页
-    promoters: null,
+    ratio: 0, //比率：screenWidth/750
 
-    showType: true,
+    info: [],//广告位轮播
+
+    current: 0,//功能swiper页
+    show: true,//功能bar
+
+    username: '',//username,接口参数
+    mac: '',//mac地址
+
+    showType: true,//扫一扫与二维码转换
+
     showMode: false,
-    showWater: false,
-    showWasher: false,
     showClose: false,
 
     hotMode: [],//模式
     modeName: '',
+    waterType: 1,//选择开水器模式
+    WasherType: 1,//选择洗衣机模式
+    blowerType: 1,//选择吹风机模式
+    dryerType: 1,//选择烘干机模式
 
-    waterType: 1,//开水器模式
-    WasherType: 1,//洗衣机模式
     dryPrice: '',//单脱
     fastPrice: '',//快速
     stdPrice: '',//标准
     bigPrice: '',//大物
+
     state: 0,//状态，0：空闲，1：运行中
     tradeNO: '',//订单号
   },
-
   onLoad() {
-    const cache = async () => {
-      let mac = this.data.mac;
-      let page = this.data.page;
-      let promoters = this.data.promoters;
-      await my.getStorage({
-        key: 'page',
-        success: res => {
-          this.setData({ page: res.data })
-        }
-      });
-      await my.getStorage({
-        key: 'mac',
-        success: res => {
-          this.setData({ mac: res.data })
-        }
-      });
-      await my.getStorage({
-        key: 'promoters',
-        success: res => {
-          this.setData({ promoters: res.data })
-        }
-      });
-      if (this.data.mac == null && this.data.page == null) {
-        return null;
+    my.getStorage({
+      key: 'userId',
+      success: res => {
+        this.setData({
+          userId: res.data
+        })
       }
-      else if (this.data.mac !== null
-        && this.data.page !== null
-        && this.data.page !== undefined
-        && this.data.promoters !== null
-        && this.data.promoters !== undefined) {
-        my.navigateTo({ url: this.data.page });
-      }
-      else if (this.data.mac !== null
-       && this.data.page == null 
-       && this.data.promoters == null) {
-        this.getType();
-      }
-    }
-    // 执行 async 函数同步等待
-    cache();
-    // 获取用户标识
-    my.getStorage({ key: 'userId', success: res => { this.setData({ userId: res.data }) } });
+    });
+    my.getStorage({
+      key: 'page',
+      success: (res) => {
+        if (res.data && res.data !== 'undefined') {
+          my.navigateTo({
+            url: res.data
+          });
+        } else {
+          my.getStorage({
+            key: 'mac',
+            success: (res) => {
+              if (res.data && res.data !== 'undefined') {
+                this.setData({
+                  mac: res.data
+                })
+                this.getType()
+              }
+            },
+          });
+        }
+      },
+    });
   },
   onShow() {
-    // 请求授权操作
     my.getAuthCode({
       scopes: 'auth_base',
       success: (res) => {
-        // 将authCode传输给后台
         let authCode = res.authCode;
         let params = { authCode: authCode }
         let url = '/alipay/miniprogram/grantLogin';
-        // 网络请求
         app.req.requestPostApi(url, params, this, res => {
           // 获取反馈数据的userId
           let userId = res.res.UserId;
@@ -285,6 +272,7 @@ Page({
   },
   // 开水器支付功能(已签约免密协议的时候调用 - 不需要拉起支付直接开启机器)
   signed(tradeNO) {
+    console.log(111);
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
     let parmas = { tradeNo: tradeNO, alipayPid: userId };

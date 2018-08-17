@@ -119,24 +119,22 @@ Page({
       })
       return;
     }
-    var promoters = my.getStorageSync({ key: 'promoters' });
-    var _promoters,
-      cacheTime = my.getStorageSync({ key: 'cacheTime' });
+    var promoters = my.getStorageSync({ key: 'promoters' }).data,
+      _promoters,
+      cacheTime = my.getStorageSync({ key: 'cacheTime' }).data;
     console.warn(promoters, cacheTime)
-    console.warn(Date.parse(new Date()));
-
+    console.warn(Date.parse(new Date()))
     if (promoters && cacheTime > Date.parse(new Date())) {
       _promoters = promoters;
-      console.warn(_promoters)
     } else {
       my.removeStorageSync({
-        key: 'promoters', // 缓存数据的key
+        key: 'promoters',
       });
       my.removeStorageSync({
-        key: 'cacheTime', // 缓存数据的key
+        key: 'cacheTime',
       });
-    }
 
+    }
     var that = this;
     var url = '/miniprogram/alipay';
     var params = {
@@ -145,6 +143,7 @@ Page({
       money: this.data.money,
       ground_promotion_no: _promoters,
     }
+    console.log(JSON.stringify(params))
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
       var orderStr = res.res
@@ -174,8 +173,6 @@ Page({
               content: '已取消支付',
               duration: 1200,
             });
-          } else {
-            console.log(res);
           }
         },
       })
