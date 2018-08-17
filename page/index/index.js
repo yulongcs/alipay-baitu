@@ -11,7 +11,9 @@ Page({
     current: 0,   //  功能位轮播
     show: true,   //  功能bar
     userId: '', //  接口参数
-    mac: '',       //  mac 支付宝扫一扫
+    mac: null,        //  mac 支付宝扫一扫
+    page: null,//  字段扫码进入充值页
+    promoters: null,
 
     showType: true,
     showMode: false,
@@ -31,34 +33,51 @@ Page({
     state: 0,//状态，0：空闲，1：运行中
     tradeNO: '',//订单号
   },
-  // 页面加载时触发
+
   onLoad() {
-    // 获取mac扫码进入的mac变量
-    let mac = my.getStorageSync({
-      key: 'mac', // 缓存数据的key
-    })
-    // 将其赋值给mac变量（此时mac已有值）
-    this.setData({ mac: mac.data })
-    // 判断如果mac 没有的话，获取用户标识 为了触发后面操作
-    if (!this.data.mac) {
-      my.getStorage({
-        key: 'userId', // 缓存数据的key
-        success: (res) => {
-          this.setData({ userId: res.data })
-        },
+    const cache = async () => {
+      let mac = this.data.mac;
+      let page = this.data.page;
+      let promoters = this.data.promoters;
+      await my.getStorage({
+        key: 'page',
+        success: res => {
+          this.setData({ page: res.data })
+        }
       });
-      // 如果有存在mac 执行
-    } else {
-      my.getStorage({
-        key: 'userId', // 缓存数据的key
-        success: (res) => {
-          this.setData({ userId: res.data })
-          this.getType();
-        },
+      await my.getStorage({
+        key: 'mac',
+        success: res => {
+          this.setData({ mac: res.data })
+        }
       });
+      await my.getStorage({
+        key: 'promoters',
+        success: res => {
+          this.setData({ promoters: res.data })
+        }
+      });
+      if (this.data.mac == null && this.data.page == null) {
+        return null;
+      }
+      else if (this.data.mac !== null
+        && this.data.page !== null
+        && this.data.page !== undefined
+        && this.data.promoters !== null
+        && this.data.promoters !== undefined) {
+        my.navigateTo({ url: this.data.page });
+      }
+      else if (this.data.mac !== null
+       && this.data.page == null 
+       && this.data.promoters == null) {
+        this.getType();
+      }
     }
+    // 执行 async 函数同步等待
+    cache();
+    // 获取用户标识
+    my.getStorage({ key: 'userId', success: res => { this.setData({ userId: res.data }) } });
   },
-  // 页面显示时触发
   onShow() {
     // 请求授权操作
     my.getAuthCode({
@@ -105,15 +124,15 @@ Page({
                   })
                 }
                 my.setStorageSync({
-                  key: 'id', // 缓存数据的key
+                  key: 'id',
                   data: res.res.id, // 要缓存的数据
                 });
                 my.setStorageSync({
-                  key: 'schoolName', // 缓存数据的key
+                  key: 'schoolName',
                   data: res.res.schoolName, // 要缓存的数据
                 });
                 my.setStorageSync({
-                  key: 'cardNo', // 缓存数据的key
+                  key: 'cardNo',
                   data: res.res.cardNo, // 要缓存的数据
                 });
                 this.getInfo();
@@ -133,7 +152,7 @@ Page({
               });
             } else {
               my.setStorage({
-                key: 'nickName', // 缓存数据的key
+                key: 'nickName',
                 data: '未设置支付宝昵称', // 要缓存的数据
               });
             }
@@ -198,10 +217,10 @@ Page({
     });
   },
   // 获取模式
-  getType: function () {
+  getType() {
     var that = this;
     my.getStorage({
-      key: 'userId', // 缓存数据的key
+      key: 'userId',
       success: (res) => {
         this.setData({ userId: res.data })
       },
@@ -224,7 +243,8 @@ Page({
         modeType: res.res.type,
         modeName: res.res.name,
         showMode: true,
-        hotMode: res.res.modeList
+        hotMode: res.res.modeList,
+        mac: res.res.mapping
       })
     })
   },
@@ -426,11 +446,11 @@ Page({
             type: 'fail',
             duration: 1000,
           })
-        } else if(res.resultCode == 6001){
+        } else if (res.resultCode == 6001) {
           my.showToast({
-            content:'订单中途取消',
-            type:'fail',
-            duration:1000,
+            content: '订单中途取消',
+            type: 'fail',
+            duration: 1000,
           })
         }
       }

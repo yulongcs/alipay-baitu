@@ -8,18 +8,15 @@ App({
     userInfo: null,
   },
   onLaunch(options) {
-    // 获取到支付宝扫码进入的参数
     if (!options.query) {
-      my.removeStorage({
-        key: 'mac',
-        success: (res) => {
-        },
-      });
+      my.removeStorage({ key: 'mac', });
+      my.removeStorage({ key: 'target_page', });
     } else {
-      my.setStorage({
-        key: 'mac',
-        data: options.query.mac,
-      });
+      my.setStorage({ key: 'mac', data: options.query.mac });
+      my.setStorage({ key: 'page', data: options.query.target_page });
+      my.setStorage({ key: 'promoters', data: options.query.ground_promotion_no });
+      my.setStorage({ key: 'cacheTime', data: Date.parse(new Date() + 9000000) })
+      console.warn(Date.parse(new Date()), Date.parse(new Date()) + 9000000)
     }
   },
 

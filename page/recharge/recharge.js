@@ -111,8 +111,7 @@ Page({
   /**
    * 充值button事件
    */
-  recharge: function () {
-
+  recharge() {
     if (this.data.money == 0) {//充值数目不为空
       my.alert({
         title: '提示',
@@ -120,22 +119,31 @@ Page({
       })
       return;
     }
+    var promoters = my.getStorageSync({ key: 'promoters' });
+    var _promoters,
+      cacheTime = my.getStorageSync({ key: 'cacheTime' });
+    console.warn(promoters, cacheTime)
+    console.warn(Date.parse(new Date()));
+
+    if (promoters && cacheTime > Date.parse(new Date())) {
+      _promoters = promoters;
+      console.warn(_promoters)
+    } else {
+      my.removeStorageSync({
+        key: 'promoters', // 缓存数据的key
+      });
+      my.removeStorageSync({
+        key: 'cacheTime', // 缓存数据的key
+      });
+    }
 
     var that = this;
-    var time = new Date().getTime();
     var url = '/miniprogram/alipay';
-    var sign = app.common.createSign({
-      userName: that.data.userId,
-      stuId: that.data.sa_id,
-      money: this.data.money,      
-      timestamp: time
-    })
     var params = {
       userName: that.data.userId,
       stuId: that.data.sa_id,
       money: this.data.money,
-      timestamp: time,
-      sign: sign
+      ground_promotion_no: _promoters,
     }
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
@@ -170,12 +178,6 @@ Page({
             console.log(res);
           }
         },
-        fail: (res) => {
-         console.log(res);
-        },
-        complete: (res) => {
-          console.log(res);
-        }
       })
     })
   },
@@ -218,7 +220,6 @@ Page({
     my.getStorage({
       key: 'id',
       success: function (res) {
-        //console.log(res.data)
         that.setData({
           sa_id: res.data
         })
