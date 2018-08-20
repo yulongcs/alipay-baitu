@@ -231,7 +231,7 @@ Page({
         modeName: res.res.name,
         showMode: true,
         hotMode: res.res.modeList,
-        mac: res.res.mapping
+        mac: res.res.mapping,
       })
     })
   },

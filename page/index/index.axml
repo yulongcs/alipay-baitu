@@ -31,7 +31,7 @@
   <view class='water' a:if="{{showMode}}">
     <view class="shadow" style="height:{{screenHeight}}px"></view>
     <view class='detail'>
-      <text>请选择{{modeName}}模式</text>
+      <text>请选择{{modeName}}({{mac}})模式</text>
       <block a:for="{{hotMode}}" a:for-index="index" a:key='index'>
         <view id="{{item.modeId}}" catchTap='getModeType'>{{item.name}}</view>
       </block>
