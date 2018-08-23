@@ -114,8 +114,10 @@ Page({
     console.warn(promoters, cacheTime)
     console.warn(Date.parse(new Date()))
     if (promoters && cacheTime > Date.parse(new Date())) {
+      console.log('执行if')
       _promoters = promoters;
     } else {
+      console.log('执行else')
       my.removeStorageSync({
         key: 'promoters',
       });
@@ -132,7 +134,7 @@ Page({
       money: this.data.money,
       ground_promotion_no: _promoters,
     }
-    console.log(JSON.stringify(params))
+    console.warn(JSON.stringify(params))
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
       var orderStr = res.res

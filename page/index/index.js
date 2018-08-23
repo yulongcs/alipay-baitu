@@ -234,13 +234,13 @@ Page({
     })
   },
   // 取消功能
-  cancel: function (e) {
+  cancel(e) {
     this.setData({
       showMode: false,
     })
   },
   // 获取打水或者洗衣模式
-  getModeType: function (e) {
+  getModeType(e) {
     switch (this.data.modeType) {
       case 1:
         this.setData({
@@ -498,7 +498,7 @@ Page({
     })
   },
   // 关闭开水器
-  endHot: function () {
+  endHot() {
     var that = this;
     let userId = this.data.userId;
     let url = '/miniprogram/machine/stophot';
@@ -529,7 +529,7 @@ Page({
 
   },
   // 直接出水模式打水动画
-  getAraw: function (t) {
+  getAraw(t) {
     var that = this;
     var step = 2;
     interval = setInterval(function () {
@@ -556,181 +556,135 @@ Page({
       }
     }, 1000)
   },
-  // 开启洗衣机
-  openWasher: function () {
-    var that = this;
+  // 通过支付功能 除了开水器以外
+  generalPay(tradeNO) {
+    let url = '/alipay/miniprogram/facepay_open_machine';
+    let userId = this.data.userId;
+    let parmas = { tradeNo: tradeNO, alipayPid: userId };
+    my.removeStorage({ key: 'mac', });
+    app.req.requestPostApi(url, parmas, this, res => {
+      my.showToast({
+        content: '洗衣开启成功',
+        type: 'success',
+        duration: 1000,
+      });
+    })
+  },
+  // 没有代扣服务
+  generalNopay(tradeNO) {
+    my.tradePay({
+      tradeNO: tradeNO,
+      success: (res) => {
+        if (res.resultCode == 9000) {
+          my.showToast({
+            type: 'success',
+            content: '支付成功',
+            duration: 1000,
+            success: (res) => {
+              let url = '/alipay/miniprogram/facepay_open_machine';
+              let tradeNO = this.data.tradeNO;
+              let userId = this.data.userId;
+              var params = {
+                tradeNO: tradeNO,
+                alipayPid: userId,
+              }
+              app.req.requestPostApi(url, params, this, res => {
+                that.setData({
+                  showMode: false
+                })
+                my.showToast({
+                  title: '机器开启成功',
+                })
+              })
+            },
+          });
+        } else if (res.resultCode == 4000) {
+          my.showToast({
+            type: 'fail',
+            content: '支付失败',
+            duration: 1000,
+          });
+        } else if (res.resultCode == 6001) {
+          my.showToast({
+            type: 'fail',
+            content: '已取消支付',
+            duration: 1000,
+          });
+        }
+      },
+    });
+  },
+  // facepay通用函数 除了开水器以外
+  general() {
+    let that = this;
     let userId = this.data.userId;
     let mapping = this.data.mac;
-    let modeId = this.data.waterType;
+    let modeId = this.data.washerType;
     let url = '/alipay/miniprogram/facepay';
     let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
-    // 网络请求
+
     app.req.requestPostApi(url, params, this, res => {
-      let tradeNO = res.res;
-      this.setData({ tradeNO: tradeNO })
-      my.tradePay({
-        tradeNO: tradeNO,
-        success: (res) => {
-          if (res.resultCode == 9000) {
-            my.showToast({
-              type: 'success',
-              content: '支付成功',
-              duration: 1000,
-              success: (res) => {
-                let url = '/alipay/miniprogram/facepay_open_machine';
-                let tradeNO = this.data.tradeNO;
+      let tradeNO = res.res.tradeNo;
+      let balanceOf = res.res.is_money_enough;
+      let withHold = res.res.is_alipay_withhold_sign;
+      // 判断 用户余额是否充足  为true 
+      if (balanceOf) {
+        // 为true 直接开启设备（不需要拉起支付窗口）
+        this.generalPay(tradeNO)
+        // 用户余额不充足的情况下 为false
+      } else {
+        // 判断用户是否签约免密支付协议
+        if (withHold) {
+          // 为true的时候 直接开启设备(不需要开拉起支付窗口)
+          this.generalPay(tradeNO)
+          // 为false的时候 提醒用户签约免密支付协议
+        } else {
+          my.confirm({
+            title: '温馨提示',
+            content: '您是否开通免密支付?',
+            confirmButtonText: '马上签约',
+            cancelButtonText: '暂不需要',
+            success: res => {
+              // 用户点击马上签约以后 执行签约功能 跳转至内嵌页面
+              if (res.confirm) {
+                let url = '/alipay/miniprogram/get_withhold_sign_str';
                 let userId = this.data.userId;
-                var params = {
-                  tradeNO: tradeNO,
-                  alipayPid: userId,
-                }
+                let params = { userName: userId }
+                // 选择签约后的网络请求
                 app.req.requestPostApi(url, params, this, res => {
-                  that.setData({
-                    showMode: false
-                  })
-                  my.showToast({
-                    title: '机器开启成功',
-                  })
+                  let signStr = res.res;
+                  // 获取签约字符串 返回结果
+                  my.paySignCenter({
+                    signStr: signStr,
+                    success: res => {
+                      console.log(JSON.stringify(res));
+                    }
+                  });
                 })
-              },
-            });
-          } else if (res.resultCode == 4000) {
-            my.showToast({
-              type: 'fail',
-              content: '支付失败',
-              duration: 1000,
-            });
-          } else if (res.resultCode == 6001) {
-            my.showToast({
-              type: 'fail',
-              content: '已取消支付',
-              duration: 1000,
-            });
-          } else {
-            console.log(res);
-          }
-        },
-      })
+              } else {
+                // 未签约选择后 调用拉起支付窗口进行支付
+                this.generalNopay(tradeNO);
+              }
+            },
+          })
+        }
+      }
     })
+  },
+  // 开启洗衣机
+  openWasher() {
+    this.general();
   },
   // 开启吹风机
-  openBlower: function () {
-    var that = this;
-    let userId = this.data.userId;
-    let mapping = this.data.mac;
-    let modeId = this.data.waterType;
-    let url = '/alipay/miniprogram/facepay';
-    let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
-    // 网络请求
-    app.req.requestPostApi(url, params, this, res => {
-      let tradeNO = res.res;
-      this.setData({ tradeNO: tradeNO })
-      my.tradePay({
-        tradeNO: tradeNO,
-        success: (res) => {
-          if (res.resultCode == 9000) {
-            my.showToast({
-              type: 'success',
-              content: '支付成功',
-              duration: 1000,
-              success: (res) => {
-                let url = '/alipay/miniprogram/facepay_open_machine';
-                let tradeNO = this.data.tradeNO;
-                let userId = this.data.userId;
-                var params = {
-                  tradeNO: tradeNO,
-                  alipayPid: userId,
-                }
-                app.req.requestPostApi(url, params, this, res => {
-                  console.log('成功开启吹风机')
-                  that.setData({
-                    showMode: false
-                  })
-                  my.showToast({
-                    title: '机器开启成功',
-                  })
-                })
-              },
-            });
-          } else if (res.resultCode == 4000) {
-            my.showToast({
-              type: 'fail',
-              content: '支付失败',
-              duration: 1000,
-            });
-          } else if (res.resultCode == 6001) {
-            my.showToast({
-              type: 'fail',
-              content: '已取消支付',
-              duration: 1000,
-            });
-          } else {
-            console.log(res);
-          }
-        },
-      })
-    })
+  openBlower() {
+    this.general();
   },
   // 开启烘干机
-  openDryer: function () {
-    var that = this;
-    let userId = this.data.userId;
-    let mapping = this.data.mac;
-    let modeId = this.data.waterType;
-    let url = '/alipay/miniprogram/facepay';
-    let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
-    // 网络请求
-    app.req.requestPostApi(url, params, this, res => {
-      let tradeNO = res.res;
-      this.setData({ tradeNO: tradeNO })
-      my.tradePay({
-        tradeNO: tradeNO,
-        success: (res) => {
-          if (res.resultCode == 9000) {
-            my.showToast({
-              type: 'success',
-              content: '支付成功',
-              duration: 1000,
-              success: (res) => {
-                let url = '/alipay/miniprogram/facepay_open_machine';
-                let tradeNO = this.data.tradeNO;
-                let userId = this.data.userId;
-                var params = {
-                  tradeNO: tradeNO,
-                  alipayPid: userId,
-                }
-                app.req.requestPostApi(url, params, this, res => {
-                  console.log('成功开启烘干机')
-                  that.setData({
-                    showMode: false
-                  })
-                  my.showToast({
-                    title: '机器开启成功',
-                  })
-                })
-              },
-            });
-          } else if (res.resultCode == 4000) {
-            my.showToast({
-              type: 'fail',
-              content: '支付失败',
-              duration: 1000,
-            });
-          } else if (res.resultCode == 6001) {
-            my.showToast({
-              type: 'fail',
-              content: '已取消支付',
-              duration: 1000,
-            });
-          } else {
-            console.log(res);
-          }
-        },
-      })
-    })
+  openDryer() {
+    this.general();
   },
   // 绘制图形
-  draw: function (s, e) {
+  draw(s, e) {
     var x = this.data.screenWidth / 2,
       y = this.data.screenWidth / 2,
       radius = this.data.screenWidth / 3 + 3;
@@ -745,10 +699,10 @@ Page({
     cxt_arc.draw();
   },
   // 获取设备信息
-  getInfo: function () {
+  getInfo() {
     var that = this;
     my.getSystemInfo({
-      success: function (res) {
+      success(res) {
         that.setData({
           screenHeight: res.screenHeight,
           screenWidth: res.windowWidth,
@@ -758,7 +712,7 @@ Page({
     })
   },
   // 获取广告位信息
-  getAdInfo: function () {
+  getAdInfo() {
     var that = this;
     let userId = this.data.userId;
     let url = '/miniprogram/ad/adList';
@@ -792,7 +746,7 @@ Page({
     }
   },
   // 二维码绘制
-  drawQRCode: function () {
+  drawQRCode() {
     var that = this;
     let userId = this.data.userId;
     var time = new Date().getTime();
@@ -812,7 +766,7 @@ Page({
     })
   },
   // 适配不同屏幕大小的canvas
-  setCanvasSize: function () {
+  setCanvasSize() {
     var size = {};
     try {
       var res = my.getSystemInfoSync();
@@ -827,7 +781,7 @@ Page({
     return size;
   },
   // 调用插件中的draw方法，绘制二维码图片
-  createQrCode: function (url, canvasId, cavW, cavH) {
+  createQrCode(url, canvasId, cavW, cavH) {
     QR.qrApi.draw(url, canvasId, cavW, cavH);
   },
 });

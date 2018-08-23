@@ -34,7 +34,7 @@ Page({
     })
   },
   // 选择title
-  radioChange: function (e) {
+  radioChange (e) {
     var that = this;
     that.setData({
       titleId: e.detail.value
@@ -42,7 +42,7 @@ Page({
   },
 
   // 反馈问题描述
-  getText: function (e) {
+  getText (e) {
     var that = this;
     var feedback = e.detail.value;
     that.setData({
@@ -50,7 +50,7 @@ Page({
     })
   },
   // 上传图片
-  upload: function () {
+  upload () {
     var that = this;
     my.chooseImage({
       count: 3,
@@ -70,7 +70,7 @@ Page({
   },
 
   // 七牛云上传图片
-  qiniuUpload: function () {
+  qiniuUpload () {
     var that = this;
     var image = [];
     for (var i = 0; i < imagePath.length; i++) {
@@ -90,7 +90,7 @@ Page({
   },
 
   // 获取token
-  getToken: function () {
+  getToken () {
     var that = this;
     var time = new Date().getTime();
     var url = '/miniprogram/feedback/qiniu/token';
@@ -113,7 +113,7 @@ Page({
   },
 
   // 提交舆情
-  postComment: function () {
+  postComment () {
     var that = this;
     if (imagePath.length > 0) {
       that.qiniuUpload();
@@ -122,7 +122,7 @@ Page({
       that.pushComment(null);
     }
   },
-  pushComment: function (img) {
+  pushComment (img) {
     var that = this;
     //console.log(that.data.image, that.data.feedback, that.data.titleId);
     if (!that.data.feedback || !that.data.titleId) {
@@ -162,7 +162,7 @@ Page({
     })
   },
 
-  onLoad: function () {
+  onLoad () {
     var that = this;
     imagePath.splice(0, imagePath.length)
     my.getSystemInfo({
@@ -186,7 +186,7 @@ Page({
   },
 
   // 监听页面加载
-  onUnload: function () {
+  onUnload () {
     clearTimeout(timeout);
   },
 });

@@ -2,6 +2,7 @@ const app = getApp();
 Page({
   data: {
     money: '',
+    userId: '',
     showRefund: false,
     showPay: false,
   },
@@ -81,14 +82,11 @@ Page({
    */
   onLoad() {
     let that = this;
-    let userId = my.getStorage({
+    let userId = my.getStorageSync({
       key: 'userId', // 缓存数据的key
-      success: (res) => {
-        that.setData({ userId: res.data })
-        that.getRefund();
-        that.getMoney();
-      },
-    });
-
+    }).data;
+    that.setData({ userId: userId })
+    that.getRefund();
+    that.getMoney();
   },
 });

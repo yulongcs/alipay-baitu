@@ -7,7 +7,7 @@ Page({
     comment: [],
   },
 
-  onShow: function () {
+  onShow() {
     let userId = my.getStorage({
       key: 'userId', // 缓存数据的key
       success: (res) => {
@@ -42,12 +42,12 @@ Page({
     })
   },
   // 按钮跳转
-  gotoComment: function () {
+  gotoComment() {
     my.navigateTo({
       url: '../comment/comment',
     })
   },
-  encrypt: function (...any) {
+  encrypt(...any) {
     var array = any;
     array.sort();
     var str = array.join('&');

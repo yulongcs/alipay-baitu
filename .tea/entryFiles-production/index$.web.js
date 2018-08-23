@@ -12,3 +12,5 @@ require('../../page/recharge/recharge');
 require('../../page/record/record');
 require('../../page/swingCard/swingCard');
 require('../../page/cardReader/cardReader');
+require('../../page/schoolNew/schoolNew');
+require('../../page/groundRecharge/groundRecharge');
