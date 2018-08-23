@@ -1,0 +1,52 @@
+
+.content {
+  padding: 0 10rpx;
+}
+
+.school {
+  width: 100%;
+  padding: 15rpx 0;
+  border-bottom: solid 1px #eee;
+}
+
+.search {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.reading{
+    margin-top: 10rpx;
+}
+
+.search input {
+  margin: 20rpx 0;
+  text-align: center;
+}
+
+.searchColor {
+  color: #63b8f4;
+}
+
+.search button {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 4rpx;
+  right: 145rpx;
+  background-color: #fff;
+}
+
+.search button::after {
+  content: '';
+  display: none;
+  outline: none;
+  border: 0;
+}
+.school {
+    background: #fff;
+}
+.a-button {
+    border: none;
+}

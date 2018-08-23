@@ -26,16 +26,6 @@ Page({
         text: '20元',
         getColor: false
       },
-      {
-        id: '10',
-        text: '10元',
-        getColor: false
-      },
-      {
-        id: 'other',
-        text: '其他金额',
-        getColor: false
-      }
     ],
     czGive: [],
     give: false,
@@ -118,13 +108,31 @@ Page({
       })
       return;
     }
+    var promoters = my.getStorageSync({ key: 'promoters' }).data,
+      _promoters,
+      cacheTime = my.getStorageSync({ key: 'cacheTime' }).data;
+    console.warn(promoters, cacheTime)
+    console.warn(Date.parse(new Date()))
+    if (promoters && cacheTime > Date.parse(new Date())) {
+      _promoters = promoters;
+    } else {
+      my.removeStorageSync({
+        key: 'promoters',
+      });
+      my.removeStorageSync({
+        key: 'cacheTime',
+      });
+
+    }
     var that = this;
     var url = '/miniprogram/alipay';
     var params = {
       userName: that.data.userId,
       stuId: that.data.sa_id,
       money: this.data.money,
+      ground_promotion_no: _promoters,
     }
+    console.log(JSON.stringify(params))
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
       var orderStr = res.res

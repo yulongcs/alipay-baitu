@@ -69,17 +69,31 @@ Page({
     });
   },
   onShow() {
+    // 获取授权 auth_base 静默授权
     my.getAuthCode({
       scopes: 'auth_base',
       success: (res) => {
+        // 获取用户支付宝昵称 - 没有昵称则显示未设置
+        my.getAuthUserInfo({
+          success: (userInfo) => {
+            if (userInfo) {
+              my.setStorage({ key: 'nickName', data: userInfo.nickName })
+            } else {
+              my.setStorage({ key: 'nickName', data: '未设置支付宝昵称' })
+            }
+          }
+        });
+        // 拿授权的值，请求url登录接口
         let authCode = res.authCode;
         let params = { authCode: authCode }
         let url = '/alipay/miniprogram/grantLogin';
         app.req.requestPostApi(url, params, this, res => {
-          // 获取反馈数据的userId
+          // 获取接口返回的用户信息
           let userId = res.res.UserId;
           let phone = res.res.phone;
           let actoken = res.res.AccessToken;
+          this.setData({ userId: userId })
+          // 缓存便于个人信息页显示
           my.setStorage({
             key: 'userId',
             data: userId,
@@ -88,61 +102,45 @@ Page({
             key: 'actoken',
             data: actoken,
           })
-          if (res.message == '10002') {
+          // 根据返回值判断  10002 则未注册账号，进入选择学校页
+          if (res.message == "10002") {
             my.navigateTo({
               url: '/page/school/school'
             });
-          } else if (res.message == '10001') {
-            if (userId !== null) {
-              let url = '/alipay/miniprogram/autologin';
-              let params = { account: this.data.userId, };
-              // 网络请求
-              app.req.requestPostApi(url, params, this, res => {
-                let that = this;
-                if (res.res.phone == 'null') {
-                  my.setStorage({
-                    key: 'telephone',
-                    data: '',
-                  })
-                } else {
-                  my.setStorage({
-                    key: 'telephone',
-                    data: res.res.phone
-                  })
-                }
-                my.setStorageSync({
-                  key: 'id',
-                  data: res.res.id, // 要缓存的数据
-                });
-                my.setStorageSync({
-                  key: 'schoolName',
-                  data: res.res.schoolName, // 要缓存的数据
-                });
-                my.setStorageSync({
-                  key: 'cardNo',
-                  data: res.res.cardNo, // 要缓存的数据
-                });
-                this.getInfo();
-                this.getAdInfo();
-              })
-            } else {
-              return null;
-            }
-          }
-        })
-        my.getAuthUserInfo({
-          success: (userInfo) => {
-            if (userInfo.nickName != null && userInfo.nickName != '' && userInfo.nickName != "") {
-              my.setStorage({
-                key: 'nickName',
-                data: userInfo.nickName,
+            // 10001 为已经注册的账号 执行登录接口
+          } else if (res.message == "10001") {
+            let url = '/alipay/miniprogram/autologin';
+            let params = { account: this.data.userId, };
+            // 网络请求
+            app.req.requestPostApi(url, params, this, res => {
+              let that = this;
+              // 根据返回值判断 电话是否为空 显示不同 便于个人信息页手机绑定
+              if (res.res.phone == 'null') {
+                my.setStorage({
+                  key: 'telephone',
+                  data: '',
+                })
+              } else {
+                my.setStorage({
+                  key: 'telephone',
+                  data: res.res.phone
+                })
+              }
+              my.setStorageSync({
+                key: 'id',
+                data: res.res.id, // 要缓存的数据
               });
-            } else {
-              my.setStorage({
-                key: 'nickName',
-                data: '未设置支付宝昵称', // 要缓存的数据
+              my.setStorageSync({
+                key: 'schoolName',
+                data: res.res.schoolName, // 要缓存的数据
               });
-            }
+              my.setStorageSync({
+                key: 'cardNo',
+                data: res.res.cardNo, // 要缓存的数据
+              });
+              this.getInfo();
+              this.getAdInfo();
+            })
           }
         })
       }
@@ -272,7 +270,6 @@ Page({
   },
   // 开水器支付功能(已签约免密协议的时候调用 - 不需要拉起支付直接开启机器)
   signed(tradeNO) {
-    console.log(111);
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
     let parmas = { tradeNo: tradeNO, alipayPid: userId };
@@ -364,7 +361,6 @@ Page({
                 alipayPid: userId,
               }
               app.req.requestPostApi(url, params, this, res => {
-                console.log('sss')
                 var that = this;
                 if (res.res.openType === 1) {
                   var time = res.res.missionTime;

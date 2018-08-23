@@ -7,7 +7,7 @@
     <view class='phoneNum'>昵称</view>
     <view>{{nickName}}</view>
   </view>
-  <view class='item'>
+  <view class='item' catchTap='changeSchool'>
     <view class='school'>学校</view>
     <view>{{schoolName}}</view>
   </view>

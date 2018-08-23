@@ -60,43 +60,41 @@ Page({
     })
   },
   // 获取学校
-  selectSchool: function (e) {
+  selectSchool(e) {
     var obj = { id: e.target.id, account: this.data.account }
-    console.log(obj)
     let url = '/alipay/miniprogram/register'
     let params = { schoolId: obj.id, account: obj.account, accessToken: this.data.actoken }
-    // 网络请求
-    app.req.requestPostApi(url, params, this, res => {
-      my.alert({
-        title: '提示',
-        content: '选错学校设备会不能用的哦',
-        success: () => {
-          let that = this;
-          let url = '/alipay/miniprogram/autologin';
-          let params = { account: obj.account };
-          // 网络请求
+    // 网络请求'
+    my.confirm({
+      title: '温馨提示',
+      content: '选错学校设备将无法使用',
+      confirmButtonText: '确定选择',
+      cancelButtonText: '取消选择',
+      success: (res) => {
+        if (res.confirm) {
           app.req.requestPostApi(url, params, this, res => {
-            ;
             let schoolName = my.setStorage({
-              key: 'schoolName', // 缓存数据的key
-              data: res.res.schoolName, // 要缓存的数据
+              key: 'schoolName',
+              data: res.res.schoolName,
               success: (res) => {
                 that.setData({ schoolName: res.data })
               },
             });
             let cardNo = my.setStorage({
-              key: 'cardNo', // 缓存数据的key
-              data: res.res.cardNo, // 要缓存的数据
+              key: 'cardNo',
+              data: res.res.cardNo,
               success: (res) => {
                 that.setData({ cardNo: res.data })
               },
             });
             my.reLaunch({
-              url: '/page/index/index', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+              url: '/page/index/index',
             });
           })
+        } else {
+          return;
         }
-      })
-    })
+      },
+    });
   },
 })
