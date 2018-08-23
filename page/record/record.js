@@ -19,9 +19,9 @@ Page({
 
     state: true,//消费记录完成状态
   },
-   /**
-   * 选择消费swiper-item
-   */
+  /**
+  * 选择消费swiper-item
+  */
   select: function (e) {
     if (e.target.id == 'rech') {
       this.setData({
@@ -30,7 +30,7 @@ Page({
       })
     } else {
       this.setData({
-        show:false,
+        show: false,
         current: 1
       })
     }
@@ -43,7 +43,7 @@ Page({
     this.setSwiperHeight();
     my.getStorage({
       key: 'userId',
-      success: function(res) {
+      success: function (res) {
         that.setData({
           userId: res.data
         })
@@ -56,13 +56,13 @@ Page({
   /**
    * 获取设备信息
    */
-  setSwiperHeight:function(){
+  setSwiperHeight: function () {
     var that = this;
     my.getAuthUserInfo({
-      success: function(res) {
+      success: function (res) {
         that.setData({
           screenHeight: res.windowHeight,
-          ratio:res.screenWidth/750
+          ratio: res.screenWidth / 750
         })
       },
     })
@@ -70,14 +70,14 @@ Page({
   /**
    * 获取充值，消费信息
    */
-  getRecharge:function(page){
+  getRecharge: function (page) {
     var that = this;
     var time = new Date().getTime();
     var sign = app.common.createSign({
       timestamp: time,
       userName: that.data.userId,
-      pn:page,
-      ps:that.data.pageNum
+      pn: page,
+      ps: that.data.pageNum
     })
     var params = {
       userName: that.data.userId,
@@ -86,7 +86,7 @@ Page({
       ps: that.data.pageNum,
       sign: sign
     }
-    app.req.requestPostApi('/miniprogram/stu/rechargeorders',params,this,function(res){
+    app.req.requestPostApi('/miniprogram/stu/rechargeorders', params, this, function (res) {
       that.setData({
         re_loading: '点击加载'
       })
@@ -94,7 +94,7 @@ Page({
         return;
       }
       var array = that.data.re_array;
-      for(var i = 0;i < res.res.length;i ++){
+      for (var i = 0; i < res.res.length; i++) {
         //后端数据坑，需要自己解时间
         var date = new Date(res.res[i].timestamp);
         var month = date.getMonth() + 1;
@@ -108,10 +108,10 @@ Page({
       that.setData({
         re_array: array,
         re_page: page
-      })    
+      })
     })
   },
-  getConsumption:function(page){
+  getConsumption: function (page) {
     var that = this;
     var time = new Date().getTime();
     var sign = app.common.createSign({
@@ -136,33 +136,25 @@ Page({
       }
       var array = that.data.co_array;
       for (var i = 0; i < res.res.length; i++) {
-        //后端数据坑，需要自己解时间
-        var date = new Date(res.res[i].timestamp);
-        var month = date.getMonth() + 1;
-        var minute = date.getMinutes();
-        if (minute < 10) {
-          minute = '0' + minute;
-        }
-        res.res[i].timestamp = date.getFullYear() + '-' + month + '-' + date.getDate() + ' ' + date.getHours() + ':' + minute;
         array.push(res.res[i]);
       }
       that.setData({
         co_array: array,
-        co_page:page
+        co_page: page
       })
     })
   },
   /**
    * 加载充值，消费记录
    */
-  fresh:function(e){
-    if(e.target.id == 're_loading'){
+  fresh: function (e) {
+    if (e.target.id == 're_loading') {
       this.setData({
-        re_loading:'加载中...'
+        re_loading: '加载中...'
       })
       var page = this.data.re_page + 1;
       this.getRecharge(page);
-    }else{
+    } else {
       this.setData({
         co_loading: '加载中...'
       })
