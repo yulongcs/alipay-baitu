@@ -37,14 +37,21 @@ Page({
     tradeNO: '',//订单号
   },
   onLoad() {
+    // 调用获取宽度高度
+    this.getInfo();
     my.getStorage({
       key: 'userId',
-      success: res => {
+      success: (res) => {
         this.setData({
           userId: res.data
-        })
-      }
+        });
+        // 调用引导充值函数
+        this.getMoney()
+        // 调用广告位函数
+        this.getAdInfo();
+      },
     });
+
     my.getStorage({
       key: 'page',
       success: (res) => {
@@ -67,9 +74,6 @@ Page({
         }
       },
     });
-    this.getMoney();
-  },
-  onShow() {
     // 获取授权 auth_base 静默授权
     my.getAuthCode({
       scopes: 'auth_base',
@@ -79,10 +83,11 @@ Page({
         let params = { authCode: authCode }
         let url = '/alipay/miniprogram/grantLogin';
         app.req.requestPostApi(url, params, this, res => {
-          // 获取接口返回的用户信息
+          /* 接口返回值 支付宝用户标识 电话号码 actoken废弃  */
           let userId = res.res.UserId;
           let phone = res.res.phone;
           let actoken = res.res.AccessToken;
+          // 赋值给初始化数据的userId
           this.setData({ userId: userId })
           // 缓存便于个人信息页显示
           my.setStorage({
@@ -117,20 +122,20 @@ Page({
                   data: res.res.phone
                 })
               }
+              /* 缓存接口返回值 用户id 学校名称 虚拟卡号  */
               my.setStorageSync({
                 key: 'id',
-                data: res.res.id, // 要缓存的数据
+                data: res.res.id,
               });
               my.setStorageSync({
                 key: 'schoolName',
-                data: res.res.schoolName, // 要缓存的数据
+                data: res.res.schoolName,
               });
               my.setStorageSync({
                 key: 'cardNo',
-                data: res.res.cardNo, // 要缓存的数据
+                data: res.res.cardNo,
               });
-              this.getInfo();
-              this.getAdInfo();
+
             })
           }
         })
@@ -141,9 +146,7 @@ Page({
   getMoney() {
     let that = this;
     let url = '/miniprogram/stu/money';
-    let userId = my.getStorageSync({
-      key: 'userId', // 缓存数据的key
-    }).data;
+    let userId = this.data.userId;
     let time = new Date().getTime();
     let sign = app.common.createSign({
       userName: userId,
@@ -259,7 +262,7 @@ Page({
       showMode: false,
     })
   },
-  // 获取打水或者洗衣模式
+  /*获取机器模式 - 模式不区分 需要id对应上接口返回值*/
   getModeType(e) {
     switch (this.data.modeType) {
       case 1:
@@ -270,7 +273,7 @@ Page({
         break;
       case 2:
         this.setData({
-          washerType: e.target.id
+          WasherType: e.target.id
         })
         this.openWasher();
         break;
@@ -288,7 +291,7 @@ Page({
         break;
     }
   },
-  // 开水器支付(已签约免密协议的时候调用 - 不需要拉起收银台开启机器)
+  /*开水器支付(已签约免密协议的时候调用 - 不需要拉起收银台开启机器)*/
   signed(tradeNO) {
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
@@ -357,7 +360,7 @@ Page({
       }
     })
   },
-  // 开水器支付(不签约免密协议的时候调用 - 需要拉起收银台后开启机器 )
+  /*开水器支付(不签约免密协议的时候调用 - 需要拉起收银台后开启机器 )*/
   notSigned(tradeNO) {
     my.tradePay({
       tradeNO: tradeNO,
@@ -639,7 +642,7 @@ Page({
     let that = this;
     let userId = this.data.userId;
     let mapping = this.data.mac;
-    let modeId = this.data.washerType;
+    let modeId = this.data.waterType;
     let url = '/alipay/miniprogram/facepay';
     let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
 
@@ -752,6 +755,7 @@ Page({
       })
     })
   },
+  // 跳转到H5页面 - 暂时保留且不使用
   jumpTo(e) {
     switch (e.currentTarget.dataset.info) {
       case 0:
@@ -765,7 +769,7 @@ Page({
         break;
     }
   },
-  // 二维码绘制
+  // 二维码绘制 
   drawQRCode() {
     var that = this;
     let userId = this.data.userId;

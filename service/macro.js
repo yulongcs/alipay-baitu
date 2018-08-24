@@ -3,7 +3,7 @@
  */
 var appId = '2018051060090277';
 var key = '$%011VBGFJ,YSYYRPS';
-var version = '1.8.3';
+var version = '1.8.4';
 
 
 var api = 'https://app.hzchengshan.cn/CSProject';
