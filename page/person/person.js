@@ -1,7 +1,6 @@
 const app = getApp();
 Page({
   data: {
-    nickName: '',     //用户昵称
     id: '',           //用户ID
     schoolName: '',       //学校
   },
@@ -25,13 +24,6 @@ Page({
     app.req.requestPostApi(url, params, this, res => {
       that.setData({ schoolName: res.res.schoolName })
     })
-
-    my.getStorage({
-      key: 'nickName', // 缓存数据的key
-      success: (res) => {
-        that.setData({ nickName: res.data })
-      },
-    });
     my.getStorage({
       key: 'schoolName', // 缓存数据的key
       success: (res) => {

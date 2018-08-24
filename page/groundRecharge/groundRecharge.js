@@ -137,9 +137,9 @@ Page({
     console.warn(JSON.stringify(params))
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
-      var orderStr = res.res
+      var tradeNO = res.res
       my.tradePay({
-        orderStr: orderStr,
+        tradeNO: tradeNO,
         success: (res) => {
           if (res.resultCode == 9000) {
             my.showToast({
@@ -147,6 +147,12 @@ Page({
               content: '充值成功',
               duration: 1200,
               success: (res) => {
+                my.removeStorageSync({
+                  key: 'promoters',
+                });
+                my.removeStorageSync({
+                  key: 'cacheTime',
+                });
                 my.switchTab({
                   url: '/page/index/index',
                 });

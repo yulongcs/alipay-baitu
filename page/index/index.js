@@ -67,22 +67,13 @@ Page({
         }
       },
     });
+    this.getMoney();
   },
   onShow() {
     // 获取授权 auth_base 静默授权
     my.getAuthCode({
       scopes: 'auth_base',
       success: (res) => {
-        // 获取用户支付宝昵称 - 没有昵称则显示未设置
-        my.getAuthUserInfo({
-          success: (userInfo) => {
-            if (userInfo) {
-              my.setStorage({ key: 'nickName', data: userInfo.nickName })
-            } else {
-              my.setStorage({ key: 'nickName', data: '未设置支付宝昵称' })
-            }
-          }
-        });
         // 拿授权的值，请求url登录接口
         let authCode = res.authCode;
         let params = { authCode: authCode }
@@ -143,6 +134,35 @@ Page({
             })
           }
         })
+      }
+    })
+  },
+  // 获取金额，引导用户充值
+  getMoney() {
+    let that = this;
+    let url = '/miniprogram/stu/money';
+    let userId = my.getStorageSync({
+      key: 'userId', // 缓存数据的key
+    }).data;
+    let time = new Date().getTime();
+    let sign = app.common.createSign({
+      userName: userId,
+      timestamp: time
+    })
+    let params = { userName: userId, timestamp: time, sign: sign }
+
+    app.req.requestPostApi(url, params, this, res => {
+      if (res.message <= 0) {
+        my.confirm({
+          title: '温馨提示',
+          content: '余额不足，请前去充值',
+          confirmButtonText: '确定',
+          success: (res) => {
+            if (res.confirm) {
+              my.navigateTo({ url: '/page/recharge/recharge' });
+            }
+          },
+        });
       }
     })
   },

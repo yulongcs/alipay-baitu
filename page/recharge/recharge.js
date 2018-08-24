@@ -123,13 +123,13 @@ Page({
     var params = {
       userName: that.data.userId,
       stuId: that.data.sa_id,
-      money: this.data.money,
+      money:0.01,
     }
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
-      var orderStr = res.res
+      var tradeNO = res.res
       my.tradePay({
-        orderStr: orderStr,
+        tradeNO: tradeNO,
         success: (res) => {
           if (res.resultCode == 9000) {
             my.showToast({
