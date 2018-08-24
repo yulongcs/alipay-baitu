@@ -288,7 +288,7 @@ Page({
         break;
     }
   },
-  // 开水器支付功能(已签约免密协议的时候调用 - 不需要拉起支付直接开启机器)
+  // 开水器支付(已签约免密协议的时候调用 - 不需要拉起收银台开启机器)
   signed(tradeNO) {
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
@@ -357,7 +357,7 @@ Page({
       }
     })
   },
-  // 开水器支付功能(不签约免密协议的时候调用 - 需要拉起支付后开启机器 )
+  // 开水器支付(不签约免密协议的时候调用 - 需要拉起收银台后开启机器 )
   notSigned(tradeNO) {
     my.tradePay({
       tradeNO: tradeNO,
@@ -460,7 +460,7 @@ Page({
       }
     })
   },
-  // 开启开水器
+  // 开水器预支付
   openHot() {
     let userId = this.data.userId;
     let mapping = this.data.mac;
@@ -576,7 +576,7 @@ Page({
       }
     }, 1000)
   },
-  // 通过支付功能 除了开水器以外
+  // 预支付不拉起收银台开启设备
   generalPay(tradeNO) {
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
@@ -584,13 +584,13 @@ Page({
     my.removeStorage({ key: 'mac', });
     app.req.requestPostApi(url, parmas, this, res => {
       my.showToast({
-        content: '洗衣开启成功',
+        content: '机器开启成功',
         type: 'success',
         duration: 1000,
       });
     })
   },
-  // 没有代扣服务
+  // 预支付拉起收银台开启设备
   generalNopay(tradeNO) {
     my.tradePay({
       tradeNO: tradeNO,
@@ -634,7 +634,7 @@ Page({
       },
     });
   },
-  // facepay通用函数 除了开水器以外
+  // 预支付函数 包含签约
   general() {
     let that = this;
     let userId = this.data.userId;
@@ -691,15 +691,15 @@ Page({
       }
     })
   },
-  // 开启洗衣机
+  // 开启洗衣机 调用预支付函数
   openWasher() {
     this.general();
   },
-  // 开启吹风机
+  // 开启吹风机 调用预支付函数
   openBlower() {
     this.general();
   },
-  // 开启烘干机
+  // 开启烘干机 调用预支付函数
   openDryer() {
     this.general();
   },
