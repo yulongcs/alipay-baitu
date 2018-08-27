@@ -26,6 +26,7 @@
 ├── app.json                    // 全局路径配置
 ├── app.acss                    // 全局样式配置
 ├── page                        // 生产目录
+│   ├── bindNum                 // 绑定手机号页
 │   ├── cardReader              // 读卡页
 │   ├── comment                 // 反馈页
 │   ├── comment_list            // 反馈列表页
@@ -33,8 +34,10 @@
 │   ├── mine                    // 个人中心页
 │   ├── person                  // 个人信息页
 │   ├── recharge                // 充值页
+│   ├── groundRecharge          // 地推充值页
 │   ├── record                  // 消费信息页
 │   ├── school                  // 选择学校页
+│   ├── schoolNew               // 修改学校页
 │   ├── swingCard               // 刷卡绑定页
 │   ├── wallet                  // 钱包页
 └──

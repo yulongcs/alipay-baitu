@@ -123,7 +123,7 @@ Page({
     var params = {
       userName: that.data.userId,
       stuId: that.data.sa_id,
-      money:0.01,
+      money:that.data.money,
     }
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
