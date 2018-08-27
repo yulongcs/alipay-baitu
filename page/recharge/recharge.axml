@@ -15,6 +15,6 @@
 <view>
   <input a:if="{{show}}" class="number" onInput='getMoney' type='number' focus='true' placeholder='输入充值金额'></input>
 </view>
-<view a:if="{{}}">
+<view>
    <button onTap='recharge'>充值</button> 
 </view>

@@ -4,7 +4,7 @@
     <swiper indicator-dots="true" autoplay="true" interval="3000" duration="1000">
       <block a:for="{{info}}" a:for-index="index" a:key='index'>
         <swiper-item style='height:150px'>
-          <image src="{{item.img}}" class='image' data-info="{{item.action}}"  data-url="{{item.h5url}}" data-id="{{item.id}}" />
+          <image src="{{item.img}}" class='image' onTap='jumpTo' data-info="{{item.action}}"  data-url="{{item.h5url}}" data-id="{{item.id}}" />
         </swiper-item>
       </block>
     </swiper>

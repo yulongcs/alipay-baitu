@@ -13,6 +13,29 @@ Page({
     feedback: '',        //
     image: [],           // 存储图片
   },
+  // 生命周期函数 页面加载完成
+  onLoad() {
+    let that = this;
+    imagePath.splice(0, imagePath.length)
+    my.getSystemInfo({
+      success: (res) => {
+        console.log(res)
+        that.setData({
+          width: res.windowWidth / 4,
+        })
+      },
+    });
+    let userId = my.getStorageSync({
+      key: 'userId', // 缓存数据的key
+    }).data;
+    that.setData({ userId: userId })
+    that.getToken();
+    that.getTitle();
+  },
+  // 监听页面加载
+  onUnload() {
+    clearTimeout(timeout);
+  },
   // 获取标题
   getTitle() {
     let that = this;
@@ -26,15 +49,14 @@ Page({
         timestamp: new Date().getTime(),
       })
     }
-    app.req.requestPostApi(url, params, this, function (res) {
+    app.req.requestPostApi(url, params, this, res => {
       that.setData({
         title: res.res
       })
-      console.log(that.data.title);
     })
   },
   // 选择title
-  radioChange (e) {
+  radioChange(e) {
     var that = this;
     that.setData({
       titleId: e.detail.value
@@ -42,7 +64,7 @@ Page({
   },
 
   // 反馈问题描述
-  getText (e) {
+  getText(e) {
     var that = this;
     var feedback = e.detail.value;
     that.setData({
@@ -50,7 +72,7 @@ Page({
     })
   },
   // 上传图片
-  upload () {
+  upload() {
     var that = this;
     my.chooseImage({
       count: 3,
@@ -64,13 +86,12 @@ Page({
         that.setData({
           filePath: imagePath
         })
-        //console.log(that.data.filePath)
       },
     })
   },
 
   // 七牛云上传图片
-  qiniuUpload () {
+  qiniuUpload() {
     var that = this;
     var image = [];
     for (var i = 0; i < imagePath.length; i++) {
@@ -90,7 +111,7 @@ Page({
   },
 
   // 获取token
-  getToken () {
+  getToken() {
     var that = this;
     var time = new Date().getTime();
     var url = '/miniprogram/feedback/qiniu/token';
@@ -102,7 +123,7 @@ Page({
         timestamp: new Date().getTime(),
       })
     }
-    app.req.requestPostApi(url, params, this, function (res) {
+    app.req.requestPostApi(url, params, this, res => {
       console.log(res);
       that.setData({
         token: res.res.token,
@@ -113,7 +134,7 @@ Page({
   },
 
   // 提交舆情
-  postComment () {
+  postComment() {
     var that = this;
     if (imagePath.length > 0) {
       that.qiniuUpload();
@@ -122,12 +143,11 @@ Page({
       that.pushComment(null);
     }
   },
-  pushComment (img) {
+  pushComment(img) {
     var that = this;
-    //console.log(that.data.image, that.data.feedback, that.data.titleId);
     if (!that.data.feedback || !that.data.titleId) {
       my.alert({
-        title: 'error',
+        title: '温馨提示',
         content: '请选择问题点并输入反馈',
       });
       return;
@@ -155,38 +175,10 @@ Page({
     }
 
     // 调用网络接口
-    app.req.requestPostApi(url, params, this, function () {
+    app.req.requestPostApi(url, params, this, res => {
       my.navigateBack({
         url: '../comment_list/comment_list'
       })
     })
-  },
-
-  onLoad () {
-    var that = this;
-    imagePath.splice(0, imagePath.length)
-    my.getSystemInfo({
-      success: function (res) {
-        console.log(res)
-        that.setData({
-          width: res.windowWidth / 4,
-        })
-      },
-    });
-    let useId = my.getStorage({
-      key: 'userId',
-      success: function (res) {
-        that.setData({
-          userId: res.data,
-        })
-        that.getToken();
-        that.getTitle();
-      },
-    });
-  },
-
-  // 监听页面加载
-  onUnload () {
-    clearTimeout(timeout);
   },
 });

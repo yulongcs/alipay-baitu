@@ -665,10 +665,11 @@ Page({
               let url = '/alipay/miniprogram/facepay_open_machine';
               let tradeNO = this.data.tradeNO;
               let userId = this.data.userId;
-              var params = {
-                tradeNO: tradeNO,
+              let params = {
+                tradeNo: tradeNO,
                 alipayPid: userId,
               }
+              console.log(params);
               app.req.requestPostApi(url, params, this, res => {
                 that.setData({
                   showMode: false
@@ -756,7 +757,7 @@ Page({
       })
     })
   },
-  // 跳转到H5页面 - 暂时保留且不使用
+  // 跳转到H5页面
   jumpTo(e) {
     switch (e.currentTarget.dataset.info) {
       case 0:
