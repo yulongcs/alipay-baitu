@@ -22,7 +22,7 @@ Page({
   /**
   * 选择消费swiper-item
   */
-  select: function (e) {
+  select(e) {
     if (e.target.id == 'rech') {
       this.setData({
         show: true,
@@ -38,12 +38,12 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad(options) {
     var that = this;
     this.setSwiperHeight();
     my.getStorage({
       key: 'userId',
-      success: function (res) {
+      success: (res) => {
         that.setData({
           userId: res.data
         })
@@ -56,10 +56,10 @@ Page({
   /**
    * 获取设备信息
    */
-  setSwiperHeight: function () {
+  setSwiperHeight() {
     var that = this;
     my.getAuthUserInfo({
-      success: function (res) {
+      success: (res) => {
         that.setData({
           screenHeight: res.windowHeight,
           ratio: res.screenWidth / 750
@@ -70,7 +70,7 @@ Page({
   /**
    * 获取充值，消费信息
    */
-  getRecharge: function (page) {
+  getRecharge(page) {
     var that = this;
     var time = new Date().getTime();
     var sign = app.common.createSign({
@@ -86,7 +86,7 @@ Page({
       ps: that.data.pageNum,
       sign: sign
     }
-    app.req.requestPostApi('/miniprogram/stu/rechargeorders', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/stu/rechargeorders', params, this, (res) => {
       that.setData({
         re_loading: '点击加载'
       })
@@ -111,7 +111,7 @@ Page({
       })
     })
   },
-  getConsumption: function (page) {
+  getConsumption(page) {
     var that = this;
     var time = new Date().getTime();
     var sign = app.common.createSign({
@@ -127,7 +127,7 @@ Page({
       ps: that.data.pageNum,
       sign: sign
     }
-    app.req.requestPostApi('/miniprogram/stu/useorders', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/stu/useorders', params, this, (res) => {
       that.setData({
         co_loading: '点击加载'
       })
@@ -147,7 +147,7 @@ Page({
   /**
    * 加载充值，消费记录
    */
-  fresh: function (e) {
+  fresh(e) {
     if (e.target.id == 're_loading') {
       this.setData({
         re_loading: '加载中...'
@@ -165,7 +165,7 @@ Page({
   /**
    * swiper滑动事件
    */
-  changeSwiper: function (e) {
+  changeSwiper(e) {
     if (e.detail.current == 1) {
       this.setData({
         current: 1,
