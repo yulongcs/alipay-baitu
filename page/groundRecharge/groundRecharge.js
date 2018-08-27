@@ -131,7 +131,7 @@ Page({
     var params = {
       userName: that.data.userId,
       stuId: that.data.sa_id,
-      money: this.data.money,
+      money: that.data.money,
       ground_promotion_no: _promoters,
     }
     console.warn(JSON.stringify(params))
