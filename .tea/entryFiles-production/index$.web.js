@@ -14,3 +14,4 @@ require('../../page/swingCard/swingCard');
 require('../../page/cardReader/cardReader');
 require('../../page/schoolNew/schoolNew');
 require('../../page/groundRecharge/groundRecharge');
+require('../../page/webview/webview');

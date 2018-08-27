@@ -13,7 +13,8 @@
     "page/swingCard/swingCard",
     "page/cardReader/cardReader",
     "page/schoolNew/schoolNew",
-    "page/groundRecharge/groundRecharge"
+    "page/groundRecharge/groundRecharge",
+    "page/webview/webview"
   ],
   "window": {
     "enableWK": "YES",

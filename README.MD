@@ -40,6 +40,7 @@
 │   ├── schoolNew               // 修改学校页
 │   ├── swingCard               // 刷卡绑定页
 │   ├── wallet                  // 钱包页
+│   ├── webview                 // 内嵌H5页
 └──
 </pre>
 
