@@ -7,4 +7,11 @@
       </navigator >
     </view>
   </view>
+  <!-- 跳转到支付宝H5页面 保留暂不使用  -->
+  <!-- <view class="baitu_H5" onTap="goH5">
+    <view class="baitu_col">
+      <image class="baitu_img" src="../../image/btn_login.png" mode="aspectFit" />
+      <view class="baitu_text">佰途H5</view>
+    </view>
+  </view> -->
 </view>

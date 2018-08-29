@@ -11,7 +11,6 @@ navigator {
     padding: 0 20rpx;
     height: 150rpx; 
     line-height: 150rpx;
-    background-image: url('../image/list_bg_info.png');
     opacity: 10%;
     font-size: 28rpx;
 }
@@ -29,4 +28,18 @@ navigator view {display: flex;align-items: center;padding-left: 30rpx;color:#000
 }
 .col {
     background-color: #ECf7FD;
+}
+
+.baitu_col {
+  display: flex;
+  align-items: center;
+  padding-left: 30rpx;
+  color: #000;
+  background-color: #ECf7FD;  
+}
+.baitu_col .baitu_img {
+  background-size:100% 100%;margin-bottom:20rpx;
+}
+.baitu_col .baitu_text {
+  margin-left:11px;
 }

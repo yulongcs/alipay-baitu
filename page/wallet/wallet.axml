@@ -5,9 +5,9 @@
   <view a:if="{{showPay}}">
     <button onTap='goto'>充值</button>
   </view>
-   <view a:if="{{showRefund}}">
+   <!-- <view a:if="{{showRefund}}">
     <button onTap='refund'>退款</button>
-  </view>
+  </view> -->
   <view class='record'>
     <text class="font_34" onTap='record'>明细记录</text>
   </view>

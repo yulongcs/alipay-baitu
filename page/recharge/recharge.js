@@ -160,37 +160,6 @@ Page({
     })
   },
   /**
-   * 充值送活动
-   */
-  getGive: function () {
-    var that = this;
-    var time = new Date().getTime();
-    var sign = app.common.createSign({
-      timestamp: time,
-      userName: that.data.userId
-    })
-    var params = {
-      userName: that.data.userId,
-      timestamp: time,
-      sign: sign
-    }
-    app.req.requestPostApi('/miniprogram/stu/getact', params, this, function (res) {
-      var array = res.res.detail;
-      for (var i = 0; i < array.length; i++) {
-        if (i == 0) {
-          array[i].getColor = true;
-        } else {
-          array[i].getColor = false;
-        }
-      }
-      that.setData({
-        give: true,
-        czGive: array,
-        actId: res.res.activity.id
-      })
-    })
-  },
-  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
@@ -209,7 +178,6 @@ Page({
         that.setData({
           userId: res.data
         })
-        that.getGive();
       },
     })
   },

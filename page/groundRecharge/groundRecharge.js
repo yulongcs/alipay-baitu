@@ -28,8 +28,24 @@ Page({
       },
     ],
     czGive: [],
-    give: false,
     actId: '',
+  },
+  /**
+  * 生命周期函数--监听页面加载
+  */
+  onLoad(options) {
+    var that = this;
+    my.getStorage({
+      key: 'id',
+      success: function (res) {
+        that.setData({
+          sa_id: res.data
+        })
+      },
+    });
+    let userId = my.getStorageSync({ key: 'userId' }).data
+    that.setData({ userId: userId })
+    that.getGive();
   },
   /**
   * 更改高亮状态及data.money
@@ -134,7 +150,6 @@ Page({
       money: that.data.money,
       ground_promotion_no: _promoters,
     }
-    console.warn(JSON.stringify(params))
     // 网络请求
     app.req.requestPostApi(url, params, this, function (res) {
       var tradeNO = res.res
@@ -178,21 +193,24 @@ Page({
   /**
    * 充值送活动
    */
-  getGive: function () {
-    var that = this;
-    var time = new Date().getTime();
-    var sign = app.common.createSign({
+  getGive() {
+    let that = this;
+    let url = '/miniprogram/stu/getact';
+    let time = new Date().getTime();
+    let sign = app.common.createSign({
       timestamp: time,
       userName: that.data.userId
     })
-    var params = {
+    let params = {
       userName: that.data.userId,
       timestamp: time,
       sign: sign
     }
-    app.req.requestPostApi('/miniprogram/stu/getact', params, this, function (res) {
-      var array = res.res.detail;
-      for (var i = 0; i < array.length; i++) {
+    // 请求充值送
+    app.req.requestPostApi(url, params, this, res => {
+      console.warn(JSON.stringify(res))
+      let array = res.res.detail;
+      for (let i = 0; i < array.length; i++) {
         if (i == 0) {
           array[i].getColor = true;
         } else {
@@ -204,29 +222,6 @@ Page({
         czGive: array,
         actId: res.res.activity.id
       })
-    })
-  },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    var that = this;
-    my.getStorage({
-      key: 'id',
-      success: function (res) {
-        that.setData({
-          sa_id: res.data
-        })
-      },
-    });
-    my.getStorage({
-      key: 'userId',
-      success: function (res) {
-        that.setData({
-          userId: res.data
-        })
-        that.getGive();
-      },
     })
   },
 });

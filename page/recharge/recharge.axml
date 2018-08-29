@@ -6,12 +6,6 @@
     <view id="{{item.id}}" class="{{item.getColor?'selected':'normal'}} number" onTap='changeColor'>{{item.text}}</view>
   </block>  
 </view>
-<view class='money-cz' a:if="{{give}}">
-  <view></view>
-  <block a:for="{{czGive}}" a:key="index">
-    <view id="{{item.id}}" class="{{item.getColor?'selected':'normal'}} number" onTap='changeColorCZ'>{{item.money}}</view>
-  </block>
-</view>
 <view>
   <input a:if="{{show}}" class="number" onInput='getMoney' type='number' focus='true' placeholder='输入充值金额'></input>
 </view>

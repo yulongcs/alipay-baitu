@@ -18,5 +18,6 @@ require('../../page/cardReader/cardReader');
 require('../../page/schoolNew/schoolNew');
 require('../../page/groundRecharge/groundRecharge');
 require('../../page/webview/webview');
+require('../../page/baituH5/baituH5');
 }
 self.bootstrapApp ? self.bootstrapApp({ success }) : success();

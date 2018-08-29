@@ -14,7 +14,8 @@
     "page/cardReader/cardReader",
     "page/schoolNew/schoolNew",
     "page/groundRecharge/groundRecharge",
-    "page/webview/webview"
+    "page/webview/webview",
+    "page/baituH5/baituH5"
   ],
   "window": {
     "enableWK": "YES",
