@@ -11,7 +11,10 @@ Page({
    */
   onLoad(options) {
     console.log(options);
-    this.setData({ url: options.url, ad_id: options.id })
+    let url = my.getStorageSync({
+      key: 'nav', // 缓存数据的key
+    }).data;
+    this.setData({ url: url, ad_id: options.id })
     let startTime = new Date().getTime();
     this.setData({ startTime: startTime })
   },

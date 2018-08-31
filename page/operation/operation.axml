@@ -1,0 +1,10 @@
+<!-- 操作说明 -->
+<view class="main">
+  <view a:for="{{operation}}" a:key="index">
+    <view class="col">
+      <navigator url="{{item.url}}">
+        <view>{{item.name}}</view>
+      </navigator>
+    </view>
+  </view>
+</view>

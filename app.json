@@ -1,5 +1,5 @@
 {
-  "pages": [    
+  "pages": [
     "page/index/index",
     "page/person/person",
     "page/bindNum/bindNum",
@@ -11,12 +11,15 @@
     "page/recharge/recharge",
     "page/record/record",
     "page/swingCard/swingCard",
-    "page/groundRecharge/groundRecharge",            
     "page/cardReader/cardReader",
+    "page/groundRecharge/groundRecharge",
     "page/schoolNew/schoolNew",
     "page/webview/webview",
+    "page/refund/refund",
     "page/baituH5/baituH5",
-    "page/refund/refund"
+    "page/operation/operation",            
+    "page/waterThat/waterThat",
+    "page/cardThat/cardThat"
   ],
   "window": {
     "enableWK": "YES",

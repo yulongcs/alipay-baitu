@@ -25,9 +25,9 @@ Page({
     that.setData({ userId: userId })
     that.getGive();
   },
-   /**
-   * 充值送活动
-   */
+  /**
+  * 充值送活动
+  */
   getGive() {
     let that = this;
     let url = '/miniprogram/stu/getact';
@@ -124,6 +124,7 @@ Page({
       userName: that.data.userId,
       stuId: that.data.sa_id,
       money: that.data.money,
+      activityId: that.data.actId,
       ground_promotion_no: _promoters,
     }
     // 网络请求

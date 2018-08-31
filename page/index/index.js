@@ -97,7 +97,6 @@ Page({
             let params = { account: this.data.userId, };
             // 网络请求
             app.req.requestPostApi(url, params, this, res => {
-              console.warn(JSON.stringify(res))
               my.getStorage({
                 key: 'userId', // 缓存数据的key
                 success: (res) => {
@@ -211,7 +210,6 @@ Page({
       userName: userId,
       sign: sign
     }
-    console.warn(JSON.stringify(params))
     app.req.requestPostApi('/miniprogram/machine/scan', params, this, function(res) {
       that.setData({
         modeType: res.res.type,
@@ -720,9 +718,10 @@ Page({
   generalPay(tradeNO) {
     let url = '/alipay/miniprogram/facepay_open_machine';
     let userId = this.data.userId;
-    let parmas = { tradeNo: tradeNO, alipayPid: userId };
+    let params = { tradeNo: tradeNO, alipayPid: userId };
     my.removeStorage({ key: 'mac', });
-    app.req.requestPostApi(url, parmas, this, res => {
+    app.req.requestPostApi(url, params, this, res => {
+      console.log(JSON.stringify(res))
       my.showToast({
         content: '机器开启成功',
         type: 'success',
@@ -742,13 +741,11 @@ Page({
             duration: 1000,
             success: (res) => {
               let url = '/alipay/miniprogram/facepay_open_machine';
-              let tradeNO = this.data.tradeNO;
               let userId = this.data.userId;
               let params = {
                 tradeNo: tradeNO,
                 alipayPid: userId,
               }
-              console.log(params);
               app.req.requestPostApi(url, params, this, res => {
                 that.setData({
                   showMode: false
@@ -831,7 +828,6 @@ Page({
       sign: sign
     }
     app.req.requestPostApi(url, params, this, res => {
-      console.log(JSON.stringify(res))
       that.setData({
         info: res.res
       })
@@ -843,11 +839,16 @@ Page({
       case 0:
         break;
       case 1:
+        my.setStorageSync({
+          key: 'nav',
+          data: e.currentTarget.dataset.url,
+        });
         my.navigateTo({
-          url: '/page/webview/webview?url=' + e.currentTarget.dataset.url + '&id=' + e.currentTarget.dataset.id,
+          url: '/page/webview/webview?id=' + e.currentTarget.dataset.id,
         })
         break;
       case 2:
+        my.navigateTo({ url: '/page/operation/operation' });
         break;
     }
   },

@@ -1,0 +1,17 @@
+.col {
+    background-color: #ECf7FD;  
+}
+navigator { 
+    padding: 0 20rpx;
+    height: 150rpx; 
+    line-height: 150rpx;
+    opacity: 10%;
+    font-size: 28rpx;
+}
+navigator view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 30rpx;
+  color:#000;
+}
