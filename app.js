@@ -10,6 +10,8 @@ App({
     if (!options.query) {
       my.removeStorage({ key: 'mac', });
       my.removeStorage({ key: 'page', });
+      my.removeStorage({ key: 'promoters', });
+      my.removeStorage({ key: 'cacheTime', });
     } else {
       // 打印返回值 缓存扫后台生成二维码进入的映射码 页面地址 地推人员标识 时间戳
       console.warn(JSON.stringify(options.query))

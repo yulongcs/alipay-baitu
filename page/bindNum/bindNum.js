@@ -7,12 +7,42 @@ Page({
     codes: '获取验证码',       //   页面文字
     count: 60,                //   存储倒计时
     buttonDsiable: false,     //   三元禁用按钮
+    showAct: false,         //   红包显示
+    getText: "领取红包",
+    disabled: false,
+    aniData: {},
+    current: 0,
+    tel: true
   },
   onLoad() {
+    var animation = my.createAnimation({
+      duration: 100,
+    });
+    this.animation = animation;
+    this.setData({
+      aniData: animation.export()
+    });
     my.getStorage({
       key: 'userId', // 缓存数据的key
       success: (res) => {
         this.setData({ userId: res.data })
+      },
+    });
+  },
+  onShow() {
+    console.log(1)
+    my.getStorage({
+      key: 'telephone', // 缓存数据的key
+      success: (res) => {
+        console.log(2)
+        console.log(res.data)
+        if (res.data == "" || res.data == undefined) {
+          console.log('执行if')
+          this.setData({ telephone: res.data })
+        } else {
+          console.log('执行else')
+          this.setData({ tel: false })
+        }
       },
     });
   },
@@ -84,19 +114,68 @@ Page({
         data: res.res.sa_id
       })
       my.setStorage({
-        key:'telephone',
-        data:res.res.sa_phone
+        key: 'telephone',
+        data: res.res.sa_phone
       })
-      my.showToast({
+
+      my.confirm({
+        title: '温馨提示',
         content: '绑定成功',
-        type: 'success',
-        duration: 1000,
+        confirmButtonText: '确定',
         success: (res) => {
-          my.navigateBack({
-            url: '/page/person/person'
-          });
+          let promoters = my.getStorageSync({
+            key: 'promoters', // 缓存数据的key
+          }).data;
+          this.setData({ promoters: promoters })
+          if (promoters) {
+            that.setData({ showAct: true })
+          } else {
+            my.navigateBack({});
+          }
         },
       });
     })
+  },
+  // 获取红包
+  getReward() {
+    this.animation.rotate(10).step();
+    this.animation.rotate(-10).step();
+    this.animation.rotate(10).step();
+    this.animation.rotate(-10).step();
+    this.animation.rotate(0).step();
+    this.setData({ aniData: this.animation.export() })
+    let url = '/miniprogram/redpackage';
+    let userId = my.getStorageSync({
+      key: 'userId', // 缓存数据的key
+    }).data;
+    let params = {
+      type: 1,
+      userName: userId
+    }
+    app.req.requestPostApi(url, params, this, res => {
+      this.setData({
+        getText: '恭喜您获得' + res.res + '元,已放入钱包',
+        disabled: true,
+        current: 1
+      })
+    })
+  },
+  // 点击取消跳转到页面
+  toRecharge() {
+    this.setData({
+      showAct: false
+    })
+    let cacheTime = my.getStorageSync({
+      key: 'cacheTime', // 缓存数据的key
+    }).data;
+    this.setData({ cacheTime: cacheTime })
+    if (cacheTime > Date.parse(new Date())) {
+      my.navigateTo({ url: '/page/groundRecharge/groundRecharge' });
+    } else {
+      my.navigateBack({
+      });
+    }
   }
 });
+
+

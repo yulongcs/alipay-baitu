@@ -8,6 +8,11 @@
   width: 100%;
   display: flex;
   text-align: center;
+  justify-content: center;
+}
+.money-cz {
+  margin-top: 70rpx;
+  margin-bottom: 35rpx;
 }
 .number{
   width: 30%;
@@ -30,13 +35,16 @@ input,button{
 .selected{
   color: #c5E8F9;
   border-radius: 50rpx;
+  font-size: 24px;
   background-color: rgb(62, 179, 236);
-}
-view{
-  margin-top: 10rpx;
 }
 .text{
   text-align: center;
+  margin-top: 240rpx;
+  margin-bottom: 120rpx;
+}
+.text text{
+  font-size: 38px;
 }
 button{
   background-color: #c5E8F9;

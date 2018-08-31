@@ -36,22 +36,9 @@ Page({
     state: 0,//状态，0：空闲，1：运行中
     tradeNO: '',//订单号
   },
-  /* 开水器预支付和非开水器的设备 预支付函数是不一样的(模式不一样)故而区分 */
   onLoad() {
     // 调用获取宽度高度
     this.getInfo();
-    my.getStorage({
-      key: 'userId',
-      success: (res) => {
-        this.setData({
-          userId: res.data
-        });
-        // 调用引导充值函数
-        this.getMoney()
-        // 调用广告位函数
-        this.getAdInfo();
-      },
-    });
     /* 缓存值判断用户什么入口进入 跳转相应页面 */
     my.getStorage({
       key: 'page',
@@ -110,6 +97,14 @@ Page({
             let params = { account: this.data.userId, };
             // 网络请求
             app.req.requestPostApi(url, params, this, res => {
+              console.warn(JSON.stringify(res))
+              my.getStorage({
+                key: 'userId', // 缓存数据的key
+                success: (res) => {
+                  this.setData({ userId: res.data })
+                  this.getAdInfo();
+                },
+              });
               let that = this;
               // 根据返回值判断 电话是否为空 显示不同 便于个人信息页手机绑定
               if (res.res.phone == 'null') {
@@ -136,37 +131,9 @@ Page({
                 key: 'cardNo',
                 data: res.res.cardNo,
               });
-
             })
           }
         })
-      }
-    })
-  },
-  // 获取金额，引导用户充值
-  getMoney() {
-    let that = this;
-    let url = '/miniprogram/stu/money';
-    let userId = this.data.userId;
-    let time = new Date().getTime();
-    let sign = app.common.createSign({
-      userName: userId,
-      timestamp: time
-    })
-    let params = { userName: userId, timestamp: time, sign: sign }
-
-    app.req.requestPostApi(url, params, this, res => {
-      if (res.message <= 0) {
-        my.confirm({
-          title: '温馨提示',
-          content: '余额不足，请前去充值',
-          confirmButtonText: '确定',
-          success: (res) => {
-            if (res.confirm) {
-              my.navigateTo({ url: '/page/recharge/recharge' });
-            }
-          },
-        });
       }
     })
   },
@@ -228,13 +195,10 @@ Page({
   // 获取模式
   getType() {
     var that = this;
-    my.getStorage({
-      key: 'userId',
-      success: (res) => {
-        this.setData({ userId: res.data })
-      },
-    });
-    let userId = this.data.userId;
+    let userId = my.getStorageSync({
+      key: 'userId', // 缓存数据的key
+    }).data;
+    this.setData({ userId: userId })
     var time = new Date().getTime();
     var sign = app.common.createSign({
       mac: that.data.mac,
@@ -247,6 +211,7 @@ Page({
       userName: userId,
       sign: sign
     }
+    console.warn(JSON.stringify(params))
     app.req.requestPostApi('/miniprogram/machine/scan', params, this, function(res) {
       that.setData({
         modeType: res.res.type,
@@ -339,7 +304,7 @@ Page({
       }
       else if (res.res.openType === 2) {
         my.alert({
-          title: '提示',
+          title: '温馨提示',
           content: '请按键',
           success: (res) => {
             that.setData({
@@ -425,7 +390,7 @@ Page({
                 }
                 else if (res.res.openType === 2) {
                   my.alert({
-                    title: '提示',
+                    title: '温馨提示',
                     content: '请按键',
                     success: (res) => {
                       that.setData({
@@ -569,7 +534,7 @@ Page({
           showClose: false
         })
         my.confirm({
-          title: "提示",
+          title: "温馨提示",
           content: '再打一次',
           success: (res) => {
             if (res.confirm) {
@@ -865,7 +830,8 @@ Page({
       timestamp: time,
       sign: sign
     }
-    app.req.requestPostApi(url, params, this, function(res) {
+    app.req.requestPostApi(url, params, this, res => {
+      console.log(JSON.stringify(res))
       that.setData({
         info: res.res
       })

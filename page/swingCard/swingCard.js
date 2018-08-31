@@ -109,6 +109,7 @@ Page({
       my.confirm({
         title: '提示',
         content: '确认解绑吗',
+        confirmButtonText:'确定',
         success: res => {
           if (res.confirm) {
             app.req.requestPostApi(url, params, this, res => {

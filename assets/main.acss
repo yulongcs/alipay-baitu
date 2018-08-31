@@ -1,8 +1,4 @@
 page{
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
     width: 100%;
     background-position: 21% 105%;
     background-size: 100%;

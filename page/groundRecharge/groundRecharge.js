@@ -3,30 +3,8 @@ Page({
   data: {
     userId: 0,
     userName: '',
-    money: 100,
+    money: '',
     show: false,
-    txtArray: [
-      {
-        id: '100',
-        text: '100元',
-        getColor: true
-      },
-      {
-        id: '50',
-        text: '50元',
-        getColor: false
-      },
-      {
-        id: '30',
-        text: '30元',
-        getColor: false
-      },
-      {
-        id: '20',
-        text: '20元',
-        getColor: false
-      },
-    ],
     czGive: [],
     actId: '',
   },
@@ -37,7 +15,7 @@ Page({
     var that = this;
     my.getStorage({
       key: 'id',
-      success: function (res) {
+      success: function(res) {
         that.setData({
           sa_id: res.data
         })
@@ -47,39 +25,45 @@ Page({
     that.setData({ userId: userId })
     that.getGive();
   },
-  /**
-  * 更改高亮状态及data.money
-  */
-  changeColor: function (e) {
-    var textArray = [];
-    for (var i = 0; i < this.data.txtArray.length; i++) {
-      if (e.target.id == this.data.txtArray[i].id) {
-        var color = "txtArray[" + i + "].getColor"
-        if (e.target.id == 'other') {
-          this.setData({
-            [color]: true,
-            show: true,
-            money: 0
-          })
-        } else {
-          this.setData({
-            [color]: true,
-            show: false,
-            money: parseInt(e.target.id)
-          })
-        }
-      } else {
-        var color = "txtArray[" + i + "].getColor"
-        this.setData({
-          [color]: false,
-        })
-      }
+   /**
+   * 充值送活动
+   */
+  getGive() {
+    let that = this;
+    let url = '/miniprogram/stu/getact';
+    let time = new Date().getTime();
+    let sign = app.common.createSign({
+      timestamp: time,
+      userName: that.data.userId
+    })
+    let params = {
+      userName: that.data.userId,
+      timestamp: time,
+      sign: sign
     }
+    // 请求充值送
+    app.req.requestPostApi(url, params, this, res => {
+      console.warn(JSON.stringify(res))
+      let array = res.res.detail;
+      for (let i = 0; i < array.length; i++) {
+        if (i == 0) {
+          array[i].getColor = true;
+        } else {
+          array[i].getColor = false;
+        }
+      }
+      that.setData({
+        give: true,
+        money: res.res.detail[0].id,
+        czGive: array,
+        actId: res.res.activity.id
+      })
+    })
   },
   /**
    * 充值送改变选择高亮
    */
-  changeColorCZ: function (e) {
+  changeColorCZ(e) {
     var czArray = [];
     for (var i = 0; i < this.data.czGive.length; i++) {
       if (e.target.id == this.data.czGive[i].id) {
@@ -104,14 +88,6 @@ Page({
         })
       }
     }
-  },
-  /**
-   * 获取输入金额
-   */
-  getMoney: function (e) {
-    this.setData({
-      money: e.detail.value
-    })
   },
   /**
    * 充值button事件
@@ -151,7 +127,7 @@ Page({
       ground_promotion_no: _promoters,
     }
     // 网络请求
-    app.req.requestPostApi(url, params, this, function (res) {
+    app.req.requestPostApi(url, params, this, function(res) {
       var tradeNO = res.res
       my.tradePay({
         tradeNO: tradeNO,
@@ -187,40 +163,6 @@ Page({
             });
           }
         },
-      })
-    })
-  },
-  /**
-   * 充值送活动
-   */
-  getGive() {
-    let that = this;
-    let url = '/miniprogram/stu/getact';
-    let time = new Date().getTime();
-    let sign = app.common.createSign({
-      timestamp: time,
-      userName: that.data.userId
-    })
-    let params = {
-      userName: that.data.userId,
-      timestamp: time,
-      sign: sign
-    }
-    // 请求充值送
-    app.req.requestPostApi(url, params, this, res => {
-      console.warn(JSON.stringify(res))
-      let array = res.res.detail;
-      for (let i = 0; i < array.length; i++) {
-        if (i == 0) {
-          array[i].getColor = true;
-        } else {
-          array[i].getColor = false;
-        }
-      }
-      that.setData({
-        give: true,
-        czGive: array,
-        actId: res.res.activity.id
       })
     })
   },

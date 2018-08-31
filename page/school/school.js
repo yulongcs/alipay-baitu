@@ -11,7 +11,7 @@ Page({
 
   },
   // load函数
-  onLoad: function (options) {
+  onLoad (options) {
     var that = this;
     var url = '/miniprogram/getAllSchools';
     var params = null;

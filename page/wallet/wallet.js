@@ -29,7 +29,7 @@ Page({
   /**
    * 获取退款权限
    */
-  getRefund: function () {
+  getRefund: function() {
     let that = this;
     let userId = that.data.userId;
     let time = new Date().getTime();
@@ -42,7 +42,7 @@ Page({
       timestamp: time,
       sign: sign
     };
-    app.req.requestPostApi('/miniprogram/app/initAfterLogin', params, this, function (res) {
+    app.req.requestPostApi('/miniprogram/app/initAfterLogin', params, this, function(res) {
       if (res.res.isRefund) {
         that.setData({
           showRefund: true
@@ -50,13 +50,15 @@ Page({
       }
       if (res.res.isRecharge) {
         that.setData({ showPay: true })
+      } else {
+        that.setData({ showPay: true })
       }
     })
   },
   /**
    * 跳转至充值页面
    */
-  goto: function () {
+  goto: function() {
     my.navigateTo({
       url: '../recharge/recharge'
     })
@@ -64,7 +66,7 @@ Page({
   /**
   * 跳转到退款页面
   */
-  refund: function () {
+  refund: function() {
     my.navigateTo({
       url: '../refund/refund',
     })
@@ -72,7 +74,7 @@ Page({
   /**
    * 记录页面
    */
-  record: function () {
+  record: function() {
     my.navigateTo({
       url: '../record/record',
     })

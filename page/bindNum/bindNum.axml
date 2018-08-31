@@ -10,8 +10,23 @@
       <button hover-class="none" class='btnrth' onTap='getCode' disabled='{{buttonDsiable}}'>{{codes}}</button>
     </view>
     <!-- 完成按钮  -->
-    <button class='goback_btn' form-type="submit" hover-class="none">
+    <button class='goback_btn' form-type="submit" hover-class="none" a:if="{{tel}}">
+      <image src="../../image/btn_login.png" mode="scaleToFill" />
+    </button>
+    <button a:else disabled="disabled" class='goback_btn' form-type="submit" hover-class="none">
       <image src="../../image/btn_login.png" mode="scaleToFill" />
     </button>
   </form>
+</view>
+<view class="reward" a:if="{{showAct}}">
+  <view class="shadow"></view>
+  <view class="detail" animation="{{aniData}}">
+    <view>
+      <button onTap="getReward" class="getBtn {{current == 0?'':'selected'}}" disabled="{{disabled}}">{{getText}}</button>
+    </view>
+    <view class="line"></view>
+    <view class="cancel" onTap="toRecharge">
+      <image src="../../image/close.png" />
+    </view>
+  </view>
 </view>
