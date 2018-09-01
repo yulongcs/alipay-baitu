@@ -27,6 +27,9 @@
 ├── app.acss                    // 全局样式配置
 ├── page                        // 生产目录
 │   ├── baituH5                 // 支付宝H5页
+│   ├── cardThat                // 绑卡说明
+│   ├── waterThat               // 打水说明
+│   ├── operation               // 操作说明 
 │   ├── bindNum                 // 绑定手机号页
 │   ├── cardReader              // 读卡页
 │   ├── comment                 // 反馈页
