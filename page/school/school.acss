@@ -45,7 +45,7 @@
   border: 0;
 }
 .school {
-    background: #fff;
+  background: #fff;
 }
 .a-button {
     border: none;

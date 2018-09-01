@@ -1,14 +1,24 @@
 <view class="school">
   <view class='search'>
-  <form onSubmit='sub'>
-    <input name="schoolInput" onInput='onInput' type='text' placeholder-class='searchColor' placeholder='搜索学校'></input>
-    <button form-type='submit'>
-      <icon type='search' size='15' class='reading'></icon>
-    </button>
-  </form>
-
-</view>
-<view a:for="{{schoolList}}" class='content' a:key="index">
-  <view id="{{item.sc_id}}" data-text="{{item.sc_name}}" onTap='selectSchool' class='school'>{{item.sc_name}}</view>
-</view>
+    <form onSubmit='sub'>
+      <input name="schoolInput" onInput='onInput' type='text' placeholder-class='searchColor' placeholder='搜索学校'></input>
+      <button form-type='submit'>
+        <icon type='search' size='15' class='reading'></icon>
+      </button>
+    </form>
+  </view>
+  <view a:for="{{schoolList}}" class='content' a:key="index">
+    <view a:if="{{item.sc_id == clicked}}" id="item.sc_id" >
+      <view style='background:#63b8f4;' 
+        id="{{item.sc_id}}" 
+        data-text="{{item.sc_name}}" 
+        onTap='selectSchool' 
+        class='school'>
+        {{item.sc_name}}
+      </view>
+    </view>
+    <view a:else>
+      <view id="{{item.sc_id}}" data-text="{{item.sc_name}}" onTap='selectSchool' class='school'>{{item.sc_name}}</view>      
+    </view>
+  </view>
 </view>

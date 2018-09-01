@@ -4,6 +4,8 @@ Page({
   data: {
     schoolList: [],      //  学校列表
     inputVal: '',        //  获取输入框的值
+    text: '',             //  点击选中的学校名称
+    clicked: 0,
   },
   // load函数
   onLoad() {
@@ -19,7 +21,6 @@ Page({
   // 输入事件
   onInput(e) {
     let that = this;
-    console.log(e);
     that.setData({
       onInput: true,
       inputVal: e.detail.value // 获取输入框的值s
@@ -43,10 +44,13 @@ Page({
   },
   // 获取学校
   selectSchool(e) {
+    let text = e.target.dataset.text;
     let id = e.target.id
+    this.setData({ clicked: id })
+    let instructions = '您选中的是' + text + '选错学校设备将无法使用'
     my.confirm({
       title: '温馨提示',
-      content: '选错学校设备将无法使用',
+      content: instructions,
       confirmButtonText: '确定选择',
       cancelButtonText: '取消选择',
       success: (res) => {
@@ -72,7 +76,7 @@ Page({
             my.confirm({
               title: '温馨提示',
               content: res.message,
-              confirmButtonText:"确定",
+              confirmButtonText: "确定",
               success: res => {
                 my.navigateBack({});
               }

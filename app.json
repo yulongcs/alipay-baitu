@@ -30,7 +30,7 @@
     "titleBarColor": "#63B8FF"
   },
   "tabBar": {
-    "textColor": "#dddddd",
+    "textColor": "#2c2c2c",
     "selectedColor": "#33a6ff",
     "items": [
       {

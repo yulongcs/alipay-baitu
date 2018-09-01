@@ -5,17 +5,18 @@ Page({
     schoolList: [],      //  学校列表
     inputVal: '',        //  获取输入框的值
     account: '',         //  userID
-    schoolName: '',       //  学校名称
-    cardNo: '',           //  虚拟卡号
-    actoken: '',           //  令牌
-
+    schoolName: '',      //  学校名称
+    cardNo: '',          //  虚拟卡号
+    actoken: '',         //  令牌
+    text: '',            //  点击选中的学校名称
+    clicked: 0,
   },
   // load函数
-  onLoad (options) {
+  onLoad(options) {
     var that = this;
     var url = '/miniprogram/getAllSchools';
     var params = null;
-    app.req.requestPostApi(url, params, this, function (res) {
+    app.req.requestPostApi(url, params, this, function(res) {
       that.setData({
         schoolList: res.res
       })
@@ -37,14 +38,13 @@ Page({
   // 输入事件
   onInput(e) {
     let that = this;
-    console.log(e);
     that.setData({
       onInput: true,
       inputVal: e.detail.value // 获取输入框的值s
     })
   },
   // 表单提交
-  sub: function (e) {
+  sub: function(e) {
     var that = this;
     var inputVal = e.detail.value.schoolInput;   // 输入值传递给后台获取搜索结果
     var url = "/miniprogram/getAllSchools";
@@ -52,7 +52,7 @@ Page({
       schoolName: inputVal,
     }
     // 调用网络接口
-    app.req.requestGetApi(url, params, this, function (res) {
+    app.req.requestGetApi(url, params, this, function(res) {
       that.setData({
         onInput: false,
         schoolList: res.res,
@@ -61,13 +61,16 @@ Page({
   },
   // 获取学校
   selectSchool(e) {
+    let text = e.target.dataset.text;
     var obj = { id: e.target.id, account: this.data.account }
     let url = '/alipay/miniprogram/register'
     let params = { schoolId: obj.id, account: obj.account, accessToken: this.data.actoken }
+    let instructions = '您选中的是' + text + '选错学校设备将无法使用哦'
+    this.setData({ clicked: e.target.id })    
     // 网络请求'
     my.confirm({
       title: '温馨提示',
-      content: '选错学校设备将无法使用',
+      content: instructions,
       confirmButtonText: '确定选择',
       cancelButtonText: '取消选择',
       success: (res) => {
