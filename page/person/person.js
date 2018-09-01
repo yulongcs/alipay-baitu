@@ -23,12 +23,6 @@ Page({
     // 网络请求
     app.req.requestPostApi(url, params, this, res => {
       my.getStorage({
-        key: 'schoolName', // 缓存数据的key
-        success: (res) => {
-          that.setData({ schoolName: res.data })
-        },
-      });
-      my.getStorage({
         key: 'id',// 缓存数据的key
         success: res => {
           that.setData({ id: res.data })
