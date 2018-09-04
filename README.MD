@@ -26,6 +26,7 @@
 ├── app.json                    // 全局路径配置
 ├── app.acss                    // 全局样式配置
 ├── page                        // 生产目录
+│   ├── activityRule            // 充值送活动页
 │   ├── baituH5                 // 支付宝H5页
 │   ├── cardThat                // 绑卡说明
 │   ├── waterThat               // 打水说明
