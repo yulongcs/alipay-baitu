@@ -1,6 +1,9 @@
 <view class="prepaid">
   <image src="../../image/recharge_bg.png" mode="widthFix" />
 </view>
+<view class="rule" onTap="rules">充值送活动规则</view>
+<view a:if="{{worker}}" class="technology">{{technology}}12132</view>
+<view a:else class="technology"></view>
 <view class='money-cz' a:if="{{give}}">
   <block a:for="{{czGive}}" a:key="index">
     <view id="{{item.id}}" onTap='changeColorCZ'>{{item.money}}</view>

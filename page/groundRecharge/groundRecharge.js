@@ -8,11 +8,13 @@ Page({
     czGive: [],
     actId: '',
     give: false,
+    technology: '',
+    worker: ''
   },
   /**
   * 生命周期函数--监听页面加载
   */
-  onLoad(options) {
+  onLoad() {
     var that = this;
     my.getStorage({
       key: 'id',
@@ -22,9 +24,24 @@ Page({
         })
       },
     });
+    let worker = my.getStorageSync({ key: "worker" }).data
+    let promoters = my.getStorageSync({ key: 'promoters' }).data
     let userId = my.getStorageSync({ key: 'userId' }).data
-    that.setData({ userId: userId })
+    let url = '/miniprogram/get_gpp_name_by_no';
+    that.setData({ userId: userId, worker: worker, promoters: promoters })
     that.getGive();
+    let params = {
+      ground_promotion_no: 'BAITU_GPP_0001'
+    }
+    app.req.requestPostApi(url, params, this, res => {
+      let technology = res.res;
+      that.setData({ technology: technology })
+    })
+
+  },
+  // 跳到活动规则
+  rules() {
+    my.navigateTo({ url: "/page/activityRule/activityRule" });
   },
   /**
   * 充值送活动
@@ -59,35 +76,6 @@ Page({
         actId: res.res.activity.id
       })
     })
-  },
-  /**
-   * 充值送改变选择高亮
-   */
-  changeColorCZ(e) {
-    var czArray = [];
-    for (var i = 0; i < this.data.czGive.length; i++) {
-      if (e.target.id == this.data.czGive[i].id) {
-        var color = "czGive[" + i + "].getColor"
-        if (e.target.id == 'other') {
-          this.setData({
-            [color]: true,
-            show: true,
-            money: 0
-          })
-        } else {
-          this.setData({
-            [color]: true,
-            show: false,
-            money: parseInt(e.target.id)
-          })
-        }
-      } else {
-        var color = "czGive[" + i + "].getColor"
-        this.setData({
-          [color]: false,
-        })
-      }
-    }
   },
   /**
    * 充值button事件

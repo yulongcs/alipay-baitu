@@ -24,3 +24,17 @@ button{
   margin: 60rpx;
   border-radius: 20rpx;
 }
+.rule{
+  position: absolute;
+  top: 44rpx;
+  right: 75rpx;
+  color: #2A79BC;
+  font-size: 32rpx;
+}
+.technology{
+  position: absolute;
+  top: 44rpx;
+  left: 85rpx;
+  color: #2A79BC;
+  font-size: 32rpx;
+}

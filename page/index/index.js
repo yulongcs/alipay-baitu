@@ -98,8 +98,12 @@ Page({
             let params = { account: this.data.userId, };
             // 网络请求
             app.req.requestPostApi(url, params, this, res => {
-              let is_baitu_work = res.res.is_baitu_work;
-              this.setData({ is_baitu_work: is_baitu_work })
+              let is_baitu_worker = res.res.is_baitu_worker;
+              this.setData({ is_baitu_worker: is_baitu_worker })
+              my.setStorageSync({
+                key: 'worker', // 缓存数据的key
+                data: res.res.is_baitu_worker, // 要缓存的数据
+              });
               my.getStorage({
                 key: 'userId', // 缓存数据的key
                 success: (res) => {

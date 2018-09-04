@@ -30,7 +30,7 @@
   <!-- 所有机器 -->
   <view class='water' a:if="{{showMode}}">
     <view class="shadow" style="height:{{screenHeight}}px"></view>
-    <view class='detail'a:if="{{is_baitu_work}}">
+    <view class='detail'a:if="{{is_baitu_worker}}">
       <text>请选择{{modeName}}模式({{mac}})</text>
       <block a:for="{{hotMode}}" a:for-index="index" a:key='index'>
         <view id="{{item.modeId}}" catchTap='getModeType'>{{item.name}}</view>
