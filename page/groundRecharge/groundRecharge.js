@@ -7,6 +7,7 @@ Page({
     show: false,
     czGive: [],
     actId: '',
+    give: false,
   },
   /**
   * 生命周期函数--监听页面加载
@@ -43,7 +44,6 @@ Page({
     }
     // 请求充值送
     app.req.requestPostApi(url, params, this, res => {
-      console.warn(JSON.stringify(res))
       let array = res.res.detail;
       for (let i = 0; i < array.length; i++) {
         if (i == 0) {
@@ -103,13 +103,9 @@ Page({
     var promoters = my.getStorageSync({ key: 'promoters' }).data,
       _promoters,
       cacheTime = my.getStorageSync({ key: 'cacheTime' }).data;
-    console.warn(promoters, cacheTime)
-    console.warn(Date.parse(new Date()))
     if (promoters && cacheTime > Date.parse(new Date())) {
-      console.log('执行if')
       _promoters = promoters;
     } else {
-      console.log('执行else')
       my.removeStorageSync({
         key: 'promoters',
       });

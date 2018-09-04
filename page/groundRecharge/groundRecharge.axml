@@ -1,12 +1,16 @@
-<view class='text'>
-  <text>充值有优惠哦</text>
+<view class="prepaid">
+  <image src="../../image/recharge_bg.png" mode="widthFix" />
 </view>
-<view class='money-cz'>
-  <view></view>
+<view class='money-cz' a:if="{{give}}">
   <block a:for="{{czGive}}" a:key="index">
-    <view id="{{item.id}}" class="{{item.getColor?'selected':'normal'}} number" onTap='changeColorCZ'>{{item.money}}</view>
+    <view id="{{item.id}}" onTap='changeColorCZ'>{{item.money}}</view>
   </block>
 </view>
-<view>
-   <button onTap='recharge'>点我充值</button> 
+<view class='money-cz' a:else>
+  <view>暂无此活动</view>
+</view>
+<view a:if="{{give}}">
+  <button onTap='recharge'>充值</button>
+</view>
+<view a:else>
 </view>

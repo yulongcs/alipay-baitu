@@ -1,4 +1,6 @@
-@import '/assets/main.acss';
+.prepaid image{
+  width: 100%;
+}
 .money {
   display: flex;
   justify-content: center;
@@ -9,46 +11,16 @@
   display: flex;
   text-align: center;
   justify-content: center;
+  position: absolute;
+  top: 530rpx;
 }
-.money-cz {
-  margin-top: 70rpx;
-  margin-bottom: 35rpx;
-}
-.number{
-  width: 30%;
-  height: 100rpx;
-  line-height: 100rpx; 
-  border: 1rpx solid #eeeeee;
-  border-radius: 10rpx;
-  color: #c5E8F9;
-}
-input,button{
-  width: 80%;
-  margin-left:10%;
-  border:solid 1rpx #eeeeee;
-}
-.normal{
-  color:#2b7d9e;
-  background-color: rgb(203, 233, 244);
-  border-radius: 50rpx;
-}
-.selected{
-  color: #c5E8F9;
-  border-radius: 50rpx;
-  font-size: 24px;
-  background-color: rgb(62, 179, 236);
-}
-.text{
-  text-align: center;
-  margin-top: 240rpx;
-  margin-bottom: 120rpx;
-}
-.text text{
-  font-size: 38px;
+.money-cz  view{
+  font-size: 80rpx;
+  color: #084D86;
 }
 button{
-  background-color: #c5E8F9;
-  color: #2B7D9E;
+  color:white;
+  background-color: #2A79BC;
   margin: 60rpx;
-  border-radius: 50rpx;
+  border-radius: 20rpx;
 }

@@ -9,7 +9,7 @@ var version = '1.8.6';
 var api = 'https://app.hzchengshan.cn/CSProject';
 // var api = 'https://mid.zjbaitu.cn/CSProject';
 // var api = 'https://mid.zjbaitu.cn/lyb_test_zuul/CSProject';
-// var api = 'http://192.168.0.107'
+// var api = 'http://192.168.0.107:80'
 
 module.exports = {
   appId: appId,

@@ -30,17 +30,12 @@ Page({
     });
   },
   onShow() {
-    console.log(1)
     my.getStorage({
       key: 'telephone', // 缓存数据的key
       success: (res) => {
-        console.log(2)
-        console.log(res.data)
         if (res.data == "" || res.data == undefined) {
-          console.log('执行if')
           this.setData({ telephone: res.data })
         } else {
-          console.log('执行else')
           this.setData({ tel: false })
         }
       },
@@ -117,21 +112,12 @@ Page({
         key: 'telephone',
         data: res.res.sa_phone
       })
-
       my.confirm({
         title: '温馨提示',
         content: '绑定成功',
         confirmButtonText: '确定',
         success: (res) => {
-          let promoters = my.getStorageSync({
-            key: 'promoters', // 缓存数据的key
-          }).data;
-          this.setData({ promoters: promoters })
-          if (promoters) {
-            that.setData({ showAct: true })
-          } else {
-            my.navigateBack({});
-          }
+          this.setData({ showAct: true })
         },
       });
     })
@@ -163,18 +149,9 @@ Page({
   // 点击取消跳转到页面
   toRecharge() {
     this.setData({
-      showAct: false
+      showAct: false,
     })
-    let cacheTime = my.getStorageSync({
-      key: 'cacheTime', // 缓存数据的key
-    }).data;
-    this.setData({ cacheTime: cacheTime })
-    if (cacheTime > Date.parse(new Date())) {
-      my.navigateTo({ url: '/page/groundRecharge/groundRecharge' });
-    } else {
-      my.navigateBack({
-      });
-    }
+    my.navigateTo({ url: '/page/groundRecharge/groundRecharge' });
   }
 });
 

@@ -15,6 +15,7 @@ Page({
 
     username: '',//username,接口参数
     mac: '',//mac地址
+    is_baitu_work: false,
 
     showType: true,//扫一扫与二维码转换
 
@@ -97,6 +98,8 @@ Page({
             let params = { account: this.data.userId, };
             // 网络请求
             app.req.requestPostApi(url, params, this, res => {
+              let is_baitu_work = res.res.is_baitu_work;
+              this.setData({ is_baitu_work: is_baitu_work })
               my.getStorage({
                 key: 'userId', // 缓存数据的key
                 success: (res) => {
