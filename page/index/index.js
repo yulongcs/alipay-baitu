@@ -171,15 +171,6 @@ Page({
             mac = mac.split('#')[0];
           }
         }
-        //  扫描小程序码
-        else if (res.path) {
-          if (res.path.indexOf('mac=')) {
-            mac = res.path.split('mac=')[1];
-            if (mac.indexOf('#') >= 0) {
-              mac = mac.split('#')[0];
-            }
-          }
-        }
         // 支付宝直接扫码
         else if (res.code.indexOf('mac%3D') >= 0) {
           mac = res.code.split('mac%3D')[1];
@@ -252,12 +243,14 @@ Page({
         this.setData({
           blowerType: e.target.id
         })
+        console.log(this.data.blowerType)
         this.openBlower();
         break;
       case 4:
         this.setData({
           dryerType: e.target.id
         })
+        console.log(this.data.dryerType)
         this.openDryer();
         break;
     }
@@ -613,6 +606,7 @@ Page({
     let userId = this.data.userId;
     let mapping = this.data.mac;
     let modeId = this.data.blowerType;
+    console.log('吹风机', modeId)
     let url = '/alipay/miniprogram/facepay';
     let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
 
@@ -669,7 +663,7 @@ Page({
     let that = this;
     let userId = this.data.userId;
     let mapping = this.data.mac;
-    let modeId = this.data.blowerType;
+    let modeId = this.data.dryerType;
     let url = '/alipay/miniprogram/facepay';
     let params = { alipayPid: userId, mapping: mapping, modeId: modeId };
 

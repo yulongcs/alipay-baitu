@@ -12,10 +12,10 @@
   text-align: center;
   justify-content: center;
   position: absolute;
-  top: 530rpx;
+  top: 450rpx;
 }
 .money-cz  view{
-  font-size: 80rpx;
+  font-size:65rpx;
   color: #084D86;
 }
 button{

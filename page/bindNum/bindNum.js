@@ -103,24 +103,45 @@ Page({
     let url = '/alipay/miniprogram/bind_phone'
     let params = { userName: userId, phoneNum: telephone, smsCode: code }
     // 网络请求
-    app.req.requestPostApi(url, params, this, res => {
-      my.setStorage({
-        key: 'id',
-        data: res.res.sa_id
+    if (telephone !== '' && code !== '') {
+      app.req.requestPostApi(url, params, this, res => {
+        my.setStorage({
+          key: 'id',
+          data: res.res.sa_id
+        })
+        my.setStorage({
+          key: 'telephone',
+          data: res.res.sa_phone
+        })
+        my.confirm({
+          title: '温馨提示',
+          content: '绑定成功',
+          confirmButtonText: '确定',
+          success: (res) => {
+            this.setData({ showAct: true })
+          },
+        });
       })
-      my.setStorage({
-        key: 'telephone',
-        data: res.res.sa_phone
-      })
-      my.confirm({
-        title: '温馨提示',
-        content: '绑定成功',
-        confirmButtonText: '确定',
-        success: (res) => {
-          this.setData({ showAct: true })
-        },
+    } else if (code !== '') {
+      my.showToast({
+        content: '输入手机号码啦',
+        type: 'fail',
+        duration: 1000,
       });
-    })
+    } else if (telephone !== '') {
+      my.showToast({
+        content: '输入验证码啦',
+        type: 'fail',
+        duration: 1000,
+      });
+    }
+    else {
+      my.showToast({
+        content: "输入号码和验证码啦",
+        type: "fail",
+        duration: 1000,
+      });
+    }
   },
   // 获取红包
   getReward() {

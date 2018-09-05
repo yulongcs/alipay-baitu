@@ -1,8 +1,8 @@
 <view class="prepaid">
-  <image src="../../image/recharge_bg.png" mode="widthFix" />
+  <image src="https://app.hzchengshan.cn/minipro_img/recharge_activity/background.png" mode="widthFix" />
 </view>
-<view class="rule" onTap="rules">充值送活动规则</view>
-<view a:if="{{worker}}" class="technology">{{technology}}12132</view>
+<!-- <view class="rule" onTap="rules">充值送活动规则</view> -->
+<view a:if="{{worker}}" class="technology">{{technology}}</view>
 <view a:else class="technology"></view>
 <view class='money-cz' a:if="{{give}}">
   <block a:for="{{czGive}}" a:key="index">
