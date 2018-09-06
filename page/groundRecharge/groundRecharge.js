@@ -31,7 +31,7 @@ Page({
     that.setData({ userId: userId, worker: worker, promoters: promoters })
     that.getGive();
     let params = {
-      ground_promotion_no: 'BAITU_GPP_0001'
+      ground_promotion_no: promoters
     }
     app.req.requestPostApi(url, params, this, res => {
       let technology = res.res;
