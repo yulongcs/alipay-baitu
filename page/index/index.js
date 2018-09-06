@@ -40,7 +40,7 @@ Page({
   onLoad() {
     // 调用获取宽度高度
     this.getInfo();
-    /* 缓存值判断用户什么入口进入 跳转相应页面 */
+       /* 缓存值判断用户什么入口进入 跳转相应页面 */
     my.getStorage({
       key: 'page',
       success: (res) => {

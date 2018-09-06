@@ -9,33 +9,24 @@ Page({
     actId: '',
     give: false,
     technology: '',
-    worker: ''
+    worker: '',
   },
   /**
   * 生命周期函数--监听页面加载
   */
   onLoad() {
-    var that = this;
-    my.getStorage({
-      key: 'id',
-      success: function(res) {
-        that.setData({
-          sa_id: res.data
-        })
-      },
-    });
     let worker = my.getStorageSync({ key: "worker" }).data
     let promoters = my.getStorageSync({ key: 'promoters' }).data
     let userId = my.getStorageSync({ key: 'userId' }).data
     let url = '/miniprogram/get_gpp_name_by_no';
-    that.setData({ userId: userId, worker: worker, promoters: promoters })
-    that.getGive();
+    this.setData({ userId: userId, worker: worker, promoters: promoters, })
+    this.getGive();
     let params = {
       ground_promotion_no: promoters
     }
     app.req.requestPostApi(url, params, this, res => {
       let technology = res.res;
-      that.setData({ technology: technology })
+      this.setData({ technology: technology })
     })
 
   },
@@ -47,15 +38,14 @@ Page({
   * 充值送活动
   */
   getGive() {
-    let that = this;
     let url = '/miniprogram/stu/getact';
     let time = new Date().getTime();
     let sign = app.common.createSign({
       timestamp: time,
-      userName: that.data.userId
+      userName: this.data.userId
     })
     let params = {
-      userName: that.data.userId,
+      userName: this.data.userId,
       timestamp: time,
       sign: sign
     }
@@ -69,7 +59,7 @@ Page({
           array[i].getColor = false;
         }
       }
-      that.setData({
+      this.setData({
         give: true,
         money: res.res.detail[0].id,
         czGive: array,
@@ -81,6 +71,10 @@ Page({
    * 充值button事件
    */
   recharge() {
+    let id = my.getStorageSync({
+      key: 'id', // 缓存数据的key
+    }).data;
+    this.setData({ id: id })
     if (this.data.money == 0) {//充值数目不为空
       my.alert({
         title: '提示',
@@ -100,20 +94,19 @@ Page({
       my.removeStorageSync({
         key: 'cacheTime',
       });
-
     }
-    var that = this;
-    var url = '/miniprogram/alipay';
-    var params = {
-      userName: that.data.userId,
-      stuId: that.data.sa_id,
-      money: that.data.money,
-      activityId: that.data.actId,
+    let url = '/miniprogram/alipay';
+    let params = {
+      userName: this.data.userId,
+      stuId: id,
+      money: this.data.money,
+      activityId: this.data.actId,
       ground_promotion_no: _promoters,
     }
+    console.log(params)
     // 网络请求
-    app.req.requestPostApi(url, params, this, function(res) {
-      var tradeNO = res.res
+    app.req.requestPostApi(url, params, this, res => {
+      let tradeNO = res.res
       my.tradePay({
         tradeNO: tradeNO,
         success: (res) => {

@@ -44,7 +44,7 @@ Page({
   /**
   * 更改高亮状态及data.money
   */
-  changeColor: function (e) {
+  changeColor: function(e) {
     var textArray = [];
     for (var i = 0; i < this.data.txtArray.length; i++) {
       if (e.target.id == this.data.txtArray[i].id) {
@@ -73,7 +73,7 @@ Page({
   /**
    * 充值送改变选择高亮
    */
-  changeColorCZ: function (e) {
+  changeColorCZ: function(e) {
     var czArray = [];
     for (var i = 0; i < this.data.czGive.length; i++) {
       if (e.target.id == this.data.czGive[i].id) {
@@ -102,7 +102,7 @@ Page({
   /**
    * 获取输入金额
    */
-  getMoney: function (e) {
+  getMoney: function(e) {
     this.setData({
       money: e.detail.value
     })
@@ -111,6 +111,14 @@ Page({
    * 充值button事件
    */
   recharge() {
+    my.getStorage({
+      key: 'id',
+      success: function(res) {
+        that.setData({
+          sa_id: res.data
+        })
+      },
+    });
     if (this.data.money == 0) {//充值数目不为空
       my.alert({
         title: '提示',
@@ -123,10 +131,10 @@ Page({
     var params = {
       userName: that.data.userId,
       stuId: that.data.sa_id,
-      money:that.data.money,
+      money: that.data.money,
     }
     // 网络请求
-    app.req.requestPostApi(url, params, this, function (res) {
+    app.req.requestPostApi(url, params, this, function(res) {
       var tradeNO = res.res
       my.tradePay({
         tradeNO: tradeNO,
@@ -162,11 +170,11 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     var that = this;
     my.getStorage({
       key: 'id',
-      success: function (res) {
+      success: function(res) {
         that.setData({
           sa_id: res.data
         })
@@ -174,7 +182,7 @@ Page({
     });
     my.getStorage({
       key: 'userId',
-      success: function (res) {
+      success: function(res) {
         that.setData({
           userId: res.data
         })

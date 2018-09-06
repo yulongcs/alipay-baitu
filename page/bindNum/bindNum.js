@@ -66,32 +66,39 @@ Page({
         timestamp: new Date().getTime(),
       })
     }
-
     // 网络请求
-    app.req.requestPostApi(url, params, this, (res) => {
+    if (telephone !== '') {
+      app.req.requestPostApi(url, params, this, (res) => {
+        my.showToast({
+          content: '验证码已发送',
+          type: 'success',
+          duration: 1000,
+        });
+        let mobile = that.data.mobile;
+        let timer = setInterval(() => {
+          let count = that.data.count - 1;
+          that.setData({
+            codes: count + 's重新发送',
+            count: count,
+            buttonDisable: true,
+          })
+          if (count < 1) {
+            clearInterval(timer);
+            that.setData({
+              count: 59,
+              codes: '获取验证码',
+              buttonDisable: false,
+            })
+          }
+        }, 1000)
+      })
+    } else {
       my.showToast({
-        content: '验证码已发送',
-        type: 'success',
+        content: '请输入手机号啦',
+        type: 'fail',
         duration: 1000,
       });
-      let mobile = that.data.mobile;
-      let timer = setInterval(() => {
-        let count = that.data.count - 1;
-        that.setData({
-          codes: count + 's重新发送',
-          count: count,
-          buttonDisable: true,
-        })
-        if (count < 1) {
-          clearInterval(timer);
-          that.setData({
-            count: 59,
-            codes: '获取验证码',
-            buttonDisable: false,
-          })
-        }
-      }, 1000)
-    })
+    }
   },
 
   // 表单提交
@@ -124,7 +131,7 @@ Page({
       })
     } else if (code !== '') {
       my.showToast({
-        content: '输入手机号码啦',
+        content: '输入手机号啦',
         type: 'fail',
         duration: 1000,
       });
@@ -137,7 +144,7 @@ Page({
     }
     else {
       my.showToast({
-        content: "输入号码和验证码啦",
+        content: "输入手机号和验证码啦",
         type: "fail",
         duration: 1000,
       });

@@ -14,8 +14,7 @@ App({
       my.removeStorage({ key: 'cacheTime', });
       my.removeStorage({ key: 'nav', });
     } else {
-      // 打印返回值 缓存扫后台生成二维码进入的映射码 页面地址 地推人员标识 时间戳
-      console.warn(JSON.stringify(options.query))
+      // 缓存扫后台生成二维码进入的映射码 页面地址 地推人员标识 时间戳
       my.setStorage({ key: 'mac', data: options.query.mac });
       my.setStorage({ key: 'page', data: options.query.target_page });
       my.setStorage({ key: 'promoters', data: options.query.ground_promotion_no });
