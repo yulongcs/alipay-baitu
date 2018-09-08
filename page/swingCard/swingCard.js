@@ -62,6 +62,13 @@ Page({
           })
         }
       });
+    } else {
+      my.showToast({
+        content: '卡号绑过啦',
+        type: 'fail',
+        duration: 1000
+      })
+      return false
     }
   },
 
@@ -88,18 +95,20 @@ Page({
         confirmButtonText: '确定',
         success: res => {
           if (res.confirm) {
-            app.req.requestPostApi(url, params, this, res => {
-              my.showToast({
-                content: '解绑成功',
-                type: 'success',
-                duration: 1000,
-              })
-              my.setStorage({
-                key: 'cardNo', // 缓存数据的key
-                data: '',
-              });
-              that.setData({ cardNo: '' })
-            })
+            my.showToast({
+              content: '解绑成功',
+              type: 'success',
+              duration: 500,
+              success: (res) => {
+                app.req.requestPostApi(url, params, this, res => {
+                  my.setStorage({
+                    key: 'cardNo', // 缓存数据的key
+                    data: '',
+                  });
+                  that.setData({ cardNo: '' })
+                })
+              },
+            });
           } else {
             my.showToast({
               content: '已取消',
