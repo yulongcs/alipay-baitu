@@ -40,7 +40,7 @@ Page({
   onLoad() {
     // 调用获取宽度高度
     this.getInfo();
-       /* 缓存值判断用户什么入口进入 跳转相应页面 */
+    /* 缓存值判断用户什么入口进入 跳转相应页面 */
     my.getStorage({
       key: 'page',
       success: (res) => {
@@ -164,27 +164,8 @@ Page({
     var mac;
     my.scan({
       success: (res) => {
-        // 扫描二维码
-        if (res.code.indexOf('mac=') >= 0) {
-          mac = res.code.split('mac=')[1];
-          if (mac.indexOf('#') >= 0) {
-            mac = mac.split('#')[0];
-          }
-        }
-        // 支付宝直接扫码
-        else if (res.code.indexOf('mac%3D') >= 0) {
-          mac = res.code.split('mac%3D')[1];
-          if (mac.indexOf('#') >= 0) {
-            mac = mac.split('#')[0];
-          }
-        }
-        // 二维码内容直接为mac地址
-        else {
-          mac = res.code;
-        }
-        that.setData({
-          mac: mac
-        })
+        mac = res.code;
+        that.setData({ mac: mac })
         that.getType();
       }
     });
@@ -534,6 +515,7 @@ Page({
         my.confirm({
           title: "温馨提示",
           content: '再打一次',
+          confirmButtonText: '确定',
           success: (res) => {
             if (res.confirm) {
               that.openHot();

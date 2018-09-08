@@ -36,32 +36,8 @@ Page({
     if (!cardNo) {
       my.scan({
         success: (res) => {
-          //扫描二维码
-          if (res.code.indexOf('mac=') >= 0) {
-            mac = res.result.split("mac=")[1];
-            if (mac.indexOf('#') >= 0) {
-              mac = mac.split('#')[0];
-            }
-            //支付宝直接扫码
-          } else if (res.code.indexOf('mac%3D') >= 0) {
-            mac = res.result.split("mac%3D")[1];
-            if (mac.indexOf('#') >= 0) {
-              mac = mac.split('#')[0];
-            }
-          }
-          //扫描小程序码
-          else if (res.path) {
-            if (res.path.indexOf('mac=')) {
-              mac = res.path.split("mac=")[1];
-              if (mac.indexOf('#') >= 0) {
-                mac = mac.split('#')[0];
-              }
-            }
-          }
-          //二维码内容直接为mac地址
-          else {
-            mac = res.code;
-          }
+          console.log(res)
+          mac = res.code;
           that.setData({ mac: mac, })
           var url = '/miniprogram/sign/bind';
           var time = new Date().getTime();
@@ -78,7 +54,7 @@ Page({
           }
           var task_uuid = that.data.task_uuid;
           // 调用网络接口
-          app.req.requestPostApi(url, params, this, function (res) {
+          app.req.requestPostApi(url, params, this, function(res) {
             var task_uuid = res.message;
             my.redirectTo({
               url: "/page/cardReader/cardReader?mac=" + mac + "&userName=" + userId + "&task_uuid=" + task_uuid
@@ -109,7 +85,7 @@ Page({
       my.confirm({
         title: '提示',
         content: '确认解绑吗',
-        confirmButtonText:'确定',
+        confirmButtonText: '确定',
         success: res => {
           if (res.confirm) {
             app.req.requestPostApi(url, params, this, res => {
